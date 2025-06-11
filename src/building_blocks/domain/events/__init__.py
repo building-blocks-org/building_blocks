@@ -1,4 +1,4 @@
 """
 Domain events module.
-Contains the events that represents facts that happened in ur domain.
+Contains the events that represent facts that happened in your domain.
 """
