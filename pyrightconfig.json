@@ -11,5 +11,11 @@
     ],
     "reportMissingImports": true,
     "reportMissingTypeStubs": false,
-    "pythonPlatform": "All"
+    "pythonPlatform": "All",
+    "executionEnvironments": [
+        {
+            "root": "src",
+            "pythonVersion": "3.13"
+        }
+    ]
 }
