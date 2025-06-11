@@ -32,8 +32,8 @@ repos:
     rev: v1.16.0
     hooks:
       - id: mypy
-        args: ["--python-version", "3.13"]
-        additional_dependencies: [types-all]
+        args: ["--python-version", "3.9"]
+        additional_dependencies: []
 
   - repo: https://github.com/PyCQA/bandit
     rev: 1.8.3

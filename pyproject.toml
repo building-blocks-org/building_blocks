@@ -2,7 +2,8 @@
 name = "building-blocks"
 version = "0.1.0"
 description = "A clean architecture Python library following hexagonal principles"
-authors = ["Glauber Brennon <glauberbrennon@gmail.com>"]  # Keep personal email for now
+authors = ["Glauber Brennon <glauberbrennon@gmail.com>"]
+license = "MIT"
 readme = "README.md"
 packages = [{include = "building_blocks", from = "src"}]
 keywords = [
@@ -19,17 +20,17 @@ keywords = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.13"
+python = "^3.9"
 
 [tool.poetry.group.dev.dependencies]
-black = "^25.1.0"
-isort = "^6.0.1"
-mypy = "^1.16.0"
-bandit = "^1.8.3"
-pre-commit = "^4.2.0"
-pytest = "^8.3.0"
-pytest-cov = "^6.0.0"
-ruff = "^0.8.0"
+black = "*"
+isort = "*"
+mypy = "*"
+bandit = "*"
+pre-commit = "*"
+pytest = "*"
+pytest-cov = "*"
+ruff = "*"
 
 [build-system]
 requires = ["poetry-core"]
@@ -38,7 +39,7 @@ build-backend = "poetry.core.masonry.api"
 # Tool configurations
 [tool.black]
 line-length = 88
-target-version = ['py313']
+target-version = ['py39']
 
 [tool.isort]
 profile = "black"
@@ -47,7 +48,7 @@ line_length = 88
 
 [tool.ruff]
 line-length = 88
-target-version = "py313"
+target-version = "py39"
 src = ["src", "tests"]
 
 [tool.ruff.lint]
@@ -62,7 +63,7 @@ select = [
 ]
 
 [tool.mypy]
-python_version = "3.13"
+python_version = "3.9"
 warn_return_any = true
 warn_unused_configs = true
 disallow_untyped_defs = true
