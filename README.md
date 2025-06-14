@@ -59,7 +59,7 @@ Building Blocks provides a foundation for implementing clean architecture patter
 │              Any Framework or Interface                 │
 │        (Web, CLI, Desktop, Mobile, etc.)               │
 └─────────────────────┬───────────────────────────────────┘
-                      │
+                      │ (depends on)
                       ▼
       ┌─────────────────────────────────────────────────────┐
       │            Application Layer                        │
@@ -68,24 +68,24 @@ Building Blocks provides a foundation for implementing clean architecture patter
       │  │        Application Inbound Ports            │    │
       │  │     (Use Cases, Command/Query Handlers)     │    │
       │  │        (Interfaces/Abstract Classes)        │    │
-      │  └─────────────────────────────────────────────┘    │
-      │                        ▲                            │
-      │                        │                            │
-      │  ┌─────────────────────────────────────────────┐    │
+      │  └─────────────────┬───────────────────────────┘    │
+      │                    ▲ (implements)                   │
+      │                    │                                │
+      │  ┌─────────────────┴───────────────────────────┐    │
       │  │        Application Services                 │    │
       │  │   (Implementations of Inbound Ports)        │    │
       │  │         (Concrete Classes)                  │    │
-      │  └─────────────────────────────────────────────┘    │
-      │                        │                            │
-      │                        ▼                            │
+      │  └─────────────────┬───────────────────────────┘    │
+      │                    │ (depends on)                   │
+      │                    ▼                                │
       │  ┌─────────────────────────────────────────────┐    │
       │  │       Application Outbound Ports            │    │
       │  │    (External Services, Notifications)       │    │
       │  │        (Interfaces/Abstract Classes)        │    │
       │  └─────────────────────────────────────────────┘    │
-      └─────────────┬───────────────────────────┬───────────┘
-                    │                           │
-                    ▼                           ▼
+      └─────────────┬───────────────────────────────────────┘
+                    │ (depends on)
+                    ▼
 ┌─────────────────────────────────────────────────────────┐
 │                   Domain Layer                          │
 │                  (Business Logic)                       │
@@ -99,25 +99,26 @@ Building Blocks provides a foundation for implementing clean architecture patter
 │  │          Domain Inbound Ports                   │    │
 │  │        (Domain Service Interfaces)              │    │
 │  │        (Interfaces/Abstract Classes)            │    │
-│  └─────────────────────────────────────────────────┘    │
-│                        ▲                                │
-│                        │                                │
-│  ┌─────────────────────────────────────────────────┐    │
+│  └─────────────────┬───────────────────────────────┘    │
+│                    ▲ (implements)                       │
+│                    │                                    │
+│  ┌─────────────────┴───────────────────────────────┐    │
 │  │           Domain Services                       │    │
 │  │     (Implementations of Inbound Ports)          │    │
 │  │           (Concrete Classes)                    │    │
-│  └─────────────────────────────────────────────────┘    │
-│                        │                                │
-│                        ▼                                │
+│  └─────────────────┬───────────────────────────────┘    │
+│                    │ (depends on)                       │
+│                    ▼                                    │
 │  ┌─────────────────────────────────────────────────┐    │
 │  │         Domain Outbound Ports                   │    │
 │  │    (Repository, Event Publisher, Clock)         │    │
 │  │        (Interfaces/Abstract Classes)            │    │
+│  │           **DEFINED BY DOMAIN**                 │    │
 │  └─────────────────────────────────────────────────┘    │
-└─────────────┬───────────────┬───────────────┬───────────┘
-              │               │               │
-              ▼               ▼               ▼
-┌─────────────────────────────────────────────────────────┐
+└─────────────────────────────────────────────────────────┘
+                      ▲ (implements)
+                      │
+┌─────────────────────┴───────────────────────────────────┐
 │                  Infrastructure Layer                   │
 │                 (Secondary Adapters)                    │
 │                                                         │
@@ -126,6 +127,14 @@ Building Blocks provides a foundation for implementing clean architecture patter
 │               (Concrete Classes)                        │
 └─────────────────────────────────────────────────────────┘
 ```
+
+### Key Architectural Principles ✅
+
+1. **Dependencies Point Inward**: All arrows point toward the domain layer
+2. **Domain is Independent**: Domain layer has ZERO outward dependencies
+3. **Dependency Inversion**: Infrastructure implements domain-defined interfaces
+4. **Interfaces in Domain**: Outbound ports are contracts defined by the domain
+5. **Clean Boundaries**: Each layer only knows about the layer inside it
 
 ## Port Architecture
 
@@ -173,11 +182,11 @@ Building Blocks follows proper hexagonal architecture with clear port separation
 ### Code Examples: Interfaces vs Implementations
 
 ```python
-# Domain Outbound Port (Interface)
+# Domain Outbound Port (Interface) - DEFINED BY DOMAIN
 class UserRepository(ABC):
     @abstractmethod
     async def save(self, user: User) -> None: ...
-    
+
     @abstractmethod
     async def find_by_id(self, user_id: str) -> User | None: ...
 
@@ -186,20 +195,20 @@ class CreateUserUseCase(ABC):
     @abstractmethod
     async def execute(self, command: CreateUserCommand) -> User: ...
 
-# Application Service (Implementation)
+# Application Service (Implementation) - DEPENDS ON DOMAIN INTERFACES
 class CreateUserUseCaseImpl(CreateUserUseCase):  # Concrete implementation
-    def __init__(self, user_repository: UserRepository):  # Depends on interface
+    def __init__(self, user_repository: UserRepository):  # Depends on DOMAIN interface
         self._user_repository = user_repository
-    
+
     async def execute(self, command: CreateUserCommand) -> User:
         # Concrete implementation logic
         pass
 
-# Infrastructure (Implementation)
-class SQLAlchemyUserRepository(UserRepository):  # Concrete implementation
+# Infrastructure (Implementation) - IMPLEMENTS DOMAIN INTERFACES
+class SQLAlchemyUserRepository(UserRepository):  # Implements DOMAIN interface
     def __init__(self, session: Session):
         self._session = session
-    
+
     async def save(self, user: User) -> None:
         # Concrete database implementation
         pass
@@ -208,7 +217,7 @@ class SQLAlchemyUserRepository(UserRepository):  # Concrete implementation
 ### Key Distinction: Events
 
 ```python
-# Domain Layer - Domain Event Publisher (Interface)
+# Domain Layer - Domain Event Publisher (Interface DEFINED BY DOMAIN)
 class DomainEventPublisher(ABC):
     @abstractmethod
     async def publish(self, event: DomainEvent) -> None: ...
@@ -217,7 +226,7 @@ class DomainEventPublisher(ABC):
 class IntegrationEventPublisher(ABC):
     @abstractmethod
     async def publish_user_welcomed(self, user_id: str, email: str) -> None: ...
-    
+
 class MessageBus(ABC):
     @abstractmethod
     async def send_command(self, command: Command, target_service: str) -> None: ...
@@ -254,7 +263,7 @@ class User(BaseEntity[str]):
         super().__init__(user_id)
         self.email = email
         self.name = name
-    
+
     def change_email(self, new_email: str) -> None:
         # Domain logic here
         if not new_email or '@' not in new_email:
@@ -312,28 +321,28 @@ from building_blocks.application.services import CreateUserUseCaseImpl
 
 class CreateUserUseCaseImpl(CreateUserUseCase):  # Concrete implementation
     def __init__(
-        self, 
+        self,
         user_repository: UserRepository,  # Interface dependency
         email_service: EmailNotificationService  # Interface dependency
     ):
         self._user_repository = user_repository
         self._email_service = email_service
-    
+
     async def execute(self, command: CreateUserCommand) -> User:
         # Concrete implementation logic
         existing_user = await self._user_repository.find_by_email(command.email)
         if existing_user:
             raise ValueError("User already exists")
-        
+
         user = User(
             user_id=generate_id(),
             email=command.email,
             name=command.name
         )
-        
+
         await self._user_repository.save(user)
         await self._email_service.send_welcome_email(user.email, user.name)
-        
+
         return user
 ```
 
@@ -523,7 +532,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Roadmap
 
-- [ ] **v0.1.0**: Core domain building blocks (Current)
+- [ ] **v0.1.0**: Domain building blocks (Current)
 - [ ] **v0.2.0**: Application layer with Application Inbound and Outbound Ports
 - [ ] **v0.3.0**: Infrastructure abstractions and adapters
 - [ ] **v0.4.0**: Presentation layer helpers for multiple frameworks
@@ -534,6 +543,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Support
 
 - 📧 **Email**: [glauberbrennon@gmail.com](mailto:glauberbrennon@gmail.com)
+- 🐛 **Issues**: [GitHub Issues](https://github.com/gbrennon/building-blocks/issues)
 - 🐛 **Issues**: [GitHub Issues](https://github.com/gbrennon/building-blocks/issues)
 - 💬 **Discussions**: [GitHub Discussions](https://github.com/gbrennon/building-blocks/discussions)
 
