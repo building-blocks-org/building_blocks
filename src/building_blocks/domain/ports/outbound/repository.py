@@ -1,5 +1,5 @@
 """
-Generic repository interface for Domain-Driven Design.
+Generic repository interfaces for Domain-Driven Design.
 
 This module provides a generic repository interface that is parameterized
 by the aggregate root type and its ID type, providing both flexibility
@@ -15,9 +15,9 @@ TAggregateRoot = TypeVar("TAggregateRoot")
 TId = TypeVar("TId")
 
 
-class Repository(ABC, Generic[TAggregateRoot, TId]):
+class SyncRepository(ABC, Generic[TAggregateRoot, TId]):
     """
-    Generic repository interface for aggregate roots.
+    Generic sync repository interface for aggregate roots.
 
     This interface is parameterized by both the aggregate root type and its ID type,
     providing type safety while maintaining flexibility and reusability.
@@ -34,7 +34,7 @@ class Repository(ABC, Generic[TAggregateRoot, TId]):
         ...         super().__init__(order_id)
         ...         self._customer_id = customer_id
         >>>
-        >>> class OrderRepository(Repository[Order, UUID]):
+        >>> class OrderRepository(SyncRepository[Order, UUID]):
         ...     def find_by_id(self, order_id: UUID) -> Order | None:
         ...         # Implementation returns Order or None
         ...         pass
@@ -106,6 +106,108 @@ class Repository(ABC, Generic[TAggregateRoot, TId]):
 
     @abstractmethod
     def find_all(self) -> list[TAggregateRoot]:
+        """
+        Find all aggregates in the repository.
+
+        Note: Use with caution in production systems with large datasets.
+        Consider pagination or specific query methods instead.
+
+        Returns:
+            All aggregates in the repository
+        """
+
+
+class AsyncRepository(ABC, Generic[TAggregateRoot, TId]):
+    """
+    Generic async repository interface for aggregate roots.
+
+    This interface is parameterized by both the aggregate root type and its ID type,
+    providing type safety while maintaining flexibility and reusability.
+
+    Each concrete repository implementation will specify exactly which aggregate
+    and ID type it handles, making the contract explicit and type-safe.
+
+    Example:
+        >>> from uuid import UUID
+        >>> from building_blocks.domain.aggregate_root import AggregateRoot
+        >>>
+        >>> class Order(AggregateRoot[UUID]):
+        ...     def __init__(self, order_id: UUID, customer_id: str):
+        ...         super().__init__(order_id)
+        ...         self._customer_id = customer_id
+        >>>
+        >>> class OrderRepository(AsyncRepository[Order, UUID]):
+        ...     def find_by_id(self, order_id: UUID) -> Order | None:
+        ...         # Implementation returns Order or None
+        ...         pass
+        ...
+        ...     async def save(self, order: Order) -> None:
+        ...         # Implementation accepts Order specifically
+        ...         pass
+        ...
+        ...     async def delete(self, order: Order) -> None:
+        ...         # Implementation accepts Order specifically
+        ...         pass
+        ...
+        ...     async def find_all(self) -> list[Order]:
+        ...         # Implementation returns list of Orders
+        ...         pass
+        ...
+        ...     # Add aggregate-specific methods with full type safety
+        ...     async def find_by_customer_id(self, customer_id: str) -> list[Order]:
+        ...         # Aggregate-specific query - still type safe!
+        ...         pass
+    """
+
+    @abstractmethod
+    async def find_by_id(self, aggregate_id: TId) -> TAggregateRoot | None:
+        """
+        Find an aggregate by its unique identifier.
+
+        Returns None if the aggregate is not found, rather than raising
+        an exception. This follows the "Tell, Don't Ask" principle and
+        allows the domain to handle missing aggregates appropriately.
+
+        Args:
+            aggregate_id: The unique identifier of the aggregate
+
+        Returns:
+            The aggregate if found, None otherwise
+        """
+
+    @abstractmethod
+    async def save(self, aggregate: TAggregateRoot) -> None:
+        """
+        Save an aggregate to the repository.
+
+        This method handles both create and update operations.
+        The repository implementation should:
+        - Persist the aggregate state
+        - Handle optimistic concurrency control (using version)
+        - Publish domain events after successful persistence
+
+        Args:
+            aggregate: The aggregate to save
+
+        Raises:
+            ConcurrencyException: If optimistic locking fails
+            RepositoryException: If persistence fails
+        """
+
+    @abstractmethod
+    async def delete(self, aggregate: TAggregateRoot) -> None:
+        """
+        Delete an aggregate from the repository.
+
+        Args:
+            aggregate: The aggregate to delete
+
+        Raises:
+            RepositoryException: If deletion fails
+        """
+
+    @abstractmethod
+    async def find_all(self) -> list[TAggregateRoot]:
         """
         Find all aggregates in the repository.
 
