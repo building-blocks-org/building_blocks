@@ -93,10 +93,20 @@ domain/
    Specify repository interfaces in `ports/outbound/`.
 
    ```python
-   from building_blocks.domain.ports.outbound.repository import Repository
+   from building_blocks.domain.ports.outbound.repository import SyncRepository
 
-   class UserRepository(Repository[User, str]):
-       pass
+   class UserRepository(SyncRepository[User, str]):
+         def find_by_email(self, email: str) -> User | None:
+              """Find a user by email."""
+              pass
+
+         def save(self, user: User) -> None:
+              """Save a user."""
+              pass
+
+        def delete(self, user: User) -> None:
+            """Delete a user."""
+            pass
    ```
 
 5. **Handle Domain Exceptions**
