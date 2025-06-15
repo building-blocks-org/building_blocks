@@ -8,7 +8,7 @@ class AsyncNotifier(ABC, Generic[TNotification]):
     """
     Asynchronous notifier interface for sending notifications.
 
-    This interface defines the contract for sending notifications in a async
+    This interface defines the contract for sending notifications in an asynchronous
     manner.
     It can be implemented by various notification services, such as email, SMS
     or push notifications.
