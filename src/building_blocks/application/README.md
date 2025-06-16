@@ -59,14 +59,12 @@ from building_blocks.application.ports.inbound.use_case import AsyncUseCase
 
 @dataclass(frozen=True)
 class CreateUserRequest:
-    def __init__(self, email: str, name: str) -> None:
-        self.email = email
-        self.name = name
+    email: str
+    name: str
 
 @dataclass(frozen=True)
 class CreateUserResponse:
-    def __init__(self, user_id: str) -> None:
-        self.user_id = user_id
+    user_id: str
 
 class CreateUserUseCase(AsyncUseCase[CreateUserRequest, CreateUserResponse], ABC):
     @abstractmethod
