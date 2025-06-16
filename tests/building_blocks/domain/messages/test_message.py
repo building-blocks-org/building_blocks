@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from typing import Any, Optional
 from uuid import UUID, uuid4
 
-import pytest  # type: ignore
+import pytest  # type: ignore[import-not-found]
 
 from building_blocks.domain.messages.message import Message, MessageMetadata
 
@@ -25,7 +25,7 @@ class FakeMessage(Message):
         return self._data
 
     @property
-    def payload(self) -> dict[str, Any]:  # Use dict instead of Dict
+    def payload(self) -> dict[str, Any]:
         return {"data": self._data}
 
 
@@ -163,11 +163,11 @@ class TestMessage:
             "data2", metadata=metadata
         )  # Different data, same metadata
 
-        assert message1 == message2  # Messages are equal by message_id, not domain data
+        assert message1 == message2
 
     def test_eq_when_different_message_id_then_false(self):
         message1 = FakeMessage("same_data")
-        message2 = FakeMessage("same_data")  # Different metadata (different UUIDs)
+        message2 = FakeMessage("same_data")
 
         assert message1 != message2
 

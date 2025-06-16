@@ -7,23 +7,81 @@ on:
     branches: [main]
 
 jobs:
-  test:
+  lint:
+    name: Lint (ruff, black, isort)
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.9'
-
       - name: Install Poetry
         run: pip install poetry
-
       - name: Install dependencies
         run: poetry install
+      - name: Run ruff
+        run: poetry run ruff check src tests
+      - name: Run black --check
+        run: poetry run black --check src tests
+      - name: Run isort --check
+        run: poetry run isort --check src tests
 
-      - name: Run tests with coverage (fail if <85%)
-        run: |
-          poetry run pytest --cov=. --cov-report=xml --cov-fail-under=85
+  typecheck:
+    name: Type Check (mypy)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+      - name: Install Poetry
+        run: pip install poetry
+      - name: Install dependencies
+        run: poetry install
+      - name: Run mypy
+        run: poetry run mypy src tests
+
+  test:
+    name: Test & Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+      - name: Install Poetry
+        run: pip install poetry
+      - name: Install dependencies
+        run: poetry install
+      - name: Run pytest with coverage (fail if <85%)
+        run: poetry run pytest --cov=src --cov-report=xml --cov-fail-under=85
+
+  security:
+    name: Security (bandit)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+      - name: Install Poetry
+        run: pip install poetry
+      - name: Install dependencies
+        run: poetry install
+      - name: Run bandit
+        run: poetry run bandit -r src
+
+  build:
+    name: Poetry Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.9'
+      - name: Install Poetry
+        run: pip install poetry
+      - name: Install dependencies
+        run: poetry install
+      - name: Build package
+        run: poetry build
