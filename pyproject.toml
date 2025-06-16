@@ -61,7 +61,7 @@ select = [
     "C4", # flake8-comprehensions
     "UP", # pyupgrade
 ]
-ignore = ["UP007"]  # Ignore "Use `X | Y` for type annotations" (Python 3.10+ only)
+extend-ignore = ["UP007"]  # Ignore "Use `X | Y` for type annotations" (Python 3.10+ only)
 
 [tool.mypy]
 python_version = "3.9"
