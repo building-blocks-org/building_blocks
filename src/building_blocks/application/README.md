@@ -53,18 +53,20 @@ application/
 
 ```python
 from abc import ABC, abstractmethod
+from dataclasses import dataclass
+
 from building_blocks.application.ports.inbound.use_case import AsyncUseCase
 
+@dataclass(frozen=True)
 class CreateUserRequest:
     def __init__(self, email: str, name: str) -> None:
         self.email = email
         self.name = name
 
+@dataclass(frozen=True)
 class CreateUserResponse:
-    def __init__(self, user_id: str, email: str, name: str) -> None:
+    def __init__(self, user_id: str) -> None:
         self.user_id = user_id
-        self.email = email
-        self.name = name
 
 class CreateUserUseCase(AsyncUseCase[CreateUserRequest, CreateUserResponse], ABC):
     @abstractmethod
@@ -76,7 +78,7 @@ class CreateUserUseCase(AsyncUseCase[CreateUserRequest, CreateUserResponse], ABC
             request: The CreateUserRequest DTO with input data.
 
         Returns:
-            CreateUserResponse DTO with the result.
+            CreateUserResponse DTO with the result user_id.
         """
 ```
 
@@ -86,26 +88,31 @@ class CreateUserUseCase(AsyncUseCase[CreateUserRequest, CreateUserResponse], ABC
 ### 2. Implement the Use Case
 
 ```python
-from building_blocks.application.ports.outbound.notifier import Notifier
-from building_blocks.application.ports.outbound.unit_of_work import UnitOfWork
-from typing import Any
+from building_blocks.application.ports.outbound.notifier import AsyncNotifier
+from building_blocks.application.ports.outbound.unit_of_work import (
+    AsyncUnitOfWork
+)
+from building_blocks.domain.ports.outbound.repository import AsyncRepository
 
 class CreateUserService(CreateUserUseCase):
     def __init__(
         self,
-        user_repo: Any,       # Replace with your repository ABC
-        notifier: Notifier,
-        uow: UnitOfWork
+        user_repo: AsyncRepository,
+        notifier: AsyncNotifier,
+        uow: AsyncUnitOfWork
     ) -> None:
-        self.user_repo = user_repo
-        self.notifier = notifier
-        self.uow = uow
+        self._user_repo = user_repo
+        self._notifier = notifier
+        self._uow = uow
 
     async def execute(self, request: CreateUserRequest) -> CreateUserResponse:
         async with self.uow:
-            user = await self.user_repo.create(email=request.email, name=request.name)
-            await self.notifier.send(user.email, "Welcome!")
-            return CreateUserResponse(user_id=user.id, email=user.email, name=user.name)
+            user = await User(...)
+            # Create a new User entity, possibly using a factory method
+            await self._user_repo.save(user)
+            await self._notifier.notify(...)
+            # Send a notification (e.g., welcome email)
+            return CreateUserResponse(user_id=user.id)
 ```
 
 ---
