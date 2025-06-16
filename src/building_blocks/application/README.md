@@ -106,7 +106,7 @@ class CreateUserService(CreateUserUseCase):
         self._uow = uow
 
     async def execute(self, request: CreateUserRequest) -> CreateUserResponse:
-        async with self.uow:
+        async with self._uow:
             user = await User(...)
             # Create a new User entity, possibly using a factory method
             await self._user_repo.save(user)
