@@ -92,3 +92,17 @@ addopts = [
     "--cov=src",
     "--cov-report=term-missing",
 ]
+
+[tool.coverage.run]
+omit = [
+    "*/__init__.py",
+    "src/building_blocks/application/ports/**/*.py",
+    "src/building_blocks/domain/ports/**/*.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "@(abc\\.)?abstractmethod",
+    "raise NotImplementedError"
+]
