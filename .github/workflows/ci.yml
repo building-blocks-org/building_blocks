@@ -11,14 +11,9 @@ jobs:
     name: Lint (ruff, black, isort)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: ./.github/actions/setup-poetry
         with:
           python-version: '3.9'
-      - name: Install Poetry
-        run: pip install poetry
-      - name: Install dependencies
-        run: poetry install
       - name: Run ruff
         run: poetry run ruff check src tests
       - name: Run black --check
@@ -30,14 +25,9 @@ jobs:
     name: Type Check (mypy)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: ./.github/actions/setup-poetry
         with:
           python-version: '3.9'
-      - name: Install Poetry
-        run: pip install poetry
-      - name: Install dependencies
-        run: poetry install
       - name: Run mypy
         run: poetry run mypy src tests
 
@@ -45,14 +35,9 @@ jobs:
     name: Test & Coverage
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: ./.github/actions/setup-poetry
         with:
           python-version: '3.9'
-      - name: Install Poetry
-        run: pip install poetry
-      - name: Install dependencies
-        run: poetry install
       - name: Run pytest with coverage (fail if <85%)
         run: poetry run pytest --cov=src --cov-report=xml --cov-fail-under=85
 
@@ -60,14 +45,9 @@ jobs:
     name: Security (bandit)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: ./.github/actions/setup-poetry
         with:
           python-version: '3.9'
-      - name: Install Poetry
-        run: pip install poetry
-      - name: Install dependencies
-        run: poetry install
       - name: Run bandit
         run: poetry run bandit -r src
 
@@ -75,13 +55,8 @@ jobs:
     name: Poetry Build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: ./.github/actions/setup-poetry
         with:
           python-version: '3.9'
-      - name: Install Poetry
-        run: pip install poetry
-      - name: Install dependencies
-        run: poetry install
       - name: Build package
         run: poetry build
