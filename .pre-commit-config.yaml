@@ -16,11 +16,6 @@ repos:
       - id: black
         language_version: python3.13
 
-  - repo: https://github.com/PyCQA/isort
-    rev: 6.0.1
-    hooks:
-      - id: isort
-
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.8.4
     hooks:
@@ -32,8 +27,8 @@ repos:
     rev: v1.16.0
     hooks:
       - id: mypy
-        args: ["--python-version", "3.9"]
-        additional_dependencies: []
+        entry: poetry run mypy src tests
+        pass_filenames: false
 
   - repo: https://github.com/PyCQA/bandit
     rev: 1.8.3

@@ -24,7 +24,6 @@ python = "^3.9"
 
 [tool.poetry.group.dev.dependencies]
 black = "*"
-isort = "*"
 mypy = "*"
 bandit = "*"
 pre-commit = "*"
@@ -36,15 +35,10 @@ ruff = "*"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-# Tool configurations
+# Unified Code Style Configuration
 [tool.black]
 line-length = 88
 target-version = ['py39']
-
-[tool.isort]
-profile = "black"
-src_paths = ["src", "tests"]
-line_length = 88
 
 [tool.ruff]
 line-length = 88
@@ -56,11 +50,12 @@ select = [
     "E",  # pycodestyle errors
     "W",  # pycodestyle warnings
     "F",  # pyflakes
-    "I",  # isort
+    "I",  # isort (import sorting)
     "B",  # flake8-bugbear
     "C4", # flake8-comprehensions
     "UP", # pyupgrade
 ]
+# Ruff will handle import sorting, so no need for isort section.
 
 [tool.mypy]
 python_version = "3.9"
@@ -77,6 +72,7 @@ mypy_path = "src"
 
 [[tool.mypy.overrides]]
 module = "tests.*"
+ignore_missing_imports = true
 disallow_untyped_defs = false
 
 [tool.bandit]
@@ -90,4 +86,18 @@ addopts = [
     "--strict-config",
     "--cov=src",
     "--cov-report=term-missing",
+]
+
+[tool.coverage.run]
+omit = [
+    "*/__init__.py",
+    "src/building_blocks/application/ports/**/*.py",
+    "src/building_blocks/domain/ports/**/*.py",
+]
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover",
+    "@(abc\\.)?abstractmethod",
+    "raise NotImplementedError"
 ]
