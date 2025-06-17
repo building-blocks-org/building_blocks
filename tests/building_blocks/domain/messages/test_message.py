@@ -8,7 +8,7 @@ from datetime import datetime, timezone
 from typing import Any, Optional
 from uuid import UUID, uuid4
 
-import pytest  # type: ignore[import-not-found]
+import pytest
 
 from building_blocks.domain.messages.message import Message, MessageMetadata
 
