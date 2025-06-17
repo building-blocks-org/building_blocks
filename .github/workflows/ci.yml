@@ -11,8 +11,7 @@ jobs:
     name: Lint (ruff, black, isort)
     runs-on: ubuntu-latest
     steps:
-      - name: Debug list setup-poetry dir
-        run: ls -la .
+      - uses: actions/checkout@v4        # <--- Add this line
       - uses: ./.github/actions/setup-poetry
         with:
           python-version: '3.9'
@@ -27,8 +26,7 @@ jobs:
     name: Type Check (mypy)
     runs-on: ubuntu-latest
     steps:
-      - name: Debug list setup-poetry dir
-        run: ls -lR .github/actions/setup-poetry
+      - uses: actions/checkout@v4        # <--- Add this line
       - uses: ./.github/actions/setup-poetry
         with:
           python-version: '3.9'
@@ -39,8 +37,7 @@ jobs:
     name: Test & Coverage
     runs-on: ubuntu-latest
     steps:
-      - name: Debug list setup-poetry dir
-        run: ls -lR .github/actions/setup-poetry
+      - uses: actions/checkout@v4        # <--- Add this line
       - uses: ./.github/actions/setup-poetry
         with:
           python-version: '3.9'
@@ -51,8 +48,7 @@ jobs:
     name: Security (bandit)
     runs-on: ubuntu-latest
     steps:
-      - name: Debug list setup-poetry dir
-        run: ls -lR .github/actions/setup-poetry
+      - uses: actions/checkout@v4        # <--- Add this line
       - uses: ./.github/actions/setup-poetry
         with:
           python-version: '3.9'
@@ -63,8 +59,7 @@ jobs:
     name: Poetry Build
     runs-on: ubuntu-latest
     steps:
-      - name: Debug list setup-poetry dir
-        run: ls -lR .github/actions/setup-poetry
+      - uses: actions/checkout@v4        # <--- Add this line
       - uses: ./.github/actions/setup-poetry
         with:
           python-version: '3.9'
