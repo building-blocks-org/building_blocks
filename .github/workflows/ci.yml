@@ -1,0 +1,72 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+jobs:
+  lint:
+    name: Lint (ruff, black, isort)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug list setup-poetry dir
+        run: ls -lR .github/actions/setup-poetry
+      - uses: ./.github/actions/setup-poetry
+        with:
+          python-version: '3.9'
+      - name: Run ruff
+        run: poetry run ruff check src tests
+      - name: Run black --check
+        run: poetry run black --check src tests
+      - name: Run isort --check
+        run: poetry run isort --check src tests
+
+  typecheck:
+    name: Type Check (mypy)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug list setup-poetry dir
+        run: ls -lR .github/actions/setup-poetry
+      - uses: ./.github/actions/setup-poetry
+        with:
+          python-version: '3.9'
+      - name: Run mypy
+        run: poetry run mypy src tests
+
+  test:
+    name: Test & Coverage
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug list setup-poetry dir
+        run: ls -lR .github/actions/setup-poetry
+      - uses: ./.github/actions/setup-poetry
+        with:
+          python-version: '3.9'
+      - name: Run pytest with coverage (fail if <85%)
+        run: poetry run pytest --cov=src --cov-report=xml --cov-fail-under=85
+
+  security:
+    name: Security (bandit)
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug list setup-poetry dir
+        run: ls -lR .github/actions/setup-poetry
+      - uses: ./.github/actions/setup-poetry
+        with:
+          python-version: '3.9'
+      - name: Run bandit
+        run: poetry run bandit -r src
+
+  build:
+    name: Poetry Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Debug list setup-poetry dir
+        run: ls -lR .github/actions/setup-poetry
+      - uses: ./.github/actions/setup-poetry
+        with:
+          python-version: '3.9'
+      - name: Build package
+        run: poetry build
