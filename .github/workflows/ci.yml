@@ -8,7 +8,7 @@ on:
 
 jobs:
   lint:
-    name: Lint (ruff, black, isort)
+    name: Lint (ruff, black)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -19,12 +19,10 @@ jobs:
         run: pip install poetry
       - name: Install dependencies
         run: poetry install
-      - name: Run ruff
+      - name: Run Ruff (lint and import sort)
         run: poetry run ruff check src tests
-      - name: Run black --check
+      - name: Run Black --check
         run: poetry run black --check src tests
-      - name: Run isort --check
-        run: poetry run isort --check src tests
 
   typecheck:
     name: Type Check (mypy)
