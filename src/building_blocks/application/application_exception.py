@@ -1,7 +1,6 @@
 class ApplicationException(Exception):
-    """Base class for all application-specific exceptions."""
-
     """
+    Base class for all application-specific exceptions.
     This exception should be used to indicate issues that occur within the
     application layer, such as validation failures, service errors, or other
     application-specific issues.
