@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Debug list setup-poetry dir
-        run: ls -lR .github/actions/setup-poetry
+        run: ls -lR .github/actions
       - uses: ./.github/actions/setup-poetry
         with:
           python-version: '3.9'
