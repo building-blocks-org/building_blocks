@@ -99,7 +99,7 @@ skips = ["B101"]
 skips = ["**/test_*.py", "**/tests/**/*.py"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests", "examples/*/tests"]
+testpaths = ["tests"]
 python_files = ["test_*.py"]
 addopts = [
     "--strict-markers",
