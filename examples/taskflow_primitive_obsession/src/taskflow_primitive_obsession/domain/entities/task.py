@@ -1,5 +1,7 @@
+from __future__ import annotations
+
 from datetime import datetime
-from typing import Optional
+from uuid import uuid4
 
 from building_blocks.domain.aggregate_root import AggregateRoot
 
@@ -13,7 +15,7 @@ class Task(AggregateRoot[str]):
         priority: str,
         due_date: datetime,
         status: str,
-        assigned_to_email: Optional[str] = None,
+        assigned_to_email: str | None = None,
     ):
         super().__init__(id_)
         self._name = name
@@ -23,9 +25,6 @@ class Task(AggregateRoot[str]):
         self._status = status
         self._due_date = due_date
 
-    def mark_as_completed(self):
-        self.status = "completed"
-
     def __str__(self):
         return f"""Task(
         name={self._name},
@@ -34,3 +33,33 @@ class Task(AggregateRoot[str]):
         status={self._status},
         due_date={self._due_date},
     )"""
+
+    def mark_as_completed(self):
+        self.status = "completed"
+
+    @classmethod
+    def create_pending(
+        cls,
+        name: str,
+        description: str,
+        priority: str,
+        due_date: datetime,
+        assigned_to_email: str | None = None,
+    ):
+        """
+        Factory method to create a new pending task.
+
+        Args:
+            name (str): Name of the task
+            description (str): Description of the task
+            priority (str): Priority level of the task
+            due_date (datetime): Due date for the task
+            assigned_to_email (Optional[str]): Email of the user assigned to the task
+
+        Returns:
+            Task: A new Task instance in pending state
+        """
+        id_ = uuid4().hex
+        return Task(
+            id_, name, description, priority, due_date, "pending", assigned_to_email
+        )
