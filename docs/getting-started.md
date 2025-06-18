@@ -51,8 +51,7 @@ from building_blocks.application.ports.inbound.use_case import AsyncUseCase, Syn
 
 @dataclass
 class GetUserRequest:
-    def __init__(self, user_id: int):
-        self.user_id = user_id
+    user_id: int
 
 @dataclass
 class GetUserResponse:
