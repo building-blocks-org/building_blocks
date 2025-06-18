@@ -21,6 +21,7 @@ keywords = [
 
 [tool.poetry.dependencies]
 python = "^3.9"
+pytest-asyncio = "^1.0.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "*"
@@ -99,26 +100,29 @@ skips = ["B101"]
 skips = ["**/test_*.py", "**/tests/**/*.py"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "examples"]
 python_files = ["test_*.py"]
 addopts = [
     "--strict-markers",
     "--strict-config",
     "--cov=src",
     "--cov-report=term-missing",
+    "--cov-report=html",
+    "-v"
 ]
 
 [tool.coverage.run]
-source = ["src", "examples"]
+branch = true
 omit = [
-    "*/__init__.py",
-    "src/building_blocks/application/ports/**/*.py",
-    "src/building_blocks/domain/ports/**/*.py",
+    "**/ports/**",
+    "**/__init__.py"
 ]
 
 [tool.coverage.report]
-exclude_lines = [
-    "pragma: no cover",
-    "@(abc\\.)?abstractmethod",
-    "raise NotImplementedError"
+show_missing = true
+skip_covered = true
+precision = 2
+omit = [
+    "**/ports/**",
+    "**/__init__.py"
 ]
