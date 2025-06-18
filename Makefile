@@ -1,7 +1,7 @@
 # Building Blocks - Development Automation
 # Author: Glauber Brennon <glauberbrennon@gmail.com>
 
-.PHONY: help create-project examples docs quality test clean
+.PHONY: help create-project examples docs quality test clean coverage
 
 # Default target
 help: ## Show this help message
@@ -59,18 +59,17 @@ quality: ## Run all quality checks
 	@poetry run ruff check src/ examples/
 	@poetry run mypy src/
 	@poetry run bandit -r src/
-	@echo "✅ Quality checks passed!"
-
-test: ## Run all tests (library + examples)
-	@echo "🧪 Running tests..."
-	@poetry run pytest tests/ -v
+	@echo "✅ quality checks passed!"
+test: ## run all tests (library + examples)
+	@echo "🧪 running tests..."
+	@poetry run pytest --cov --cov-config=pyproject.toml tests/ -v
 	@for example in examples/*/; do \
 		if [ -f "$$example/pyproject.toml" ]; then \
-			echo "Testing $$(basename "$$example")..."; \
-			cd "$$example" && poetry run pytest tests/ -v && cd - >/dev/null; \
+			echo "testing $$(basename "$$example")..."; \
+			cd "$$example" && poetry run pytest --cov --cov-config=pyproject.toml tests/ -v && cd - >/dev/null; \
 		fi; \
 	done
-	@echo "✅ All tests passed!"
+	@echo "✅ all tests passed!"
 
 clean: ## Clean up generated files and caches
 	@echo "🧹 Cleaning up..."
