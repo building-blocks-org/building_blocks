@@ -9,7 +9,7 @@
 - **Separation of Concerns:** Each layer has a clear, focused responsibility.
 - **Dependency Rule:** All dependencies point inward—domain is the core and never knows about application, infrastructure, or presentation.
 - **Framework Agnostic:** Core logic is independent of frameworks (FastAPI, Django, etc).
-- **Port & Adapter Pattern:** Contracts (ports/interfaces) are defined in the core; implementations (adapters) live in infrastructure.
+- **Port & Adapter Pattern:** Contracts (ports/interfaces) are defined in the core; implementations (adapters) live in infrastructure or application.
 
 ---
 
@@ -21,11 +21,31 @@
 - **How:**
   - Use `building_blocks.domain.Entity`, `AggregateRoot` for identity and event tracking.
   - No framework, DB, or technical logic here.
-- **Ports:**
-  - **Outbound:** Abstract base classes (interfaces) for repositories, event publishers, clocks, etc.
-    - Example: `UserRepository`, `OrderEventPublisher`, `AsyncRepository`
-- **Example AsyncRepository Port:**
+
+#### **Domain Ports**
+
+Domain ports are **Abstract Base Classes (ABCs)** defining contracts for dependencies and pluggable domain logic.
+They are split into:
+
+#### 🔹 **Outbound Domain Ports**
+
+- **What:** Interfaces for dependencies the domain needs (but doesn't implement), such as persistence, messaging, clocks, etc.
+- **Where:** `domain/ports/outbound/`
+- **Examples:**
+  - **Repository Ports:** Persist and retrieve AggregateRoots.
+  - **Event Publisher Ports:** Publish domain events.
+    - These are typically outbound ports defined in the **domain** layer if publishing events is a core domain requirement, or in the **application** layer if event publication is an application-level orchestration concern.
+  - **Clock Ports:** Access system time.
+- **Typical Example:**
+
   ```python
+  # domain/ports/outbound/async_repository.py
+  from abc import ABC, abstractmethod
+  from typing import Generic, TypeVar
+
+  TAggregateRoot = TypeVar("TAggregateRoot")
+  TId = TypeVar("TId")
+
   class AsyncRepository(ABC, Generic[TAggregateRoot, TId]):
       """
       Generic async repository interface for aggregate roots.
@@ -48,46 +68,115 @@
       async def find_all(self) -> list[TAggregateRoot]: ...
   ```
 
+  ```python
+  # domain/ports/outbound/event_publisher.py (if event publishing is domain concern)
+  from abc import ABC, abstractmethod
+  from typing import Any
+
+  class EventPublisher(ABC):
+      """
+      Outbound port for publishing domain events.
+      """
+      @abstractmethod
+      async def publish(self, event: Any) -> None:
+          """Publish a domain event."""
+  ```
+
+  > **Note:** If event publishing is more of an application-level concern, define `EventPublisher` in `application/ports/outbound/`.
+
+#### 🔹 **Inbound Domain Ports**
+
+- **What:** Interfaces for pluggable domain logic/policies that are injected into the domain (e.g., strategies, business rules).
+- **Where:** `domain/ports/inbound/`
+- **Examples:**
+  - **Policy Ports:** Discount calculation, authorization, shipping calculation, etc.
+  - **Specification/Strategy:** Custom validation, calculation, or selection strategies.
+- **Typical Example:**
+
+  ```python
+  # domain/ports/inbound/discount_policy.py
+  from abc import ABC, abstractmethod
+
+  class DiscountPolicy(ABC):
+      """
+      Inbound domain port for calculating discounts.
+      """
+      @abstractmethod
+      def calculate_discount(self, customer_id: str, total: float) -> float:
+          """Return the discount amount for a given customer and order total."""
+  ```
+
 ---
 
 ### 2. **Application Layer** (Use Cases & Orchestration)
 
 - **What:** Orchestrates business workflows and defines how external requests enter the system.
 - **How:**
-  - **UseCase Ports:** Abstract base classes (interfaces) for each use case.
+  - **UseCase Ports:** Abstract base classes (interfaces) for each use case (inbound application ports).
+    - **Location:** `application/ports/inbound/use_case.py`
+    - **Every UseCase must be defined here.**
   - **Async Support:** For IO-bound operations, use `AsyncUseCase` as your inbound port:
+
     ```python
+    # application/ports/inbound/use_case.py
+    from abc import ABC, abstractmethod
+    from typing import Generic, TypeVar
+
+    TRequest = TypeVar("TRequest")
+    TResponse = TypeVar("TResponse")
+
     class AsyncUseCase(ABC, Generic[TRequest, TResponse]):
         """
         Application inbound port for asynchronous use cases.
-        Implementations must define:
-        'async def execute(self, request: TRequest) -> TResponse'
+
+        Use cases orchestrate interactions between domain services, repositories,
+        and other components to fulfill application-specific operations.
+
+        This base class is for asynchronous use cases—implementations should define
+        'async def execute(self, request: TRequest) -> TResponse'.
         """
+
         @abstractmethod
-        async def execute(self, request: TRequest) -> TResponse: ...
+        async def execute(self, request: TRequest) -> TResponse:
+            """
+            Asynchronous execution of the use case with the provided request.
+
+            This method should be implemented by concrete use case classes to
+            perform the necessary operations and return a response.
+
+            Args:
+                request: The request object containing input data for the use case.
+            Returns:
+                TResponse: The response object containing the result of the use case
+                execution.
+            Raises:
+                Exception: Any exceptions that occur during execution should be
+                handled appropriately, such as validation errors or service failures.
+            """
     ```
   - **Application Services:** Concrete classes implement these ports.
-  - **Request/Response:** All requests/responses are `@dataclass(frozen=True)` for immutability and clarity. This ensures that use case inputs and outputs are explicit, type-safe, and cannot be mutated.
-- **Example:**
-  ```python
-  @dataclass(frozen=True)
-  class CreateUserRequest:
-      email: str
-      name: str
+  - **Request/Response:** All requests/responses are `@dataclass(frozen=True)` for immutability and clarity.
+  - **Implements Domain Inbound Ports:** Application layer can implement inbound domain ports (e.g., `LoyaltyDiscountPolicy`) if logic is purely business or composed from domain/application services.
+  - **Application Outbound Ports:** For cross-cutting concerns (e.g., notification, external systems), define ports such as `Notifier`, `EventPublisher` in `application/ports/outbound/` if they are not domain requirements.
 
-  @dataclass(frozen=True)
-  class CreateUserResponse:
-      user_id: UUID
+#### Example: Application Implementation of a Domain Inbound Port
 
-  class CreateUserUseCase(AsyncUseCase[CreateUserRequest, CreateUserResponse]):
-      pass
+```python
+# application/services/loyalty_discount_policy.py
+from domain.ports.inbound.discount_policy import DiscountPolicy
 
-  class CreateUserService(CreateUserUseCase):
-      def __init__(self, user_repo: UserRepository):
-          self.user_repo = user_repo
-      async def execute(self, request: CreateUserRequest) -> CreateUserResponse:
-          ...
-  ```
+class LoyaltyDiscountPolicy(DiscountPolicy):
+    """
+    Loyalty-based discount policy implementation.
+
+    - VIP customers get 20% off.
+    - All others get 5%.
+    """
+    def calculate_discount(self, customer_id: str, total: float) -> float:
+        if customer_id.startswith("VIP"):
+            return total * 0.20
+        return total * 0.05
+```
 
 ---
 
@@ -97,90 +186,90 @@
 - **Directory Structure:**
   - **Persistence Adapters:**
     - `infrastructure/persistence/models/`: ORM, ODM, or other persistence models.
-      - **Models must always have `created_at` and `updated_at` fields:**
-        These should be automatically managed (e.g., SQLAlchemy defaults, Pydantic, or framework support).
+      - **Models must always have `created_at` and `updated_at` fields:** These should be automatically managed (e.g., SQLAlchemy defaults, Pydantic, or framework support).
       - Models are responsible for mapping to/from domain objects when possible.
-      - Example:
-        ```python
-        from datetime import datetime
-        from sqlalchemy import Column, DateTime
+    - `infrastructure/persistence/repositories/`: Implements the domain outbound repository ports (e.g., `AsyncRepository`) with concrete classes.
+      - **Each adapter here must explicitly implement the corresponding domain outbound port (interface) defined in `domain/ports/outbound/`.**
+      - Mapping between persistence models and AggregateRoots can be handled in repository methods or helper functions.
+  - **Messaging Adapters:** `infrastructure/messaging/`
+  - **Other Adapters:** External APIs, notifications, caching, etc.
 
-        class UserModel(Base):
-            __tablename__ = 'users'
-            id = Column(UUID, primary_key=True)
-            email = Column(String, nullable=False)
-            name = Column(String, nullable=False)
-            created_at = Column(DateTime, default=datetime.utcnow)
-            updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
-        ```
-    - `infrastructure/persistence/repositories/`: Implements domain outbound ports with concrete classes (e.g., `SQLAlchemyUserRepository` implements `UserRepository`).
-      - Mapping between persistence models and domain aggregates can be handled in repository methods or helper functions.
-  - **Messaging Adapters:**
-    - `infrastructure/messaging/`: Implements outbound ports for event/message brokers (e.g., Kafka, RabbitMQ).
-      - Each adapter should be in its own file or subfolder for clarity.
-- **Rule:**
-  - Infrastructure only depends on interfaces from application/domain, never the other way around.
-- **Example:**
-  ```python
-  # infrastructure/persistence/repositories/user_repository.py
-  class SQLAlchemyUserRepository(UserRepository):
-      def __init__(self, session: Session):
-          self.session = session
-      async def find_by_id(self, user_id: UUID) -> Optional[User]:
-          # ORM logic, mapping from UserModel to User
-          ...
-      async def save(self, user: User) -> None:
-          # ORM logic, mapping from User to UserModel
-          ...
-  ```
+- **Rule:** Infrastructure only depends on interfaces from application/domain, never the other way around.
+
+#### Example: Repository Adapter
+
+```python
+# infrastructure/persistence/repositories/order_repository.py
+from domain.ports.outbound.async_repository import AsyncRepository
+from domain.aggregates.order import Order
+
+class SQLAlchemyOrderRepository(AsyncRepository[Order, UUID]):
+    def __init__(self, session):
+        self.session = session
+    async def find_by_id(self, order_id):
+        # ORM logic, mapping from OrderModel to Order (AggregateRoot)
+        ...
+    async def save(self, order: Order) -> None:
+        # ORM logic, mapping from Order (AggregateRoot) to OrderModel
+        ...
+    async def delete(self, order: Order) -> None:
+        ...
+    async def find_all(self) -> list[Order]:
+        ...
+```
+*Note: The adapter's implementation must be explicit about which domain outbound port it implements.*
 
 ---
 
 ### 4. **Presentation Layer** (User Interfaces & Entry Points)
 
 - **What:** REST APIs, CLI, GUIs, GRPC, etc.
-- **How:**
-  - Calls application layer use cases via their ports (never accessing domain or infra directly).
-- **Example:**
-  ```python
-  @router.post("/users")
-  async def create_user(req: CreateUserRequest, use_case: CreateUserUseCase = Depends()):
-      return await use_case.execute(req)
-  ```
+- **How:** Calls application layer use cases via their ports (never accessing domain or infra directly).
+
+```python
+@router.post("/orders")
+async def create_order(req: CreateOrderRequest, use_case: CreateOrderUseCase = Depends()):
+    return await use_case.execute(req)
+```
 
 ---
 
-## 🧩 Visual Overview
+## 🧩 Layered Visual Overview
 
-```
-+--------------------------------------------------------------+
-|                    Presentation Layer                       |
-|  (Controllers, APIs, CLI, GUI, etc.)                        |
-+-----------------------------+-------------------------------+
-                              |
-                              v
-+-----------------------------+-------------------------------+
-|              Application Layer (Ports & Use Cases)           |
-|  +-------------------+   +-----------------------------+    |
-|  |  Inbound Ports    |-->|   Application Services      |    |
-|  | (UseCase/AsyncABC)|   |   (UseCase Implementations) |    |
-|  +-------------------+   +-----------------------------+    |
-|          |        (drives)         |                          |
-|          v                         v                          |
-|  +-------------------+   +-----------------------------+    |
-|  |  Outbound Ports   |<--|   Adapters (Infra)          |    |
-|  | (Repo/Event/Etc)  |   |   (Persistence, Messaging)  |    |
-|  +-------------------+   +-----------------------------+    |
-+-----------------------------+-------------------------------+
-                              |
-                              v
-+-----------------------------+-------------------------------+
-|                   Domain Layer (Pure Business)              |
-|  +-------------------+   +-----------------------------+    |
-|  |    Entities       |   |   Domain Services           |    |
-|  |    Aggregates     |   |   Value Objects             |    |
-|  |    Events         |   |   Domain Ports (ABC)        |    |
-|  +-------------------+   +-----------------------------+    |
+```plaintext
++-------------------- Presentation Layer ----------------------+
+|  REST API / CLI / gRPC / UI                                 |
+|     |                                                       |
+|     | calls                                                 |
+v     v                                                       |
++---------------- Application Layer ---------------------------+
+|  [Use Case Inbound Port]                                    |
+|    - e.g., AsyncUseCase (application/ports/inbound/)        |
+|    | implements                                             |
+|    v                                                        |
+|  [Application Service]                                      |
+|    - e.g., CreateOrderService                               |
+|    | calls                                                  |
+|    v                                                        |
+|  [Domain Inbound Port] (policy/strategy)                    |
+|    - e.g., DiscountPolicy (domain/ports/inbound/)           |
+|    |                                                        |
+|    v                                                        |
+|  [Domain Service or Aggregate]                              |
+|    - e.g., Cart, Order, etc.                                |
+|    | uses                                                   |
+|    v                                                        |
+|  [Domain Outbound Port]                                     |
+|    - e.g., AsyncRepository (domain/ports/outbound/)         |
++-------------------------------------------------------------+
+      | implements
+      v
++------------------ Infrastructure Layer ----------------------+
+| [Repository Adapter]                                         |
+|   - e.g., SQLAlchemyOrderRepository (infra/...)              |
+|   - implements domain outbound port                          |
+| [Messaging Adapter, etc.]                                    |
+|   - EventPublisher, Notifier, etc.                           |
 +--------------------------------------------------------------+
 ```
 
@@ -188,16 +277,25 @@
 
 ## 🚦 Port & Adapter Details
 
-- **Domain Outbound Ports:**
-  - *Define* in `domain/ports/` (e.g., `AsyncRepository`, `OrderEventPublisher`)
-  - *Implement* in `infrastructure/persistence/repositories/` (for DB) or `infrastructure/messaging/` (for messaging)
+- **Domain Outbound Ports (Repositories, EventPublisher, etc):**
+  - *Define* in `domain/ports/outbound/` (e.g., `AsyncRepository`, `EventPublisher`)
+  - *Implement* in `infrastructure/persistence/repositories/` (for repositories) or other infra folders.
+  - **Repositories persist and retrieve AggregateRoots.**
   - **Persistence models** are in `infrastructure/persistence/models/` and must have `created_at`/`updated_at` fields auto-managed.
-  - Mapping from domain to persistence can be in model methods or repository classes.
+  - Mapping from AggregateRoot <--> persistence model is the repository’s responsibility.
 
-- **Application UseCase Ports:**
-  - *Define* in `application/ports/` as ABCs (sync or async, e.g., `AsyncUseCase`)
+- **Domain Inbound Ports (Policies/Strategies):**
+  - *Define* as ABCs in `domain/ports/inbound/` (e.g., `DiscountPolicy`, `ShippingCostCalculator`)
+  - *Implement* in `application/services/` (for logic that is pure or business-specific), or in `infrastructure/` if it needs external systems.
+
+- **Application Inbound Ports (UseCases):**
+  - *Define* in `application/ports/inbound/use_case.py` (e.g., `AsyncUseCase`)
   - *Implement* in `application/services/` (concrete application services)
   - **All requests and responses should be immutable dataclasses** (`@dataclass(frozen=True)`).
+
+- **Application Outbound Ports:** (if the concern is not strictly domain, e.g., notifications)
+  - *Define* in `application/ports/outbound/`.
+  - *Implement* in infrastructure adapters.
 
 - **Adapters:**
   - Messaging adapters live in `infrastructure/messaging/`
@@ -219,12 +317,17 @@
 
 - **All dependencies point inward (toward domain).**
 - **Domain is pure and unaware of frameworks/infra.**
-- **Persistence adapters implement outbound ports and live in `infrastructure/persistence/repositories/`.**
+- **Domain ports are clearly separated into inbound (`domain/ports/inbound/`) and outbound (`domain/ports/outbound/`).**
+- **Repositories are defined as outbound ports in the domain and persist AggregateRoots.**
+- **Persistence adapters implement repository ports and live in `infrastructure/persistence/repositories/`, always explicitly implementing the outbound port.**
 - **Persistence models (with auto-managed `created_at`/`updated_at`) live in `infrastructure/persistence/models/`.**
 - **Messaging adapters live in `infrastructure/messaging/`.**
+- **Application inbound ports (UseCases) are defined in `application/ports/inbound/use_case.py`.**
+- **Application outbound ports (e.g., Notifier) are defined in `application/ports/outbound/` if not a core domain concern.**
 - **Requests and responses for use cases are frozen dataclasses (immutable and explicit).**
 - **Async ports like `AsyncUseCase` and `AsyncRepository` are first-class for modern Python.**
 - **Adapters implement interfaces defined in the core.**
+- **Application layer can implement inbound domain ports for strategies/policies if logic is business-focused and pure.**
 - **You can swap infra/frameworks with zero changes to business rules.**
 
 ---
