@@ -1,31 +1,204 @@
-# Examples Overview
+# Examples Overview & Backlog
 
-This table documents the planned and suggested examples to showcase how to use the library/toolbox for building clean/hexagonal architecture applications with SOLID and DDD principles.
-
-| Example Name      | Theme/Idea                           | Concept Focus                                  | Stack / Frameworks                | Layers Used                        | Notes / Features                                   |
-|-------------------|--------------------------------------|------------------------------------------------|-----------------------------------|-------------------------------------|----------------------------------------------------|
-| **taskflow**      | Task Manager                         | Aggregates, CQRS, Event Sourcing               | Simple script, CLI, FastAPI, Flask| Application, Domain, Infra, Present.| Start simple, then scale up to web example          |
-| **orderly**       | Order Management (E-commerce)        | Domain events, business rules, DDD patterns    | FastAPI, Django                   | All                                 | CRUD, order state, payments, notifications         |
-| **gatekeeper**    | User Auth (registration/login)       | Boundaries, security, user entity, value objs  | FastAPI, Django                   | All                                 | Auth flows, RBAC, password reset, JWT, etc.        |
-| **datastreamer**  | Data Pipeline / ETL                  | Ports/adapters, hexagonal, streaming           | Script, FastAPI                   | All                                 | Ingest, transform, store data, metrics             |
-| **blogcraft**     | Blogging Platform                    | UGC, moderation, read/write separation         | FastAPI, Django, Flask            | All                                 | Posts, comments, tags, moderation                  |
-| **evently**       | Event Booking                        | Concurrency, value objects, process managers   | FastAPI, Flask                    | All                                 | Book/cancel seats, event status, notifications     |
-| **stockroom**     | Inventory Management                 | Aggregates, domain services, reporting         | FastAPI, Django, CLI              | All                                 | Stock in/out, suppliers, inventory queries         |
-| **notifier**      | Messaging/Notification System        | Event-driven, external integration, adapters   | FastAPI, Kafka, Celery            | All                                 | Send notifications via email, SMS, push, etc.      |
-| **ledger**        | Bank Account / Wallet                | Transactions, security, business rules         | FastAPI, Flask                    | All                                 | Accounts, transfers, transaction log, balances     |
-| **catalogue**     | Product Catalog                      | Aggregates, value objects, repository pattern  | FastAPI, Django, CLI              | All                                 | Manage products, categories, pricing               |
+Welcome to the **Examples Overview & Backlog** for the Building Blocks library!
+This document serves both as a catalog of existing examples and a living backlog of planned or proposed examples.
+Each example is designed to illustrate clean/hexagonal architecture, DDD, and SOLID principles across various domains and frameworks, helping users learn and apply these concepts.
 
 ---
 
-## Columns
+## 📋 Table of Contents
 
-- **Example Name:** Short, memorable project name for the example.
-- **Theme/Idea:** Real-world domain modeled in the example.
-- **Concept Focus:** Key software architecture or DDD concepts emphasized.
-- **Stack / Frameworks:** Frameworks/libraries used in the example (e.g., FastAPI, Django, Flask, CLI).
-- **Layers Used:** Application, Domain, Infrastructure, Presentation (all examples aim to use all four).
-- **Notes / Features:** Features, flows, or aspects that make the example educational and relevant.
+- [Purpose](#purpose)
+- [How to Use This Document](#how-to-use-this-document)
+- [Examples Backlog Table](#examples-backlog-table)
+- [Example Details and Notes](#example-details-and-notes)
+- [Ideas for Future Examples](#ideas-for-future-examples)
+- [Contribution Guidelines](#contribution-guidelines)
 
 ---
 
-> This table can be expanded as new examples are added or refined. Each example should include a README.md and, if applicable, a docker-compose.yml for external services.
+## Purpose
+
+- Provide a high-level summary and planning space ("backlog") for all examples.
+- Track which examples are planned, in progress, or completed.
+- Serve as a reference for contributors and users looking for inspiration or guidance.
+- Document architectural decisions and learning objectives for each example.
+
+---
+
+## How to Use This Document
+
+- **For Users:** Find examples relevant to your needs and see which concepts are demonstrated.
+- **For Contributors:** Pick up a planned or in-progress example, or propose a new one!
+- **For Maintainers:** Use this as a roadmap for educational content and code samples.
+
+---
+
+## Examples Backlog Table
+
+| Example Name   | Status      | Domain/Theme        | Stack / Frameworks         | Owner/Lead   | Notes / Learning Goals                              |
+|----------------|-------------|---------------------|----------------------------|--------------|-----------------------------------------------------|
+| taskflow       | In Progress | Task Manager        | Simple Script, FastAPI     | gbrennon     | End-to-end: CLI then web; shows evolution from script to API; deep dive on aggregates, CQRS, event handling, and layering decisions. |
+| orderly        | Planned     | Order Management    | FastAPI, Django            |              | E-commerce domain; covers order lifecycles, payments, and notifications; demonstrates business rules, domain events, extensibility, and integration with adapters. |
+| gatekeeper     | Planned     | Auth System         | FastAPI, Django            |              | Full auth lifecycle: registration, login, RBAC, password reset; explicit boundary between domain and infra; security best practices and pluggable adapters for auth strategies. |
+| datastreamer   | Planned     | Data Pipeline / ETL | Script, FastAPI            |              | Clean architecture for data ingestion/analytics; ports/adapters for sources/sinks and transform steps; testable business logic; plug-and-play adapters for external systems. |
+| blogcraft      | Idea        | Blogging Platform   | FastAPI, Django            |              | CQRS/read-write separation; moderation workflows; aggregates for posts/comments; real-world UGC and content moderation patterns. |
+| evently        | Idea        | Event Booking       | FastAPI, Flask             |              | To be defined: candidate for demonstrating process managers, seat reservation concurrency, and event-driven workflows. |
+| stockroom      | Idea        | Inventory Mgmt      | FastAPI, CLI               |              | To be defined: inventory, suppliers, stock movements, domain services, and reporting. |
+| notifier       | Idea        | Notification Svc    | FastAPI, Kafka, Celery     |              | To be improved: event-driven, outbound ports, multiple notification channels (email, SMS, push), and integration patterns. |
+| ledger         | Idea        | Bank Account        | FastAPI, Flask             |              | To be improved: rich domain, transactional boundaries, security, balance tracking, and auditability. |
+| catalogue      | Idea        | Product Catalog     | FastAPI, Django, CLI       |              | To be improved: product aggregates, categories, pricing logic, extensibility, and advanced querying. |
+
+---
+
+## Example Details and Notes
+
+### taskflow
+
+- **Status:** In Progress
+- **Theme:** Task management (To-do list)
+- **Stack:** Simple script (CLI), then FastAPI
+- **Goals:**
+  - Start with a CLI/simple-script for core domain modeling.
+  - Evolve to a FastAPI-based web version to demonstrate adaptation.
+  - Show: Entities, Value Objects, Aggregates, Use Cases, Repositories, Adapters.
+  - Demonstrate CQRS and basic event handling.
+  - Explicit documentation on layering and architectural trade-offs.
+- **Learning Points:**
+  - How a simple domain grows from script to API.
+  - Clean layering in real-world evolution.
+  - Testing business logic in isolation.
+
+---
+
+### orderly
+
+- **Status:** Planned
+- **Theme:** E-commerce order management
+- **Stack:** FastAPI, Django
+- **Goals:**
+  - Full DDD: aggregates, repositories, domain events, business invariants.
+  - Integrate with payment, inventory, notification (as ports/adapters).
+  - Extensible for new payment types, events, and notification channels.
+- **Learning Points:**
+  - Real-world business rules and event-driven design.
+  - Infrastructure adaptation (DBs, external services).
+  - API evolution and modularity.
+
+---
+
+### gatekeeper
+
+- **Status:** Planned
+- **Theme:** User registration, authentication, authorization
+- **Stack:** FastAPI, Django
+- **Goals:**
+  - Clear boundary between domain logic and infrastructure for authentication.
+  - Use value objects for email/password.
+  - Demonstrate RBAC and flexible role strategies.
+  - Pluggable adapters for JWT and session auth.
+- **Learning Points:**
+  - Security and clean boundaries in DDD.
+  - Interface segregation and pluggability.
+  - Handling sensitive data (passwords, tokens).
+
+---
+
+### datastreamer
+
+- **Status:** Planned
+- **Theme:** Data ingestion, ETL, analytics
+- **Stack:** Script, FastAPI
+- **Goals:**
+  - Hexagonal architecture for data pipelines (ports: source, sink, transform).
+  - Easily extendable with new data sources/sinks (CSV, DB, Kafka).
+  - Demonstrate testable business logic and clear separation of concerns.
+- **Learning Points:**
+  - Clean separation in data-heavy/analytics contexts.
+  - Building testable ETL pipelines with hexagonal patterns.
+
+---
+
+### blogcraft
+
+- **Status:** Idea
+- **Theme:** Blogging platform (posts, comments)
+- **Stack:** FastAPI, Django
+- **Goals:**
+  - CQRS: separate write/read models.
+  - UGC moderation workflows and process managers.
+  - Aggregates for posts and comments, tagging, and extensibility.
+- **Learning Points:**
+  - Modularity via CQRS and process managers.
+  - Real-world content moderation and UGC patterns.
+
+---
+
+### evently
+
+- **Status:** Idea
+- **Theme:** Event ticket booking
+- **Stack:** FastAPI, Flask
+- **Goals/Notes:** To be defined: candidate for process managers, seat reservation concurrency, and event-driven workflows.
+
+---
+
+### stockroom
+
+- **Status:** Idea
+- **Theme:** Inventory management
+- **Stack:** FastAPI, CLI
+- **Goals/Notes:** To be defined: inventory, suppliers, stock movements, domain services, and reporting.
+
+---
+
+### notifier
+
+- **Status:** Idea
+- **Theme:** Notification/messaging system
+- **Stack:** FastAPI, Kafka, Celery
+- **Goals/Notes:** To be improved: event-driven, outbound ports, multiple notification channels, and integration patterns.
+
+---
+
+### ledger
+
+- **Status:** Idea
+- **Theme:** Simple bank account/wallet
+- **Stack:** FastAPI, Flask
+- **Goals/Notes:** To be improved: rich domain, business invariants, transactional boundaries, and auditability.
+
+---
+
+### catalogue
+
+- **Status:** Idea
+- **Theme:** Product catalog
+- **Stack:** FastAPI, Django, CLI
+- **Goals/Notes:** To be improved: product aggregates, categories, pricing, extensibility.
+
+---
+
+## Ideas for Future Examples
+
+- **Microservice communication** with event sourcing (Sagas, process managers)
+- **Real-time chat** (WebSockets, adapters)
+- **Data science pipeline** with model training/evaluation as domain logic
+- **IoT device management** (hexagonal adapters for sensors/actuators)
+- **API Gateway** sample (aggregating multiple bounded contexts)
+- **Legacy system integration** (adapters as anti-corruption layers)
+
+Feel free to [open a discussion or suggestion](https://github.com/gbrennon/building-blocks/discussions) to propose more!
+
+---
+
+## Contribution Guidelines
+
+- To pick up an example, comment your intent in the [Discussions](https://github.com/gbrennon/building-blocks/discussions) or open an issue.
+- When working on an example, update this file with status, notes, and learning goals.
+- Each example should have its own `README.md` with its architecture, design notes, and instructions.
+- Focus on clear, educational code and explanations.
+
+---
+
+_Last updated: 2025-06-18_
