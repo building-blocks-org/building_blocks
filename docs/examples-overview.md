@@ -9,7 +9,7 @@ This document is both a catalog of existing examples and a living backlog of pla
 
 | Example Name   | Status      | Domain/Theme        | Stack / Frameworks         | Owner/Lead   | Notes / Learning Goals                              |
 |----------------|-------------|---------------------|----------------------------|--------------|-----------------------------------------------------|
-| taskflow       | In Progress | Task Manager        | Simple Script, FastAPI     | gbrennon     | End-to-end: CLI then web; shows evolution from script to API; deep dive on aggregates, CQRS, event handling, and layering decisions. |
+| taskflow       | In Progress | Task Manager        | Script, FastAPI            | gbrennon     | End-to-end: CLI then web; shows evolution from script to API; deep dive on aggregates, CQRS, event handling, and layering decisions. |
 | orderly        | Planned     | Order Management    | FastAPI, Django            |              | E-commerce domain; covers order lifecycles, payments, and notifications; demonstrates business rules, domain events, extensibility, and integration with adapters. |
 | gatekeeper     | Planned     | Auth System         | FastAPI, Django            |              | Full auth lifecycle: registration, login, RBAC, password reset; explicit boundary between domain and infra; security best practices and pluggable adapters for auth strategies. |
 | datastreamer   | Planned     | Data Pipeline / ETL | Script, FastAPI            |              | Clean architecture for data ingestion/analytics; ports/adapters for sources/sinks and transform steps; testable business logic; plug-and-play adapters for external systems. |
