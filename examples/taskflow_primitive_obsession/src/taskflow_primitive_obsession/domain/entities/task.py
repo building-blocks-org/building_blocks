@@ -25,18 +25,6 @@ class Task(AggregateRoot[str]):
         self._status = status
         self._due_date = due_date
 
-    def __str__(self):
-        return f"""Task(
-        name={self._name},
-        description={self._description},
-        priority={self._priority},
-        status={self._status},
-        due_date={self._due_date},
-    )"""
-
-    def mark_as_completed(self):
-        self.status = "completed"
-
     @classmethod
     def create_pending(
         cls,
@@ -63,3 +51,15 @@ class Task(AggregateRoot[str]):
         return Task(
             id_, name, description, priority, due_date, "pending", assigned_to_email
         )
+
+    def __str__(self) -> str:
+        return f"""Task(
+        name={self._name},
+        description={self._description},
+        priority={self._priority},
+        status={self._status},
+        due_date={self._due_date},
+    )"""
+
+    def mark_as_done(self) -> None:
+        self.status = "completed"
