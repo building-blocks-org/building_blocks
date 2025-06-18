@@ -308,3 +308,12 @@ class TestDomainEventManagement:
 
         aggregate.mark_changes_as_committed()
         assert len(aggregate.uncommitted_changes()) == 0
+
+    def test_version_when_version_1_then_returns_current_version(self):
+        aggregate_id = uuid4()
+
+        aggregate = FakeAggregateRoot(aggregate_id, "test")
+        aggregate._version = 1  # Directly set version for testing
+
+        expected_version = 1
+        assert aggregate.version == expected_version
