@@ -60,6 +60,7 @@ quality: ## Run all quality checks
 	@poetry run mypy src/
 	@poetry run bandit -r src/
 	@echo "✅ quality checks passed!"
+
 test: ## run all tests (library + examples)
 	@echo "🧪 running tests..."
 	@poetry run pytest --cov --cov-config=pyproject.toml tests/ -v

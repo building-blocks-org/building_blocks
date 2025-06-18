@@ -391,8 +391,6 @@ create_directory_structure() {
         "src/$PROJECT_NAME/application/ports/inbound"
         "src/$PROJECT_NAME/application/ports/outbound"
         "src/$PROJECT_NAME/application/services"
-        "src/$PROJECT_NAME/application/requests"
-        "src/$PROJECT_NAME/application/responses"
         "src/$PROJECT_NAME/infrastructure"
         "src/$PROJECT_NAME/infrastructure/persistence"
         "src/$PROJECT_NAME/infrastructure/messaging"
@@ -922,7 +920,6 @@ EOF
 ├── application/      # Use cases and orchestration
 │   ├── services/     # Use case implementations
 │   ├── ports/        # Application contracts
-│   ├── requests/     # Input DTOs
 EOF
 
     if [[ "$INCLUDE_EVENT_HANDLERS" == true ]]; then
@@ -1078,8 +1075,6 @@ EOF
         import $PROJECT_NAME.application
         import $PROJECT_NAME.application.ports
         import $PROJECT_NAME.application.services
-        import $PROJECT_NAME.application.requests
-        import $PROJECT_NAME.application.responses
 EOF
 
     if [[ "$INCLUDE_EVENT_HANDLERS" == true ]]; then
