@@ -30,6 +30,12 @@ pre-commit = "*"
 pytest = "*"
 pytest-cov = "*"
 ruff = "*"
+typer = "^0.9.0"    # For CLI examples
+rich = "^13.0.0"    # For beautiful output
+
+# === SHARED TOOLING CONFIGURATION ===
+# Examples inherit these configurations
+
 
 [build-system]
 requires = ["poetry-core"]
@@ -43,7 +49,7 @@ target-version = ['py39']
 [tool.ruff]
 line-length = 88
 target-version = "py39"
-src = ["src", "tests"]
+src = ["src", "tests", "examples"]
 
 [tool.ruff.lint]
 select = [
@@ -68,7 +74,7 @@ no_implicit_optional = true
 warn_redundant_casts = true
 warn_unused_ignores = true
 strict_equality = true
-mypy_path = "src"
+mypy_path = "src:examples"
 
 [[tool.mypy.overrides]]
 module = "tests.*"
@@ -79,7 +85,7 @@ disallow_untyped_defs = false
 exclude_dirs = ["tests"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "examples/*/tests"]
 python_files = ["test_*.py"]
 addopts = [
     "--strict-markers",
@@ -89,6 +95,7 @@ addopts = [
 ]
 
 [tool.coverage.run]
+source = ["src", "examples"]
 omit = [
     "*/__init__.py",
     "src/building_blocks/application/ports/**/*.py",
