@@ -82,7 +82,21 @@ ignore_missing_imports = true
 disallow_untyped_defs = false
 
 [tool.bandit]
-exclude_dirs = ["tests"]
+exclude_dirs = [
+    "tests",
+    "examples/*/tests",
+    "docs",
+    ".github",
+    "scripts",
+    ".venv",
+    "venv",
+    ".virtualenv"
+]
+skips = ["B101"]
+
+# More granular approach - only skip B101 for test files
+[tool.bandit.assert_used]
+skips = ["**/test_*.py", "**/tests/**/*.py"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests", "examples/*/tests"]

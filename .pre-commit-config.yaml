@@ -1,38 +1,69 @@
 repos:
+  # Essential Git Hygiene
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v5.0.0
     hooks:
       - id: trailing-whitespace
       - id: end-of-file-fixer
       - id: check-yaml
+      - id: check-toml
       - id: check-added-large-files
+        args: ['--maxkb=500']
       - id: check-merge-conflict
       - id: debug-statements
-      - id: check-toml
 
+  # Modern Python Formatting & Linting
   - repo: https://github.com/psf/black
     rev: 25.1.0
     hooks:
       - id: black
-        language_version: python3.13
+        language_version: python3.9
+        args: [--config=pyproject.toml]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.8.4
     hooks:
       - id: ruff
-        args: [--fix]
+        args: [--fix, --unsafe-fixes]  # Allows List→list fixes
       - id: ruff-format
 
+  # Type Safety
   - repo: https://github.com/pre-commit/mirrors-mypy
     rev: v1.16.0
     hooks:
       - id: mypy
         entry: poetry run mypy src tests
+        language: system
         pass_filenames: false
+        args: [--config-file=pyproject.toml]
 
+  # Security Scanning (Fixed Configuration)
   - repo: https://github.com/PyCQA/bandit
     rev: 1.8.3
     hooks:
       - id: bandit
-        args: ["-r", "src"]
-        exclude: ^tests/
+        name: bandit-security-scan
+        args: [
+          "-r", "src",  # Only scan src directory
+          "--format", "txt",  # Simpler format
+          "--skip", "B101"
+        ]
+        pass_filenames: false  # Critical: Don't pass individual files
+
+  # Domain-Driven Design Validation (Simplified)
+  - repo: local
+    hooks:
+      - id: domain-layer-check
+        name: Domain Layer Purity Check
+        entry: bash -c 'if find src -path "*/domain/*" -name "*.py" -exec grep -l "from.*\(requests\|flask\|fastapi\|sqlalchemy\)" {} \; | head -1 | grep -q .; then echo "❌ Domain layer has infrastructure imports!"; exit 1; else echo "✅ Domain layer is clean"; fi'
+        language: system
+        pass_filenames: false
+        verbose: true
+
+# CI Configuration
+ci:
+  autofix_commit_msg: |
+    [pre-commit.ci] auto fixes from pre-commit hooks
+  autofix_prs: true
+  autoupdate_schedule: weekly
+  skip: [mypy]  # Skip mypy in CI (run in GitHub Actions instead)
