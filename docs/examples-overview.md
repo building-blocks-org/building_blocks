@@ -1,36 +1,7 @@
 # Examples Overview & Backlog
 
 Welcome to the **Examples Overview & Backlog** for the Building Blocks library!
-This document serves both as a catalog of existing examples and a living backlog of planned or proposed examples.
-Each example is designed to illustrate clean/hexagonal architecture, DDD, and SOLID principles across various domains and frameworks, helping users learn and apply these concepts.
-
----
-
-## 📋 Table of Contents
-
-- [Purpose](#purpose)
-- [How to Use This Document](#how-to-use-this-document)
-- [Examples Backlog Table](#examples-backlog-table)
-- [Example Details and Notes](#example-details-and-notes)
-- [Ideas for Future Examples](#ideas-for-future-examples)
-- [Contribution Guidelines](#contribution-guidelines)
-
----
-
-## Purpose
-
-- Provide a high-level summary and planning space ("backlog") for all examples.
-- Track which examples are planned, in progress, or completed.
-- Serve as a reference for contributors and users looking for inspiration or guidance.
-- Document architectural decisions and learning objectives for each example.
-
----
-
-## How to Use This Document
-
-- **For Users:** Find examples relevant to your needs and see which concepts are demonstrated.
-- **For Contributors:** Pick up a planned or in-progress example, or propose a new one!
-- **For Maintainers:** Use this as a roadmap for educational content and code samples.
+This document is both a catalog of existing examples and a living backlog of planned or proposed examples.
 
 ---
 
@@ -179,19 +150,6 @@ Each example is designed to illustrate clean/hexagonal architecture, DDD, and SO
 
 ---
 
-## Ideas for Future Examples
-
-- **Microservice communication** with event sourcing (Sagas, process managers)
-- **Real-time chat** (WebSockets, adapters)
-- **Data science pipeline** with model training/evaluation as domain logic
-- **IoT device management** (hexagonal adapters for sensors/actuators)
-- **API Gateway** sample (aggregating multiple bounded contexts)
-- **Legacy system integration** (adapters as anti-corruption layers)
-
-Feel free to [open a discussion or suggestion](https://github.com/gbrennon/building-blocks/discussions) to propose more!
-
----
-
 ## Contribution Guidelines
 
 - To pick up an example, comment your intent in the [Discussions](https://github.com/gbrennon/building-blocks/discussions) or open an issue.
@@ -200,5 +158,3 @@ Feel free to [open a discussion or suggestion](https://github.com/gbrennon/build
 - Focus on clear, educational code and explanations.
 
 ---
-
-_Last updated: 2025-06-18_

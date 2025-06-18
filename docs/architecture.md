@@ -4,69 +4,85 @@
 
 ## Core Principles
 
-- **Separation of Concerns**: The library enforces a strict separation between the domain, application, and infrastructure layers.
-- **Dependency Rule**: Dependencies flow inwards. The domain layer has no knowledge of the application layer, and the application layer has no knowledge of the infrastructure or presentation layers.
-- **Framework Agnostic**: The core logic of your application should not depend on any specific framework (like FastAPI, Django, or Flask).
+- **Separation of Concerns**: Strict separation between domain, application, and infrastructure layers.
+- **Dependency Rule**: Dependencies flow inwards. The domain layer has no knowledge of application/infrastructure/presentation.
+- **Framework Agnostic**: Core logic is independent of frameworks (FastAPI, Django, etc).
 
 ## Layers
 
-The architecture is divided into the following layers.
-
 ### 1. Domain Layer
+The heart of your application: business logic, entities, rules.
+Contains Entities, Value Objects, Aggregates, Domain Services, Domain Events.
 
-This is the heart of your application, containing the business logic, entities, and rules, completely independent of any technical implementation details.
-
-- **What it is**: It contains `Entities`, `Value Objects`, `Aggregates`, `Domain Services`, and `Domain Events`.
-- **How `building_blocks` helps**: The library provides base classes and helpers to model your domain effectively. For example, you might have `building_blocks.domain.Entity` or `building_blocks.domain.AggregateRoot` that provide common functionality like identity management and domain event tracking.
+- Use: `building_blocks.domain.Entity`, `AggregateRoot` for identity/events.
+- Pure Python; no framework or DB logic here!
 
 ### 2. Application Layer
+Orchestrates use cases and defines application boundaries ("ports").
 
-This layer orchestrates the use cases of your application. It contains the application logic and defines the "ports" for interacting with the outside world.
+- Contains: Application Services (Use Cases), Inbound/Outbound Ports (abstract base classes).
+- Use: `building_blocks.application.UseCase`, `Port` for clean boundaries.
 
-- **What it is**: It contains `Application Services` (Use Cases) that execute business workflows, and the `Inbound` and `Outbound Ports` that define the application's boundaries.
-- **How `building_blocks` helps**: The library gives you structures to define these boundaries cleanly. You might use a `building_blocks.application.UseCase` base class to structure your services or `building_blocks.application.Port` as a marker interface for your repository contracts.
+### 3. Infrastructure Layer (Adapters)
+Implements outbound ports, connects to DB, frameworks, external services.
 
-### ASCII Diagram
+- Contains: Repositories, message brokers, framework adapters, etc.
+- Only depends on interfaces from the application/domain.
+
+### 4. Presentation Layer
+User-facing entry points: web, CLI, desktop, etc.
+Only depends on application layer, never on domain or infra directly.
+
+---
+
+## ASCII Diagram
 
 ```
-      +----------------------------------------------------------------+
-      |                        Presentation Layer                      |
-      |        (Controllers, Views, CLI Commands, etc.)                |
-      +----------------------------------------------------------------+
-                                      |
-                                      v
-+-------------------------------------+--------------------------------------+
-|             Application Layer (Ports)                                      |
-|                                                                            |
-|   +-------------------+       +-----------------------+                    |
-|   |  Inbound Ports    |------>|  Application Services |                    |
-|   | (Use Case ABCs)   |       |   (Orchestration)     |                    |
-|   +-------------------+       +-----------------------+                    |
-|                                      |                                     |
-|                                      v (drives)                            |
-|   +-------------------+       +-----------------------+                    |
-|   |  Outbound Ports   |<------|                       |                    |
-|   | (Repository ABCs) |       |                       |                    |
-|   +-------------------+       +-----------------------+                    |
-|                                                                            |
-+-------------------------------------+--------------------------------------+
-                                      |
-                                      v
-+-------------------------------------+--------------------------------------+
-|                     Domain Layer                                           |
-|                                                                            |
-|   +-------------------+       +-----------------------+                    |
-|   |      Entities     |       |    Domain Services    |                    |
-|   +-------------------+       +-----------------------+                    |
-|                                                                            |
-+----------------------------------------------------------------------------+
++----------------------------------------------------------------+
+|                        Presentation Layer                      |
+|        (Controllers, Views, CLI Commands, etc.)                |
++----------------------------------------------------------------+
+                                |
+                                v
++------------------------------+-------------------------------+
+|             Application Layer (Ports & Use Cases)             |
+|  +-------------------+   +-----------------------+           |
+|  |  Inbound Ports    |-->|  Application Services |           |
+|  |  (Use Case ABCs)  |   |   (Orchestration)     |           |
+|  +-------------------+   +-----------------------+           |
+|          |         (drives)        |                          |
+|          v                         v                          |
+|  +-------------------+   +-----------------------+           |
+|  |  Outbound Ports   |<--|  Adapters/Repos       |           |
+|  |  (Repo/Infra ABCs)|   |  (Infra Implementations)          |
+|  +-------------------+   +-----------------------+           |
++------------------------------+-------------------------------+
+                                |
+                                v
++------------------------------+-------------------------------+
+|                     Domain Layer                             |
+|  +-------------------+   +-----------------------+           |
+|  |    Entities       |   |   Domain Services     |           |
+|  +-------------------+   +-----------------------+           |
++--------------------------------------------------------------+
 ```
+
+---
 
 ## Port Architecture
 
-The "ports" in hexagonal architecture are the boundaries of your application, defined within the Application Layer.
+- **Inbound Ports**: Abstract base classes for use cases (application API). Called by presentation layer.
+- **Outbound Ports**: Interfaces for infrastructure needs (repos, notifications, etc). Implemented by adapters.
 
-- **Inbound Ports**: Define the API of the application layer. In `building_blocks`, these are abstract classes that your presentation layer will call. They represent the "use cases" of the system.
-- **Outbound Ports**: Define the interfaces needed by your application to get data from or send data to external systems (e.g., a database). Your infrastructure layer will provide concrete implementations (adapters) for these ports.
+This enforces testable, maintainable, framework-agnostic business logic.
 
-This separation ensures that your core application and domain logic remain pure and isolated from the details of external technologies.
+---
+
+## Key Takeaways
+
+- **All dependencies point inward (toward domain).**
+- **Domain is pure and unaware of frameworks/infra.**
+- **Adapters implement interfaces defined inside (not outside).**
+- **You can swap infra/frameworks with zero changes to business rules.**
+
+---
