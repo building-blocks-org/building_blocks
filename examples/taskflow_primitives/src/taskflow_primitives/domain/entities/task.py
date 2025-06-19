@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import datetime
 from uuid import uuid4
 
 from building_blocks.domain.aggregate_root import AggregateRoot
@@ -11,7 +12,7 @@ class Task(AggregateRoot[str]):
         id_: str,
         title: str,
         description: str,
-        due_date: str,
+        due_date: datetime.date,
         priority: int,
         status: str = "pending",
         tags: list[str] | None = None,
@@ -29,7 +30,7 @@ class Task(AggregateRoot[str]):
         cls,
         title: str,
         description: str,
-        due_date: str,
+        due_date: datetime.date,
         priority: int,
         tags: list[str] | None = None,
     ) -> Task:

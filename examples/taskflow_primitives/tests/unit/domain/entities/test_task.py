@@ -1,3 +1,4 @@
+import datetime
 from unittest import mock
 
 from taskflow_primitives.domain.entities.task import Task
@@ -6,24 +7,26 @@ from taskflow_primitives.domain.entities.task import Task
 class TestTask:
     def test_constructor_when_no_tags_then_tags_is_empty_list(self):
         id_ = "1234567890abcdef"
+        due_date = datetime.date(2023, 10, 1)
 
         task = Task(
             id_=id_,
             title="Test Task",
             description="This is a test task.",
-            due_date="2023-10-01",
+            due_date=due_date,
             priority=1,
         )
         assert task.tags == []
 
     def test_constructor_when_all_attributes_then_all_attributes_are_set(self):
         id_ = "1234567890abcdef"
+        due_date = datetime.date(2023, 10, 1)
 
         task = Task(
             id_=id_,
             title="Test Task",
             description="This is a test task.",
-            due_date="2023-10-01",
+            due_date=due_date,
             priority=1,
             status="pending",
             tags=["urgent", "work"],
