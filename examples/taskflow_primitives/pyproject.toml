@@ -21,9 +21,13 @@ building-blocks = {path = "../../", develop = true}
 typer = "^0.9.0"
 rich = "^13.0.0"
 sqlalchemy = {extras = ["asyncio"], version = "^2.0.41"}
+asyncpg = "^0.30.0"
 
 [tool.poetry.scripts]
 taskflow_primitives = "taskflow_primitives.presentation.cli.main:app"
+
+[tool.poetry.group.dev.dependencies]
+aiosqlite = "^0.21.0"
 
 [build-system]
 requires = ["poetry-core"]
