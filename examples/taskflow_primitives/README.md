@@ -1,40 +1,37 @@
-# taskflow
+# taskflow_primitives
 
-> Clean Architecture with DDD Example showcasing building-blocks library
+> Anti-pattern example demonstrating primitive obsession and anemic domain model
 
 ## 🎯 Purpose
 
 This example demonstrates:
 
-- **Clean Architecture** (Hexagonal Architecture)
-- **Domain-Driven Design (DDD)**
-- **SOLID Principles**
-- **Event-Driven Architecture**
-- **CQRS Pattern**
-- **Building Blocks Library Usage**
+- **Primitive Obsession Anti-Pattern**
+- **Anemic Domain Model Problems**
+- **Why Value Objects Matter**
+- **Scattered Business Logic Issues**
+- **Comparison with Clean Implementation**
+
+⚠️ **WARNING: This is an example of what NOT to do!**
 
 ## 🏗️ Architecture
 
 ```
-src/taskflow/
+src/taskflow_primitives/
 ├── domain/           # Pure business logic
 │   ├── entities/     # Aggregates and entities
 │   ├── value_objects/ # Immutable value types
 │   ├── messages/     # Domain events and commands
-│   ├── services/     # Domain services
 │   └── ports/        # Domain contracts
 ├── application/      # Use cases and orchestration
 │   ├── services/     # Use case implementations
 │   ├── ports/        # Application contracts
-│   ├── requests/     # Input DTOs
-│   ├── handlers/     # Event and command handlers
 │   └── responses/    # Output DTOs
 ├── infrastructure/   # External concerns
 │   ├── persistence/  # Database adapters
 │   ├── messaging/    # Event bus implementations
 │   └── services/     # External service adapters
 └── presentation/     # User interfaces
-    ├── api/          # REST API
     └── cli/          # Command line interface
 ```
 
@@ -45,19 +42,16 @@ src/taskflow/
 poetry install
 
 # Run CLI
-poetry run taskflow --help
-
-# Run API server
-poetry run uvicorn taskflow.presentation.api.main:app --reload
+poetry run taskflow_primitives --help
 
 # Run tests
 poetry run pytest
 
 # Quality checks (from repository root)
 cd ../../
-poetry run black --check examples/taskflow/
-poetry run ruff check examples/taskflow/
-poetry run mypy examples/taskflow/src/
+poetry run black --check examples/taskflow_primitives/
+poetry run ruff check examples/taskflow_primitives/
+poetry run mypy examples/taskflow_primitives/src/
 ```
 
 ## 📚 Learning Path
@@ -74,6 +68,6 @@ poetry run mypy examples/taskflow/src/
 
 ## 📖 Documentation
 
-Generated on: 2025-06-18 15:46:57 UTC
+Generated on: 2025-06-18 20:54:17 UTC
 Created by: Building Blocks Example Creator v1.2.0
 Author: Glauber Brennon <glauberbrennon@gmail.com>

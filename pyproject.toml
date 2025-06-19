@@ -21,7 +21,6 @@ keywords = [
 
 [tool.poetry.dependencies]
 python = "^3.9"
-pytest-asyncio = "^1.0.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "*"
@@ -29,6 +28,7 @@ mypy = "*"
 bandit = "*"
 pre-commit = "*"
 pytest = "*"
+pytest-asyncio = "^1.0.0"
 pytest-cov = "*"
 ruff = "*"
 typer = "^0.9.0"    # For CLI examples
@@ -105,22 +105,39 @@ python_files = ["test_*.py"]
 addopts = [
     "--strict-markers",
     "--strict-config",
-    "--cov=src",
+    "--cov=building_blocks",
     "--cov-report=term-missing",
     "--cov-report=html",
+    "--cov-append",
     "-v"
 ]
 
 [tool.coverage.run]
 branch = true
+parallel = true
+source = [
+    "src/building_blocks",
+    "examples/taskflow_primitives/src/taskflow_primitives"
+]
 omit = [
     "**/ports/**",
     "**/__init__.py"
 ]
 
+[tool.coverage.paths]
+# This helps coverage understand that the same code might be in different locations
+building_blocks = [
+    "src/building_blocks",
+    "*/building_blocks"
+]
+taskflow_primitives = [
+    "examples/taskflow_primitives/src/taskflow_primitives",
+    "*/taskflow_primitives"
+]
+
 [tool.coverage.report]
 show_missing = true
-skip_covered = true
+skip_covered = false
 precision = 2
 omit = [
     "**/ports/**",

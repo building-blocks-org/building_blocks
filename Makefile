@@ -61,16 +61,28 @@ quality: ## Run all quality checks
 	@poetry run bandit -r src/
 	@echo "✅ quality checks passed!"
 
-test: ## run all tests (library + examples)
-	@echo "🧪 running tests..."
-	@poetry run pytest --cov --cov-config=pyproject.toml tests/ -v
-	@for example in examples/*/; do \
-		if [ -f "$$example/pyproject.toml" ]; then \
-			echo "testing $$(basename "$$example")..."; \
-			cd "$$example" && poetry run pytest --cov --cov-config=pyproject.toml tests/ -v && cd - >/dev/null; \
-		fi; \
-	done
-	@echo "✅ all tests passed!"
+# Simple unified test approach
+test:
+	@echo "🧪 Running all tests with unified coverage..."
+	@rm -f .coverage*
+	PYTHONPATH=src:examples/taskflow_primitives/src poetry run pytest \
+		tests/ \
+		examples/taskflow_primitives/tests/ \
+		--cov=building_blocks \
+		--cov=taskflow_primitives \
+		--cov-report=term-missing \
+		--cov-report=html \
+		-v
+	@echo "✅ All tests completed!"
+
+# Fallback: minimal separate approach without complex coverage paths
+test-simple:
+	@echo "🧪 Running main package tests..."
+	poetry run pytest tests/ --cov=building_blocks --cov-report=term-missing -v
+
+	@echo "📦 Running taskflow_primitives tests..."
+	cd examples/taskflow_primitives && \
+	PYTHONPATH=src poetry run pytest tests/ --cov=taskflow_primitives --cov-report=term-missing -v
 
 clean: ## Clean up generated files and caches
 	@echo "🧹 Cleaning up..."
