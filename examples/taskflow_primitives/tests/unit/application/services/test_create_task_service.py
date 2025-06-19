@@ -41,8 +41,13 @@ class TestCreateTaskService:
         mock_repo = Mock(spec=TaskRepository)
         mock_repo.save = AsyncMock(side_effect=Exception("Database error"))
         create_task_service = CreateTaskService(mock_repo)
+        actual_uui4_hex = "1234567890abcdef"
 
-        with pytest.raises(Exception, match="Database error"):
+        with (
+            mock.patch("taskflow_primitives.domain.entities.task.uuid4") as MockUUID4,
+            pytest.raises(Exception, match="Database error"),
+        ):
+            MockUUID4.return_value.hex = actual_uui4_hex
             await create_task_service.execute(
                 CreateTaskRequest(
                     title="Test Task",
