@@ -6,7 +6,7 @@ from taskflow_primitives.infrastructure.persistence.models.sqlalchemy_task impor
 )
 
 
-class TestSQLAlchemyTaskModel:
+class TestSQLAlchemyTask:
     def test_from_entity(self):
         task = Task.create_pending(
             title="Test Task",
