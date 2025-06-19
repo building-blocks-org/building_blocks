@@ -28,8 +28,15 @@ mypy = "*"
 bandit = "*"
 pre-commit = "*"
 pytest = "*"
+pytest-asyncio = "^1.0.0"
 pytest-cov = "*"
 ruff = "*"
+typer = "^0.9.0"    # For CLI examples
+rich = "^13.0.0"    # For beautiful output
+
+# === SHARED TOOLING CONFIGURATION ===
+# Examples inherit these configurations
+
 
 [build-system]
 requires = ["poetry-core"]
@@ -43,7 +50,7 @@ target-version = ['py39']
 [tool.ruff]
 line-length = 88
 target-version = "py39"
-src = ["src", "tests"]
+src = ["src", "tests", "examples"]
 
 [tool.ruff.lint]
 select = [
@@ -68,7 +75,7 @@ no_implicit_optional = true
 warn_redundant_casts = true
 warn_unused_ignores = true
 strict_equality = true
-mypy_path = "src"
+mypy_path = "src:examples"
 
 [[tool.mypy.overrides]]
 module = "tests.*"
@@ -76,28 +83,63 @@ ignore_missing_imports = true
 disallow_untyped_defs = false
 
 [tool.bandit]
-exclude_dirs = ["tests"]
+exclude_dirs = [
+    "tests",
+    "examples/*/tests",
+    "docs",
+    ".github",
+    "scripts",
+    ".venv",
+    "venv",
+    ".virtualenv"
+]
+skips = ["B101"]
+
+# More granular approach - only skip B101 for test files
+[tool.bandit.assert_used]
+skips = ["**/test_*.py", "**/tests/**/*.py"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "examples"]
 python_files = ["test_*.py"]
 addopts = [
     "--strict-markers",
     "--strict-config",
-    "--cov=src",
+    "--cov=building_blocks",
     "--cov-report=term-missing",
+    "--cov-report=html",
+    "--cov-append",
+    "-v"
 ]
 
 [tool.coverage.run]
+branch = true
+parallel = true
+source = [
+    "src/building_blocks",
+    "examples/taskflow_primitives/src/taskflow_primitives"
+]
 omit = [
-    "*/__init__.py",
-    "src/building_blocks/application/ports/**/*.py",
-    "src/building_blocks/domain/ports/**/*.py",
+    "**/ports/**",
+    "**/__init__.py"
+]
+
+[tool.coverage.paths]
+# This helps coverage understand that the same code might be in different locations
+building_blocks = [
+    "src/building_blocks",
+    "*/building_blocks"
+]
+taskflow_primitives = [
+    "examples/taskflow_primitives/src/taskflow_primitives",
+    "*/taskflow_primitives"
 ]
 
 [tool.coverage.report]
-exclude_lines = [
-    "pragma: no cover",
-    "@(abc\\.)?abstractmethod",
-    "raise NotImplementedError"
+show_missing = true
+skip_covered = false
+precision = 2
+omit = [
+    "**/ports/**",
+    "**/__init__.py"
 ]

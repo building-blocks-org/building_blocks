@@ -195,6 +195,7 @@ class TestValueObject:
 
         # This should hit: return f"{self.__class__.__name__}{components}"
         # Expected: "TwoComponentVO('first', 'second')"
-        assert "TwoComponentVO" in result
-        assert "first" in result
-        assert "second" in result
+        expected_result = "TwoComponentVO('first', 'second')"
+        assert (
+            result == expected_result
+        ), f"String representation should be '{expected_result}'"
