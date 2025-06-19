@@ -17,7 +17,7 @@ class Task(AggregateRoot[str]):
         status: str = "pending",
         tags: list[str] | None = None,
     ) -> None:
-        self.id_ = id_
+        super().__init__(id_)
         self.title = title
         self.description = description
         self.due_date = due_date

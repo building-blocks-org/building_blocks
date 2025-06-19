@@ -32,9 +32,10 @@ class TestTask:
             tags=["urgent", "work"],
         )
 
+        expected_due_date = datetime.date(2023, 10, 1)
         assert task.title == "Test Task"
         assert task.description == "This is a test task."
-        assert task.due_date == "2023-10-01"
+        assert task.due_date == expected_due_date
         assert task.priority == 1
         assert task.status == "pending"
         assert task.tags == ["urgent", "work"]
