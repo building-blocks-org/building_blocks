@@ -31,4 +31,4 @@ class CreateTaskService(CreateTaskUseCase):
         )
         await self._task_repository.save(task)
 
-        return CreateTaskResponse(task_id=task.id_)
+        return CreateTaskResponse(task_id=task._id)
