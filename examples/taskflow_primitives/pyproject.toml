@@ -20,6 +20,7 @@ python = "^3.9"
 building-blocks = {path = "../../", develop = true}
 typer = "^0.9.0"
 rich = "^13.0.0"
+sqlalchemy = {extras = ["asyncio"], version = "^2.0.41"}
 
 [tool.poetry.scripts]
 taskflow_primitives = "taskflow_primitives.presentation.cli.main:app"
