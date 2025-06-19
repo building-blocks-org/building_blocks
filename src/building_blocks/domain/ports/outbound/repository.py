@@ -160,22 +160,6 @@ class AsyncRepository(ABC, Generic[TAggregateRoot, TId]):
     """
 
     @abstractmethod
-    async def find_by_id(self, aggregate_id: TId) -> TAggregateRoot | None:
-        """
-        Find an aggregate by its unique identifier.
-
-        Returns None if the aggregate is not found, rather than raising
-        an exception. This follows the "Tell, Don't Ask" principle and
-        allows the domain to handle missing aggregates appropriately.
-
-        Args:
-            aggregate_id: The unique identifier of the aggregate
-
-        Returns:
-            The aggregate if found, None otherwise
-        """
-
-    @abstractmethod
     async def save(self, aggregate: TAggregateRoot) -> None:
         """
         Save an aggregate to the repository.
@@ -195,15 +179,19 @@ class AsyncRepository(ABC, Generic[TAggregateRoot, TId]):
         """
 
     @abstractmethod
-    async def delete(self, aggregate: TAggregateRoot) -> None:
+    async def find_by_id(self, aggregate_id: TId) -> TAggregateRoot | None:
         """
-        Delete an aggregate from the repository.
+        Find an aggregate by its unique identifier.
+
+        Returns None if the aggregate is not found, rather than raising
+        an exception. This follows the "Tell, Don't Ask" principle and
+        allows the domain to handle missing aggregates appropriately.
 
         Args:
-            aggregate: The aggregate to delete
+            aggregate_id: The unique identifier of the aggregate
 
-        Raises:
-            RepositoryException: If deletion fails
+        Returns:
+            The aggregate if found, None otherwise
         """
 
     @abstractmethod
@@ -216,4 +204,16 @@ class AsyncRepository(ABC, Generic[TAggregateRoot, TId]):
 
         Returns:
             All aggregates in the repository
+        """
+
+    @abstractmethod
+    async def delete(self, aggregate_id: TId) -> None:
+        """
+        Delete an aggregate from the repository.
+
+        Args:
+            aggregate: The aggregate to delete
+
+        Raises:
+            RepositoryException: If deletion fails
         """
