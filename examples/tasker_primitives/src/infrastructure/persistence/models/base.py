@@ -1,11 +1,10 @@
 from __future__ import annotations
 
 import datetime
-import uuid
 from abc import ABC, abstractmethod
 from typing import Generic, TypeVar
 
-from sqlalchemy import DateTime
+from sqlalchemy import DateTime, func
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 # === Declarative Base ===
@@ -15,15 +14,6 @@ class Base(DeclarativeBase):
     """Declarative base for SQLAlchemy v2+."""
 
     pass
-
-
-# === UTC timestamp generator ===
-
-UTC = datetime.timezone.utc
-
-
-def now_utc() -> datetime.datetime:
-    return datetime.datetime.now(tz=UTC)
 
 
 # === TimestampedBase ===
@@ -38,18 +28,21 @@ class TimestampedBase(Base):
     __abstract__ = True
 
     created_at: Mapped[datetime.datetime] = mapped_column(
-        DateTime(timezone=True), default=now_utc, nullable=False
+        DateTime(timezone=True), server_default=func.now(), nullable=False
     )
 
     updated_at: Mapped[datetime.datetime] = mapped_column(
-        DateTime(timezone=True), default=now_utc, onupdate=now_utc, nullable=False
+        DateTime(timezone=True),
+        server_default=func.now(),
+        server_onupdate=func.now(),
+        nullable=False,
     )
 
 
 # === Typevars for generic base model ===
 
 TEntity = TypeVar("TEntity")
-TId = TypeVar("TId", bound=uuid.UUID)  # assumes all IDs are UUIDs
+TId = TypeVar("TId")
 
 
 # === MappedModel ===
@@ -57,7 +50,7 @@ TId = TypeVar("TId", bound=uuid.UUID)  # assumes all IDs are UUIDs
 
 class MappedModel(ABC, Generic[TEntity, TId]):
     """
-    Abstract base class for mapped models with a primitive UUID primary key.
+    Abstract base class for mapped models with a primitive primary key.
 
     Intended for use in designs where domain entities are not rich value objects,
     but rather raw types or anemic models. This interface standardizes conversion.

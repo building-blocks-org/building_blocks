@@ -2,11 +2,11 @@ from __future__ import annotations
 
 import uuid
 
+from sqlalchemy import UUID as SQLUUID
 from sqlalchemy.orm import Mapped, mapped_column
 
 from examples.tasker_primitives.src.domain.entities.task import Task
 from examples.tasker_primitives.src.infrastructure.persistence.models.base import (
-    SQLUUID,
     MappedModel,
     TimestampedBase,
 )

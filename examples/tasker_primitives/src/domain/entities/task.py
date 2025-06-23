@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import datetime
 from uuid import UUID
 
 from building_blocks.domain.aggregate_root import AggregateRoot
@@ -25,12 +26,14 @@ class Task(AggregateRoot[UUID]):
         task_id: UUID,
         title: str,
         description: str,
+        due_date: datetime.date,
         status: str = "todo",
         version: int = 0,
     ) -> None:
         super().__init__(task_id, version)
         self._title = title
         self._description = description
+        self._due_date = due_date
         self._status = status
 
     def __str__(self) -> str:
@@ -83,3 +86,13 @@ class Task(AggregateRoot[UUID]):
             str: The current status of the task.
         """
         return self._status
+
+    @property
+    def due_date(self) -> datetime.date:
+        """
+        Get the due date of the task.
+
+        Returns:
+            datetime.date: The due date of the task.
+        """
+        return self._due_date
