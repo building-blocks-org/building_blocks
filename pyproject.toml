@@ -30,6 +30,7 @@ pytest = "*"
 pytest-cov = "*"
 ruff = "*"
 sqlalchemy = {extras = ["asyncio"], version = "^2.0.41"}
+fastapi = {extras = ["standard"], version = "^0.115.13"}
 
 [build-system]
 requires = ["poetry-core"]
