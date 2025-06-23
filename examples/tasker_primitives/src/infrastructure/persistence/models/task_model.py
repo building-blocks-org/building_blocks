@@ -1,14 +1,18 @@
 from __future__ import annotations
 
-from uuid import UUID
+import uuid
+
+from sqlalchemy.orm import Mapped, mapped_column
 
 from examples.tasker_primitives.src.domain.entities.task import Task
 from examples.tasker_primitives.src.infrastructure.persistence.models.base import (
+    SQLUUID,
     MappedModel,
+    TimestampedBase,
 )
 
 
-class TaskModel(MappedModel[Task, UUID]):
+class TaskModel(TimestampedBase, MappedModel[Task, uuid.UUID]):
     """
     SQLAlchemy model for Task aggregate.
 
@@ -18,12 +22,16 @@ class TaskModel(MappedModel[Task, UUID]):
 
     __tablename__ = "tasks"
 
-    id: UUID
-    title: str
-    description: str
-    status: str
+    id: Mapped[uuid.UUID] = mapped_column(
+        SQLUUID(as_uuid=True), primary_key=True, default=uuid.uuid4
+    )
+    title: Mapped[str]
+    description: Mapped[str]
+    status: Mapped[str]
 
-    def __init__(self, id: UUID, title: str, description: str, status: str) -> None:
+    def __init__(
+        self, id: uuid.UUID, title: str, description: str, status: str
+    ) -> None:
         self.id = id
         self.title = title
         self.description = description

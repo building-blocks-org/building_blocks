@@ -1,13 +1,14 @@
 from __future__ import annotations
 
 import datetime
+import uuid
 from abc import ABC, abstractmethod
 from typing import Generic, TypeVar
 
 from sqlalchemy import DateTime
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
-# -- SQLAlchemy Base --
+# === Declarative Base ===
 
 
 class Base(DeclarativeBase):
@@ -16,7 +17,7 @@ class Base(DeclarativeBase):
     pass
 
 
-# -- Utility: UTC timestamp generator --
+# === UTC timestamp generator ===
 
 UTC = datetime.timezone.utc
 
@@ -25,35 +26,41 @@ def now_utc() -> datetime.datetime:
     return datetime.datetime.now(tz=UTC)
 
 
-# -- Timestamp Mixin (primitive-aware) --
+# === TimestampedBase ===
 
 
 class TimestampedBase(Base):
-    """Abstract base for models with UUID PK and timestamp tracking."""
+    """
+    Abstract base class for models with created_at / updated_at columns.
+    Intended for primitive-obsessed usage (not using VOs).
+    """
 
     __abstract__ = True
 
     created_at: Mapped[datetime.datetime] = mapped_column(
         DateTime(timezone=True), default=now_utc, nullable=False
     )
+
     updated_at: Mapped[datetime.datetime] = mapped_column(
         DateTime(timezone=True), default=now_utc, onupdate=now_utc, nullable=False
     )
 
 
-# -- Typevars --
+# === Typevars for generic base model ===
 
 TEntity = TypeVar("TEntity")
-TId = TypeVar("TId")
+TId = TypeVar("TId", bound=uuid.UUID)  # assumes all IDs are UUIDs
 
 
-# -- MappedModel (primitive ID, no VO) --
+# === MappedModel ===
 
 
 class MappedModel(ABC, Generic[TEntity, TId]):
     """
-    Base class for mapped models with primitive UUID primary key.
-    Intended for primitive-obsessed designs.
+    Abstract base class for mapped models with a primitive UUID primary key.
+
+    Intended for use in designs where domain entities are not rich value objects,
+    but rather raw types or anemic models. This interface standardizes conversion.
     """
 
     __abstract__ = True
@@ -62,15 +69,11 @@ class MappedModel(ABC, Generic[TEntity, TId]):
 
     @abstractmethod
     def to_entity(self) -> TEntity:
-        """
-        Convert the mapped model to a domain-like entity (dict or raw type).
-        """
+        """Convert this ORM model to its corresponding domain-like entity."""
         pass
 
     @classmethod
     @abstractmethod
     def from_entity(cls, entity: TEntity) -> MappedModel[TEntity, TId]:
-        """
-        Build the mapped model from a primitive-structured entity.
-        """
+        """Build an ORM model from a raw domain-like entity."""
         pass

@@ -30,6 +30,7 @@ pre-commit = "*"
 pytest = "*"
 pytest-cov = "*"
 ruff = "*"
+sqlalchemy = {extras = ["asyncio"], version = "^2.0.41"}
 
 [build-system]
 requires = ["poetry-core"]
