@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from uuid import UUID
 
 from building_blocks.domain.ports.outbound.repository import AsyncRepository
-from examples.tasker_primitives.src.domain.entity.task import Task
+from examples.tasker_primitives.src.domain.entities.task import Task
 
 
 class TaskRepository(AsyncRepository[Task, UUID], ABC):
