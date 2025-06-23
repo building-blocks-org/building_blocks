@@ -53,3 +53,33 @@ class Task(AggregateRoot[UUID]):
 
     def __hash__(self) -> int:
         return hash((self._id, self._description, self._status, self._version))
+
+    @property
+    def title(self) -> str:
+        """
+        Get the title of the task.
+
+        Returns:
+            str: The title of the task.
+        """
+        return self._title
+
+    @property
+    def description(self) -> str:
+        """
+        Get the description of the task.
+
+        Returns:
+            str: The description of the task.
+        """
+        return self._description
+
+    @property
+    def status(self) -> str:
+        """
+        Get the current status of the task.
+
+        Returns:
+            str: The current status of the task.
+        """
+        return self._status
