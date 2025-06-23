@@ -9,12 +9,11 @@ from sqlalchemy.orm import Mapped, mapped_column
 
 from examples.tasker_primitives.src.domain.entities.task import Task
 from examples.tasker_primitives.src.infrastructure.persistence.models.base import (
-    MappedModel,
-    TimestampedBase,
+    OrmModel,
 )
 
 
-class TaskModel(TimestampedBase, MappedModel[Task, uuid.UUID]):
+class TaskModel(OrmModel[Task, uuid.UUID]):
     """
     SQLAlchemy model for Task aggregate.
 

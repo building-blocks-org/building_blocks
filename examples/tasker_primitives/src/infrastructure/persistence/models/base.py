@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import datetime
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 from typing import Generic, TypeVar
 
 from sqlalchemy import DateTime, func
@@ -48,7 +48,7 @@ TId = TypeVar("TId")
 # === MappedModel ===
 
 
-class MappedModel(ABC, Generic[TEntity, TId]):
+class MappedModel(Generic[TEntity, TId]):
     """
     Abstract base class for mapped models with a primitive primary key.
 
@@ -70,3 +70,7 @@ class MappedModel(ABC, Generic[TEntity, TId]):
     def from_entity(cls, entity: TEntity) -> MappedModel[TEntity, TId]:
         """Build an ORM model from a raw domain-like entity."""
         pass
+
+
+class OrmModel(TimestampedBase, MappedModel[TEntity, TId]):
+    __abstract__ = True
