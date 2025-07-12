@@ -1,0 +1,37 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: shared_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: app_db
+    ports:
+      - "5432:5432"
+    networks:
+      - shared_net
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  tasker_primitives:
+    build:
+      context: .
+      dockerfile: examples/tasker_primitives/Dockerfile
+    environment:
+      DATABASE_URL: postgresql+asyncpg://postgres:password@postgres:5432/app_db
+    depends_on:
+      - postgres
+    networks:
+      - shared_net
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./examples/tasker_primitives:/app/examples/tasker_primitives
+    command: poetry run uvicorn examples.tasker_primitives.src.presentation.http.main:app --host 0.0.0.0 --port 8000 --reload
+
+volumes:
+  pgdata:
+
+networks:
+  shared_net:
+    name: shared_db_net
