@@ -15,7 +15,7 @@ class TaskRepository(AsyncRepository[Task, UUID], ABC):
     """
 
     @abstractmethod
-    async def find_by_id(self, task_id: UUID) -> Task:
+    async def find_by_id(self, task_id: UUID) -> Optional[Task]:
         pass
 
     @abstractmethod
