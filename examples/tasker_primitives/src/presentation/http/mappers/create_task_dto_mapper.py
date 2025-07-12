@@ -18,14 +18,8 @@ class CreateTaskDtoMapper:
     @staticmethod
     def from_http_request(request: CreateTaskHttpRequest) -> CreateTaskRequest:
         """
-        Maps the request object to a task creation dictionary.
-
-        :param request: The request object containing task details.
-        :return: A dictionary with task creation parameters.
+        Maps the HTTP request object to a service request object.
         """
-
-        print(f"Mapping HTTP request to service request: {request}")
-        print(f"Request due_date: {request.due_date}")
 
         return CreateTaskRequest(
             title=request.title,
@@ -37,9 +31,6 @@ class CreateTaskDtoMapper:
     def to_http_response(response: CreateTaskResponse) -> CreateTaskHttpResponse:
         """
         Maps the response object to a HTTP request object.
-
-        :param response: The response object containing task details.
-        :return: A HTTP request object with task creation parameters.
         """
 
         return CreateTaskHttpResponse(
