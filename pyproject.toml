@@ -31,6 +31,14 @@ pytest-cov = "*"
 ruff = "*"
 sqlalchemy = {extras = ["asyncio"], version = "^2.0.41"}
 fastapi = {extras = ["standard"], version = "^0.115.13"}
+httpx = "^0.28.1"
+pydantic-settings = "^2.10.0"
+uvicorn = "^0.35.0"
+python-dotenv = "^1.1.1"
+asyncpg = "^0.29.0"
+aiosqlite = "^0.20.0"
+psycopg2-binary = "^2.9.9"
+alembic = "^1.16.3"
 
 [build-system]
 requires = ["poetry-core"]
@@ -82,8 +90,9 @@ disallow_untyped_defs = false
 exclude_dirs = ["tests"]
 
 [tool.pytest.ini_options]
-testpaths = ["tests"]
+testpaths = ["tests", "examples"]
 python_files = ["test_*.py"]
+asyncio_mode = "auto"
 addopts = [
     "--strict-markers",
     "--strict-config",
