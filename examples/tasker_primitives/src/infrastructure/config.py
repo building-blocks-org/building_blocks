@@ -1,18 +1,31 @@
-from pydantic import BaseSettings, Field
+from pydantic import Field
+from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-class Settings(BaseSettings):
+class AppSettings(BaseSettings):
+    """Application configuration with environment variable binding."""
+
     environment: str = Field(
-        "production", description="App environment (production, test)"
-    )
-    database_url: str = Field(
-        ..., env="DATABASE_URL", description="Database connection URL"
+        "application", description="Application environment (test | application)"
     )
 
-    class Config:
-        env_file = ".env"  # Automatically load environment variables from .env file
-        env_file_encoding = "utf-8"
+    debug: bool = Field(False, description="Enable debug mode")
+
+    log_level: str = Field("INFO", description="Logging level")
+
+    database_url: str = Field(..., description="Database connection URL")
+
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_prefix="",
+        arbitrary_types_allowed=True,
+        from_attributes=True,
+    )
 
 
-# Instantiate the settings singleton
-settings = Settings()
+app_settings = AppSettings()  # Singleton instance for easy access
+
+
+# Factory functions for instantiation
+def get_app_settings() -> AppSettings:
+    return app_settings

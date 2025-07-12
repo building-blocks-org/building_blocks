@@ -1,11 +1,10 @@
-from __future__ import annotations
-
 import datetime
 from abc import abstractmethod
 from typing import Generic, TypeVar
 
 from sqlalchemy import DateTime, func
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
+from typing_extensions import Self
 
 # === Declarative Base ===
 
@@ -67,7 +66,7 @@ class MappedModel(Generic[TEntity, TId]):
 
     @classmethod
     @abstractmethod
-    def from_entity(cls, entity: TEntity) -> MappedModel[TEntity, TId]:
+    def from_entity(cls, entity: TEntity) -> Self:
         """Build an ORM model from a raw domain-like entity."""
         pass
 

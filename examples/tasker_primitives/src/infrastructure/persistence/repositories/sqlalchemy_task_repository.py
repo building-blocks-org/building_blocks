@@ -4,13 +4,14 @@ from typing import List, Optional
 from uuid import UUID
 
 from sqlalchemy import select
-from sqlalchemy.dialects.postgresql import insert as pg_insert
-from sqlalchemy.dialects.sqlite import insert as sqlite_insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from examples.tasker_primitives.src.domain.entities.task import Task
 from examples.tasker_primitives.src.domain.ports.outbound.task_repository import (
     TaskRepository,
+)
+from examples.tasker_primitives.src.infrastructure.persistence.helpers import (
+    build_upsert_statement,
 )
 from examples.tasker_primitives.src.infrastructure.persistence.models import TaskModel
 
@@ -35,30 +36,15 @@ class SQLAlchemyTaskRepository(TaskRepository):
         self._session = session
 
     async def save(self, task: Task) -> None:
-        values = {
-            "id": task.id,
-            "title": task.title,
-            "description": task.description,
-            "status": task.status,
-            "due_date": task.due_date,
-            "version": task.version,
-        }
+        values = self._build_values(task)
 
         dialect_name = self._session.bind.dialect.name
 
-        if dialect_name == "postgresql":
-            insert_stmt = pg_insert(TaskModel.__table__)
-        elif dialect_name == "sqlite":
-            insert_stmt = sqlite_insert(TaskModel.__table__)
-        else:
-            raise NotImplementedError(f"Upsert not supported for {dialect_name}")
-
-        upsert_stmt = insert_stmt.values(**values).on_conflict_do_update(
-            index_elements=["id"],
-            set_={k: getattr(insert_stmt.excluded, k) for k in values if k != "id"},
+        upsert_statement = build_upsert_statement(
+            dialect_name, TaskModel.__table__, values
         )
 
-        await self._session.execute(upsert_stmt)
+        await self._session.execute(upsert_statement)
         await self._session.commit()
 
     async def find_all(self) -> List[Task]:
@@ -82,3 +68,13 @@ class SQLAlchemyTaskRepository(TaskRepository):
             await self._session.commit()
         else:
             raise ValueError(f"Task with id {task.id} not found")
+
+    def _build_values(self, task: Task) -> dict:
+        return {
+            "id": task.id,
+            "title": task.title,
+            "description": task.description,
+            "status": task.status,
+            "due_date": task.due_date,
+            "version": task.version,
+        }

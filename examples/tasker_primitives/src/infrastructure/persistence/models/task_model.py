@@ -4,7 +4,7 @@ import datetime
 import uuid
 
 from sqlalchemy import UUID as SQLUUID
-from sqlalchemy import Date, String
+from sqlalchemy import Date, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
 from examples.tasker_primitives.src.domain.entities.task import Task
@@ -30,6 +30,7 @@ class TaskModel(OrmModel[Task, uuid.UUID]):
     description: Mapped[str] = mapped_column(String(1024), nullable=True)
     status: Mapped[str]
     due_date: Mapped[datetime.date] = mapped_column(Date, nullable=False)
+    version: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
 
     def __init__(
         self,
@@ -38,12 +39,14 @@ class TaskModel(OrmModel[Task, uuid.UUID]):
         description: str,
         status: str,
         due_date: datetime.date,
+        version: int = 0,
     ) -> None:
         self.id = id
         self.title = title
         self.description = description
         self.status = status
         self.due_date = due_date
+        self.version = version
 
     def to_entity(self) -> Task:
         return Task(
@@ -52,7 +55,7 @@ class TaskModel(OrmModel[Task, uuid.UUID]):
             description=self.description,
             status=self.status,
             due_date=self.due_date,
-            version=0,  # Assuming version is not stored in the model
+            version=self.version,
         )
 
     @classmethod
@@ -63,4 +66,5 @@ class TaskModel(OrmModel[Task, uuid.UUID]):
             description=entity.description,
             status=entity.status,
             due_date=entity.due_date,
+            version=entity.version,
         )

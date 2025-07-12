@@ -51,6 +51,9 @@ line-length = 88
 target-version = "py39"
 src = ["src", "tests", "examples"]
 fix = true  # Enable auto-fixing
+exclude = [
+    "**/migrations/**",  # Exclude migration files
+]
 
 [tool.ruff.lint]
 select = [
