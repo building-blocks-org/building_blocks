@@ -23,13 +23,13 @@ keywords = [
 python = "^3.9"
 
 [tool.poetry.group.dev.dependencies]
-mypy = "*"
+mypy = "1.16.1"
 bandit = "*"
-pre-commit = "*"
+pre-commit = "4.2.0"
 pytest = "*"
 pytest-cov = "*"
 pytest-asyncio = "*"
-ruff = "*"
+ruff = "0.12.3"
 sqlalchemy = {extras = ["asyncio"], version = "^2.0.41"}
 fastapi = {extras = ["standard"], version = "^0.115.13"}
 httpx = "^0.28.1"
@@ -54,10 +54,6 @@ fix = true
 exclude = [
     "**/migrations/**",
 ]
-
-[tool.ruff.format]
-quote_style = "double"
-line-ending = "lf"
 
 [tool.ruff.lint]
 select = [
