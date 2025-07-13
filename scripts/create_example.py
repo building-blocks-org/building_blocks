@@ -18,7 +18,7 @@ def create_init_file(path: str) -> None:
         pass
 
 
-def create_package_directory(path: str):
+def create_package_directory(path: str) -> None:
     """
     Creates a directory and places an empty __init__.py file inside it,
     making it a Python package.
