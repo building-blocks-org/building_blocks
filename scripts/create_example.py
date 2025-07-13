@@ -141,14 +141,14 @@ def main():
 
     project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-    EXAMPLES_DIR = os.path.join(project_root, "examples")
+    examples_dir_path = os.path.join(project_root, "examples")
 
     print(f"Project root identified: {project_root}")
-    print(f"Examples directory: {EXAMPLES_DIR}")
+    print(f"Examples directory: {examples_dir_path}")
 
-    os.makedirs(EXAMPLES_DIR, exist_ok=True)
+    os.makedirs(examples_dir_path, exist_ok=True)
 
-    example_base_path = os.path.join(EXAMPLES_DIR, args.example_name)
+    example_base_path = os.path.join(examples_dir_path, args.example_name)
     src_path = os.path.join(example_base_path, "src")
     os.makedirs(src_path, exist_ok=True)
     print(f"Created base example directory: {example_base_path}")
