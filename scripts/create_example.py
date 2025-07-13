@@ -103,8 +103,7 @@ def create_specific_layer(
 
     Args:
         example_name (str): The name of the example.
-        layer_name (str): The name of the layer (e.g., "application",
-        "domain").
+        layer_name (str): The name of the layer (e.g., "application", "domain").
         create_ports (bool): If True, creates the 'ports' directory structure.
         create_services (bool): If True, creates the 'services' directory.
         create_entities (bool): If True, creates the 'entities' directory (for
