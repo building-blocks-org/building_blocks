@@ -130,12 +130,7 @@ def main():
     parser.add_argument(
         "example_name", help="The name of the example project (e.g., my_service)."
     )
-    parser.add_argument(
-        "--port",
-        type=int,
-        default=8000,
-        help="The host port to map to the container (default: 8000).",
-    )
+# Removed the unused --port argument.
 
     args = parser.parse_args()
 
