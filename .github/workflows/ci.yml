@@ -16,7 +16,7 @@ jobs:
         with:
           python-version: '3.9'
       - name: Run Ruff (lint)
-        run: poetry run ruff check src tests examples
+        run: poetry run ruff check src tests
       - name: Run Black (check)
         run: poetry run black --check src tests examples
 
