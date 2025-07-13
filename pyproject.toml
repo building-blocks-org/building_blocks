@@ -55,9 +55,6 @@ fix = true  # Enable auto-fixing
 exclude = [
     "**/migrations/**",  # Exclude migration files
 ]
-ignore = [
-    "B008"
-]
 
 [tool.ruff.lint]
 select = [
