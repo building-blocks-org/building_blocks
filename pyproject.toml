@@ -45,8 +45,6 @@ alembic = "^1.16.3"
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-# Unified Code Style Configuration using Ruff
-
 [tool.ruff]
 line-length = 88
 target-version = "py39"
