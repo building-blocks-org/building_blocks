@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from typing import Optional
 from uuid import UUID
 
 from building_blocks.domain.ports.outbound.repository import AsyncRepository
