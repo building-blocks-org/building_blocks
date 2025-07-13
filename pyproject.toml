@@ -56,8 +56,6 @@ exclude = [
 ]
 
 [tool.ruff.format]
-line-length = 88
-target-version = "py39"
 quote_style = "double"
 line-ending = "lf"
 
