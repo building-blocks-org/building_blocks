@@ -14,7 +14,6 @@ RUN apt-get update && apt-get install -y \
 
 RUN pip install --no-cache-dir "poetry==1.7.1"
 
-# Copy project files including examples
 COPY . .
 
 RUN poetry install --with dev --no-interaction
