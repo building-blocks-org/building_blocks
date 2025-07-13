@@ -40,24 +40,24 @@ asyncpg = "^0.29.0"
 aiosqlite = "^0.20.0"
 psycopg2-binary = "^2.9.9"
 alembic = "^1.16.3"
+black = "^25.1.0"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
-# Unified Code Style Configuration using Ruff
-
 [tool.ruff]
 line-length = 88
 target-version = "py39"
-src = ["src", "tests", "examples"]
-fix = true  # Enable auto-fixing
+src = ["src", "tests", "examples", "scripts"]
+fix = true
 exclude = [
-    "**/migrations/**",  # Exclude migration files
+    "**/migrations/**",
 ]
-ignore = [
-    "B008"
-]
+
+[tool.ruff.format]
+quote_style = "double"
+line-ending = "lf"
 
 [tool.ruff.lint]
 select = [
@@ -73,11 +73,6 @@ ignore = [
     "D213",
     "B008"
 ]
-
-[tool.ruff.format]
-quote-style = "double"
-indent-style = "space"
-line-ending = "lf"
 
 [tool.mypy]
 python_version = "3.9"
