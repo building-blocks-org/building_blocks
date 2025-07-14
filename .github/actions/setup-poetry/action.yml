@@ -1,20 +1,25 @@
 name: "Setup Poetry"
-description: "Checkout, setup Python, cache and install Poetry dependencies"
+description: "Setup Python, install Poetry, cache and install dependencies"
 inputs:
   python-version:
     description: "Python version"
     required: true
+  poetry-version:
+    description: "Poetry version"
+    default: "1.8.2"
+
 runs:
   using: "composite"
   steps:
-    - uses: actions/checkout@v4
     - uses: actions/setup-python@v5
       with:
         python-version: ${{ inputs.python-version }}
+
     - name: Install Poetry
-      run: pip install poetry
+      run: pip install poetry==${{ inputs.poetry-version }}
       shell: bash
-    - name: Cache pip and Poetry dependencies
+
+    - name: Cache Poetry and pip
       uses: actions/cache@v3
       with:
         path: |
@@ -23,6 +28,7 @@ runs:
         key: ${{ runner.os }}-poetry-${{ hashFiles('**/poetry.lock') }}-${{ inputs.python-version }}
         restore-keys: |
           ${{ runner.os }}-poetry-${{ inputs.python-version }}
+
     - name: Install dependencies
-      run: poetry install
+      run: poetry install --no-interaction
       shell: bash
