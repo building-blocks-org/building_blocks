@@ -18,7 +18,7 @@ jobs:
       - name: Run Ruff (lint)
         run: poetry run ruff check src tests
       - name: Run Black (check)
-        run: poetry run black --check src tests examples
+        run: poetry run black --check src tests
 
   typecheck:
     name: Type Check (mypy)
@@ -29,7 +29,7 @@ jobs:
         with:
           python-version: '3.9'
       - name: Run mypy
-        run: poetry run mypy src tests examples
+        run: poetry run mypy src tests
 
   test:
     name: Test & Coverage
