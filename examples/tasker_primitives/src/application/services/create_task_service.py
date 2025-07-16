@@ -44,6 +44,11 @@ class CreateTaskService(CreateTaskUseCase):
             title=request.title,
             description=request.description,
             due_date=request.due_date,
+            priority=request.priority,
+            tags=request.tags,
+            progress=request.progress,
+            duration_minutes=request.duration_minutes,
+            assignee_email=request.assignee_email,
         )
         await self._task_repository.save(task)
 

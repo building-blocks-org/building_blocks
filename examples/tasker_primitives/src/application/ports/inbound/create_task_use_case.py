@@ -1,6 +1,7 @@
 import datetime
 from abc import abstractmethod
 from dataclasses import dataclass
+from typing import List, Optional
 
 from building_blocks.application.ports.inbound.use_case import AsyncUseCase as UseCase
 
@@ -10,6 +11,11 @@ class CreateTaskRequest:
     title: str
     description: str
     due_date: datetime.date
+    priority: str = "medium"
+    tags: Optional[List[str]] = None
+    progress: int = 0
+    duration_minutes: int = 0
+    assignee_email: Optional[str] = None
 
 
 @dataclass(frozen=True)
