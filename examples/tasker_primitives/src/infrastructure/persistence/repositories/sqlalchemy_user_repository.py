@@ -48,6 +48,15 @@ class SQLAlchemyUserRepository(UserRepository):
             await self._session.delete(model)
             await self._session.commit()
 
+    async def find_by_email(self, email: str) -> Optional[User]:
+        statement = select(UserModel).where(UserModel.email == email)
+        result = await self._session.execute(statement)
+        model = result.scalars().first()
+
+        if model:
+            return model.to_entity()
+        return None
+
     def _build_values(self, user: User) -> dict[str, Any]:
         return {
             "id": user.id,
