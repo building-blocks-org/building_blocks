@@ -6,6 +6,9 @@ from fastapi import FastAPI
 from examples.tasker_primitives.src.presentation.http.routes.task_routes import (
     router as task_router,
 )
+from examples.tasker_primitives.src.presentation.http.routes.user_routes import (
+    router as user_router,
+)
 
 
 @asynccontextmanager
@@ -22,3 +25,4 @@ app = FastAPI(
 )
 
 app.include_router(task_router)
+app.include_router(user_router)
