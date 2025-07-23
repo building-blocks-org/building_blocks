@@ -14,6 +14,7 @@ class User(AggregateRoot[UUID]):
         user_id (UUID): Unique identifier for the user.
         name (str): Name of the user.
         email (str): Email address of the user.
+        password (str): Password for the user account.
         role (str): Role of the user, default is "user".
         version (int): Version number for optimistic concurrency control.
     """
@@ -27,12 +28,14 @@ class User(AggregateRoot[UUID]):
         user_id: UUID,
         name: str,
         email: str,
+        password: str,
         role: str = "engineer",
         version: int = 0,
     ) -> None:
         super().__init__(user_id, version)
         self._name = name
         self._email = email
+        self._password = password
         self._role = role
 
     @property
@@ -42,6 +45,10 @@ class User(AggregateRoot[UUID]):
     @property
     def email(self) -> str:
         return self._email
+
+    @property
+    def password(self) -> str:
+        return self._password
 
     @property
     def role(self) -> str:
