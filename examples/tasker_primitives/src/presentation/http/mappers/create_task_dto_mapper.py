@@ -30,7 +30,7 @@ class CreateTaskDtoMapper:
     @staticmethod
     def to_http_response(response: CreateTaskResponse) -> CreateTaskHttpResponse:
         """
-        Maps the response object to a HTTP request object.
+        Maps the response object to a HTTP response object.
         """
 
         return CreateTaskHttpResponse(
