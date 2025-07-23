@@ -205,7 +205,7 @@ class Task(AggregateRoot[UUID]):
 
     def mark_as_done(self) -> None:
         self._status = self.STATUS_DONE
-        self._progress = self.MAX_PROGRESS100
+        self._progress = self.MAX_PROGRESS
 
     def start_task(self) -> None:
         if self._status == self.STATUS_TODO:
