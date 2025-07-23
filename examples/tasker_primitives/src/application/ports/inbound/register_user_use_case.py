@@ -8,6 +8,7 @@ from building_blocks.application.ports.inbound.use_case import AsyncUseCase as U
 class RegisterUserRequest:
     name: str
     email: str
+    password: str
     role: str
 
 

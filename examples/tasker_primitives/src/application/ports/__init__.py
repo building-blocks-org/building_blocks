@@ -8,6 +8,8 @@ from .inbound.register_user_use_case import (
     RegisterUserResponse,
     RegisterUserUseCase,
 )
+from .outbound.password_hasher import PasswordHasher
+from .outbound.password_verifier import PasswordVerifier
 
 __all__ = [
     "CreateTaskUseCase",
@@ -16,4 +18,6 @@ __all__ = [
     "RegisterUserUseCase",
     "RegisterUserRequest",
     "RegisterUserResponse",
+    "PasswordHasher",
+    "PasswordVerifier",
 ]
