@@ -19,3 +19,5 @@ COPY . .
 RUN poetry install --with dev --no-interaction
 
 ENV PYTHONPATH=/app/src
+
+ENTRYPOINT ["examples/tasker_primitives/docker-entrypoint.sh"]
