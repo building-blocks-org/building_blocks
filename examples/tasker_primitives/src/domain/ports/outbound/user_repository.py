@@ -48,3 +48,16 @@ class UserRepository(AsyncRepository[User, UUID], ABC):
             list[User]: A list of all User aggregates.
         """
         pass
+
+    @abstractmethod
+    async def find_by_email(self, email: str) -> Optional[User]:
+        """
+        Find a User aggregate by email.
+
+        Args:
+            email (str): The email address of the user.
+
+        Returns:
+            Optional[User]: The User aggregate if found, otherwise None.
+        """
+        pass
