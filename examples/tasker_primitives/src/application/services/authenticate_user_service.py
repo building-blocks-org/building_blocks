@@ -4,9 +4,11 @@ from typing import Any, Dict
 from examples.tasker_primitives.src.application.ports import (
     AuthenticateUserRequest,
     AuthenticateUserResponse,
+    AuthenticateUserTokenScheme,
     AuthenticateUserUseCase,
     PasswordVerifier,
     TokenGenerator,
+    TokenGeneratorPurpose,
     TokenGeneratorRequest,
 )
 from examples.tasker_primitives.src.domain.ports import UserRepository
@@ -45,6 +47,7 @@ class AuthenticateUserService(AuthenticateUserUseCase):
             AuthenticateUserResponse: The response containing access and refresh tokens.
         """
         user = await self._user_repository.find_by_email(request.email)
+
         if not user:
             raise ValueError("User not found")
 
@@ -60,6 +63,7 @@ class AuthenticateUserService(AuthenticateUserUseCase):
             access_token_expires_in=access_token["expires_in"],
             refresh_token=refresh_token["token"],
             refresh_token_expires_in=refresh_token["expires_in"],
+            token_scheme=AuthenticateUserTokenScheme.BEARER,
         )
 
     def _generate_access_token(self, user_id: str) -> Dict[str, Any]:
@@ -73,7 +77,7 @@ class AuthenticateUserService(AuthenticateUserUseCase):
             time.
             The keys are `token`(string) and `expires_in`(int).
         """
-        request = TokenGeneratorRequest(user_id, "access")
+        request = TokenGeneratorRequest(user_id, TokenGeneratorPurpose.ACCESS)
 
         return asdict(self._access_token_generator.generate(request))
 
@@ -88,6 +92,6 @@ class AuthenticateUserService(AuthenticateUserUseCase):
             time.
             The keys are `token`(string) and `expires_in`(int).
         """
-        request = TokenGeneratorRequest(user_id, "refresh")
+        request = TokenGeneratorRequest(user_id, TokenGeneratorPurpose.REFRESH)
 
         return asdict(self._access_token_generator.generate(request))
