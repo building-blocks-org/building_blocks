@@ -20,6 +20,9 @@ services:
     environment:
       ENVIRONMENT: development
       DATABASE_URL: postgresql+asyncpg://postgres:password@postgres:5432/app_db
+      SECRET_KEY: supersecretkey
+      ACCESS_TOKEN_EXPIRES_IN: 3600
+      REFRESH_TOKEN_EXPIRES_IN: 604800
     depends_on:
       - postgres
     networks:
