@@ -1,6 +1,7 @@
 from .inbound.authenticate_user_use_case import (
     AuthenticateUserRequest,
     AuthenticateUserResponse,
+    AuthenticateUserTokenScheme,
     AuthenticateUserUseCase,
 )
 from .inbound.create_task_use_case import (
@@ -22,6 +23,7 @@ from .outbound.token_authorizer import (
 )
 from .outbound.token_generator import (
     TokenGenerator,
+    TokenGeneratorPurpose,
     TokenGeneratorRequest,
     TokenGeneratorResponse,
 )
@@ -36,6 +38,7 @@ __all__ = [
     "AuthenticateUserUseCase",
     "AuthenticateUserRequest",
     "AuthenticateUserResponse",
+    "AuthenticateUserTokenScheme",
     "PasswordHasher",
     "PasswordVerifier",
     "TokenGenerator",
@@ -44,4 +47,5 @@ __all__ = [
     "TokenAuthorizer",
     "TokenAuthorizerRequest",
     "TokenAuthorizerResponse",
+    "TokenGeneratorPurpose",
 ]

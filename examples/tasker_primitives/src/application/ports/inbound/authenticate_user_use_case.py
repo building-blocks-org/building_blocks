@@ -4,6 +4,11 @@ from dataclasses import dataclass
 from building_blocks.application.ports.inbound.use_case import AsyncUseCase as UseCase
 
 
+class AuthenticateUserTokenScheme:
+    BASIC = "Basic"
+    BEARER = "Bearer"
+
+
 @dataclass(frozen=True)
 class AuthenticateUserRequest:
     email: str
@@ -16,7 +21,7 @@ class AuthenticateUserResponse:
     access_token_expires_in: int
     refresh_token: str
     refresh_token_expires_in: int
-    token_scheme: str = "Bearer"
+    token_scheme: str = AuthenticateUserTokenScheme.BEARER
 
 
 class AuthenticateUserUseCase(

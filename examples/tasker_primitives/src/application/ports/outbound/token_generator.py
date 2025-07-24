@@ -4,6 +4,11 @@ from abc import ABC, abstractmethod
 from dataclasses import dataclass
 
 
+class TokenGeneratorPurpose:
+    ACCESS = "access"
+    REFRESH = "refresh"
+
+
 @dataclass(frozen=True)
 class TokenGeneratorRequest:
     user_id: str
