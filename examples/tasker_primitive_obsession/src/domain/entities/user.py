@@ -1,8 +1,9 @@
 from __future__ import annotations
 
+from typing import Optional
 from uuid import UUID
 
-from building_blocks.domain.aggregate_root import AggregateRoot
+from building_blocks.domain.aggregate_root import AggregateRoot, AggregateVersion
 
 
 class User(AggregateRoot[UUID]):
@@ -30,7 +31,7 @@ class User(AggregateRoot[UUID]):
         email: str,
         password: str,
         role: str = "engineer",
-        version: int = 0,
+        version: Optional[AggregateVersion] = None,
     ) -> None:
         super().__init__(user_id, version)
         self._name = name

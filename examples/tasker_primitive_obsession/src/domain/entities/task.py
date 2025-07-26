@@ -4,7 +4,7 @@ import datetime
 from typing import List, Optional
 from uuid import UUID
 
-from building_blocks.domain.aggregate_root import AggregateRoot
+from building_blocks.domain.aggregate_root import AggregateRoot, AggregateVersion
 
 
 class Task(AggregateRoot[UUID]):
@@ -53,7 +53,7 @@ class Task(AggregateRoot[UUID]):
         tags: Optional[List[str]] = None,
         progress: int = 0,
         assignee_email: Optional[str] = None,
-        version: int = 0,
+        version: Optional[AggregateVersion] = None,
     ) -> None:
         # Validate priority
         valid_priorities = [
