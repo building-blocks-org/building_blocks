@@ -9,10 +9,7 @@ To generate a migration for an example project:
 
 2. Run a migration generation inside the container:
    ```bash
-   docker compose exec <example_name> ./scripts/generate_migration.sh <example_name> "<migration_message>"
-   ```
-   - `<example_name>`: The name of your example (matches directory under `examples/`).
-   - `<migration_message>`: A short message describing your migration.
+   docker compose exec {example_name} ./scripts/generate_migration.sh {example_name} "{migration_message}"
 
 Example:
 ```bash
