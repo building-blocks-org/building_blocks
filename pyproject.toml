@@ -71,6 +71,7 @@ ignore = [
     "D213",
     "B008"
 ]
+extend-ignore = ["UP007"]  # Ignore "Use `X | Y` for type annotations" (Python 3.10+ only)
 
 [tool.mypy]
 python_version = "3.9"
