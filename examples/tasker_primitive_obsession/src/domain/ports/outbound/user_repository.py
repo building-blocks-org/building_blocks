@@ -16,26 +16,34 @@ class UserRepository(AsyncRepository[User, UUID], ABC):
     """
 
     @abstractmethod
-    async def find_by_id(self, user_id: str) -> Optional[User]:
+    async def find_by_id(self, id_: UUID) -> Optional[User]:
+        """
+        Find a User aggregate by its ID.
+
+        Args:
+            id_ (UUID): The unique identifier of the user.
+        Returns:
+            Optional[User]: The User aggregate if found, otherwise None.
+        """
         pass
 
     @abstractmethod
-    async def save(self, user: User) -> None:
+    async def save(self, aggregate: User) -> None:
         """
         Save a User aggregate to the repository.
 
         Args:
-            user (User): The User aggregate to save.
+            aggregate (User): The User aggregate to save.
         """
         pass
 
     @abstractmethod
-    async def delete(self, user: User) -> None:
+    async def delete(self, aggregate: User) -> None:
         """
         Delete a User aggregate from the repository.
 
         Args:
-            user (User): The User aggregate to delete.
+            aggregate (User): The User aggregate to delete.
         """
         pass
 
