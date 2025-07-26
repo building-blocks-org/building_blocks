@@ -8,12 +8,52 @@ following Domain-Driven Design (DDD) principles, using Vaughn Vernon's approach.
 from __future__ import annotations
 
 from abc import ABC
-from typing import Generic, TypeVar
+from typing import Generic, Hashable, List, Optional, Tuple, TypeVar
 
 from building_blocks.domain.entity import Entity
 from building_blocks.domain.messages.event import Event
+from building_blocks.domain.value_object import ValueObject
 
 TId = TypeVar("TId")
+
+
+class AggregateVersion(ValueObject):
+    """
+    Value object representing the version of an aggregate root.
+
+    This is used for optimistic concurrency control to ensure that updates
+    to the aggregate are consistent and do not conflict with other changes.
+    """
+
+    def __init__(self, value: int) -> None:
+        if not isinstance(value, int):
+            raise TypeError(f"Expected int, got {type(value).__name__}")
+        if value < 0:
+            raise ValueError("Version cannot be negative")
+        self._value = value
+
+    @property
+    def value(self) -> int:
+        return self._value
+
+    def increment(self) -> AggregateVersion:
+        """
+        Increment version value by 1 and return a new AggregateVersion instance.
+        This is used to track changes to the aggregate state and ensure
+        optimistic concurrency control.
+
+        Returns:
+            AggregateVersion: A new instance with the incremented version value.
+        """
+        return AggregateVersion(self._value + 1)
+
+    def _equality_components(self) -> Tuple[Hashable, ...]:
+        """
+        Return the components used for equality comparison.
+
+        This is used by the ValueObject base class to determine equality.
+        """
+        return (self._value,)
 
 
 class AggregateRoot(Entity[TId], Generic[TId], ABC):
@@ -28,20 +68,23 @@ class AggregateRoot(Entity[TId], Generic[TId], ABC):
     "Implementing Domain-Driven Design".
     """
 
-    def __init__(self, aggregate_id: TId, version: int = 0) -> None:
+    def __init__(
+        self, aggregate_id: TId, version: Optional[AggregateVersion] = None
+    ) -> None:
         """
         Initialize the aggregate root.
 
         Args:
             aggregate_id: Unique identifier for this aggregate
-            version: Version number for optimistic concurrency control
+            version: Optional initial version for optimistic concurrency control.
+                     If not provided, defaults to AggregateVersion(0).
         """
         super().__init__(aggregate_id)
-        self._version: int = version  # ✅ Explicit type annotation
-        self._uncommitted_events: list[Event] = []
+        self._version = version or AggregateVersion(0)
+        self._uncommitted_events = []
 
     @property
-    def version(self) -> int:
+    def version(self) -> AggregateVersion:
         """
         Get the current version of this aggregate.
 
@@ -52,7 +95,7 @@ class AggregateRoot(Entity[TId], Generic[TId], ABC):
         """
         return self._version  # ✅ Make sure this returns the right attribute
 
-    def uncommitted_changes(self) -> list[Event]:
+    def uncommitted_changes(self) -> List[Event]:
         """
         Get the uncommitted domain events raised by this aggregate.
 
@@ -60,7 +103,7 @@ class AggregateRoot(Entity[TId], Generic[TId], ABC):
         Following Vaughn Vernon's naming convention.
 
         Returns:
-            list[Event]: Copy of uncommitted domain events
+            List[Event]: Copy of uncommitted domain events
         """
         return self._uncommitted_events.copy()
 
@@ -94,4 +137,4 @@ class AggregateRoot(Entity[TId], Generic[TId], ABC):
         Protected method to be called when the aggregate state changes.
         Useful for optimistic concurrency control.
         """
-        self._version += 1
+        self._version = self._version.increment()

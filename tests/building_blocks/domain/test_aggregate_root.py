@@ -4,10 +4,12 @@ Unit tests for the AggregateRoot module.
 Tests for AggregateRoot class using Vaughn Vernon's approach.
 """
 
-from typing import Any, Optional
+from typing import Any, List, Optional
 from uuid import UUID, uuid4
 
-from building_blocks.domain.aggregate_root import AggregateRoot
+import pytest
+
+from building_blocks.domain.aggregate_root import AggregateRoot, AggregateVersion
 from building_blocks.domain.entity import Entity
 from building_blocks.domain.messages.event import Event
 from building_blocks.domain.messages.message import MessageMetadata
@@ -32,17 +34,21 @@ class FakeEvent(Event):
 class FakeAggregateRoot(AggregateRoot[UUID]):
     """A fake aggregate root for testing."""
 
-    def __init__(self, aggregate_id: UUID, name: str, version: int = 0):
+    def __init__(
+        self, aggregate_id: UUID, name: str, version: Optional[AggregateVersion] = None
+    ):
         super().__init__(aggregate_id, version)
+        if not isinstance(aggregate_id, UUID):
+            raise TypeError(f"Expected UUID, got {type(aggregate_id).__name__}")
         self._name = name
-        self._actions: list[str] = []
+        self._actions: List[str] = []
 
     @property
     def name(self) -> str:
         return self._name
 
     @property
-    def actions(self) -> list[str]:
+    def actions(self) -> List[str]:
         return self._actions.copy()
 
     def perform_action(self, action: str) -> None:
@@ -73,9 +79,11 @@ class FakeAggregateRoot(AggregateRoot[UUID]):
 class TestAggregateRoot:
     """Tests for AggregateRoot class using Vernon's approach."""
 
+    _name = "TestAggregateRoot"
+
     def test_inheritance_when_created_then_is_entity(self):
         aggregate_id = uuid4()
-        aggregate = FakeAggregateRoot(aggregate_id, "test")
+        aggregate = FakeAggregateRoot(aggregate_id, self._name)
 
         assert isinstance(aggregate, Entity)
         assert isinstance(aggregate, AggregateRoot)
@@ -83,29 +91,45 @@ class TestAggregateRoot:
 
     def test_generic_typing_when_created_then_preserves_id_type(self):
         aggregate_id = uuid4()
-        aggregate = FakeAggregateRoot(aggregate_id, "test")
+        aggregate = FakeAggregateRoot(aggregate_id, self._name)
 
         # The aggregate should maintain the UUID type
         assert isinstance(aggregate.id, UUID)
         assert aggregate.id == aggregate_id
 
+    def test_init_when_no_id_then_raises_type_error(self):
+        """Test that initializing without an ID raises ValueError."""
+        with pytest.raises(ValueError, match="Entity ID cannot be None"):
+            FakeAggregateRoot(None, self._name)
+
+    def test_init_when_invalid_id_type_then_raises_type_error(self):
+        """Test that initializing with an invalid ID type raises TypeError."""
+        with pytest.raises(TypeError, match="Expected UUID, got str"):
+            FakeAggregateRoot("invalid_id", self._name)
+
     def test_init_when_no_version_then_starts_at_zero(self):
         aggregate_id = uuid4()
-        aggregate = FakeAggregateRoot(aggregate_id, "test")
+        aggregate = FakeAggregateRoot(aggregate_id, self._name)
 
-        assert aggregate.version == 0
+        assert aggregate.version.value == 0
         assert aggregate.uncommitted_changes() == []
 
     def test_init_when_custom_version_then_uses_provided_version(self):
         aggregate_id = uuid4()
-        aggregate = FakeAggregateRoot(aggregate_id, "test", version=5)
+        actual_version_value = 5
+        version = AggregateVersion(value=actual_version_value)
 
-        assert aggregate.version == 5
+        aggregate = FakeAggregateRoot(aggregate_id, self._name, version=version)
+
+        expected_version_value = actual_version_value
+        expected_version = AggregateVersion(value=expected_version_value)
+        assert aggregate.version.value == expected_version_value
+        assert aggregate.version == expected_version
         assert aggregate.uncommitted_changes() == []
 
     def test_record_event_when_called_then_event_recorded(self):
         aggregate_id = uuid4()
-        aggregate = FakeAggregateRoot(aggregate_id, "test")
+        aggregate = FakeAggregateRoot(aggregate_id, self._name)
 
         aggregate.perform_action("test_action")
 
@@ -118,7 +142,7 @@ class TestAggregateRoot:
 
     def test_uncommitted_changes_when_called_then_returns_copy(self):
         aggregate_id = uuid4()
-        aggregate = FakeAggregateRoot(aggregate_id, "test")
+        aggregate = FakeAggregateRoot(aggregate_id, self._name)
 
         aggregate.perform_action("test_action")
 
@@ -130,7 +154,7 @@ class TestAggregateRoot:
         # But with same content
         assert changes1 == changes2
 
-        # Modifying returned list shouldn't affect aggregate
+        # Modifying returned List shouldn't affect aggregate
         changes1.clear()
         assert len(aggregate.uncommitted_changes()) == 1
 
@@ -138,76 +162,87 @@ class TestAggregateRoot:
         self,
     ):
         aggregate_id = uuid4()
-        aggregate = FakeAggregateRoot(aggregate_id, "test", version=3)
+        actual_version = AggregateVersion(value=3)
+        aggregate = FakeAggregateRoot(aggregate_id, self._name, version=actual_version)
 
         # Record some events
         aggregate.perform_business_operation()  # Records 3 events
         assert len(aggregate.uncommitted_changes()) == 3
-        assert aggregate.version == 3
+        assert aggregate.version.value == 3
 
         # Mark as committed
         aggregate.mark_changes_as_committed()
 
         # Events should be cleared and version incremented
+        expected_version = AggregateVersion(value=4)
         assert len(aggregate.uncommitted_changes()) == 0
-        assert aggregate.version == 4
+        assert aggregate.version == expected_version
 
     def test_multiple_operations_when_performed_then_events_accumulate(self):
         aggregate_id = uuid4()
-        aggregate = FakeAggregateRoot(aggregate_id, "test")
+        aggregate = FakeAggregateRoot(aggregate_id, self._name)
 
         aggregate.perform_action("action1")
         aggregate.perform_action("action2")
         aggregate.change_name("new_name")
 
         changes = aggregate.uncommitted_changes()
-        assert len(changes) == 3
+        expected_changes_length = 3
+        assert len(changes) == expected_changes_length
 
         # Type narrowing for mypy
         fake_events = [change for change in changes if isinstance(change, FakeEvent)]
         assert len(fake_events) == 3
         assert fake_events[0].data == "Action performed: action1"
         assert fake_events[1].data == "Action performed: action2"
-        assert fake_events[2].data == "Name changed from test to new_name"
+        assert fake_events[2].data == f"Name changed from {self._name} to new_name"
 
     def test_version_control_scenario_tracks_version_correctly(self):
         aggregate_id = uuid4()
         aggregate = FakeAggregateRoot(aggregate_id, "test")
 
         initial_version = aggregate.version
-        assert initial_version == 0
+        assert initial_version.value == 0
 
         # First change
         aggregate.change_name("name1")
-        assert aggregate.version == 1
+        assert aggregate.version.value == 1
 
         # Second change
         aggregate.change_name("name2")
-        assert aggregate.version == 2
+        assert aggregate.version.value == 2
 
         # Commit changes (simulating persistence)
         aggregate.mark_changes_as_committed()
-        assert aggregate.version == 3
+        assert aggregate.version.value == 3
         assert len(aggregate.uncommitted_changes()) == 0
 
         # Another change after commit
         aggregate.change_name("name3")
-        assert aggregate.version == 4
+        assert aggregate.version.value == 4
         assert len(aggregate.uncommitted_changes()) == 1
 
     def test_equality_when_same_id_then_equal_regardless_of_version(self):
         aggregate_id = uuid4()
 
-        aggregate1 = FakeAggregateRoot(aggregate_id, "test1", version=1)
-        aggregate2 = FakeAggregateRoot(aggregate_id, "test2", version=5)
+        aggregate1_version = AggregateVersion(value=1)
+        aggregate1 = FakeAggregateRoot(
+            aggregate_id, "test1", version=aggregate1_version
+        )
+        aggregate2_version = AggregateVersion(value=5)
+        aggregate2 = FakeAggregateRoot(
+            aggregate_id, "test2", version=aggregate2_version
+        )
 
         # Should be equal because Entity equality is based on ID
         assert aggregate1 == aggregate2
         assert hash(aggregate1) == hash(aggregate2)
 
     def test_equality_when_different_id_then_not_equal(self):
-        aggregate1 = FakeAggregateRoot(uuid4(), "test", version=1)
-        aggregate2 = FakeAggregateRoot(uuid4(), "test", version=1)
+        """Test that different IDs are not equal."""
+        version = AggregateVersion(value=1)
+        aggregate1 = FakeAggregateRoot(uuid4(), "test", version=version)
+        aggregate2 = FakeAggregateRoot(uuid4(), "test", version=version)
 
         assert aggregate1 != aggregate2
         assert hash(aggregate1) != hash(aggregate2)
@@ -225,7 +260,7 @@ class TestAggregateRoot:
         # 2. Check uncommitted changes were recorded
         changes = aggregate.uncommitted_changes()
         assert len(changes) == 3
-        assert aggregate.version == 1  # Only change_name increments version
+        assert aggregate.version.value == 1  # Only change_name increments version
 
         # 3. Simulate publishing events (get copy before committing)
         events_to_publish = aggregate.uncommitted_changes()
@@ -233,13 +268,13 @@ class TestAggregateRoot:
 
         # 4. Mark changes as committed after successful publishing and persistence
         aggregate.mark_changes_as_committed()
-        assert aggregate.version == 2
+        assert aggregate.version.value == 2
         assert len(aggregate.uncommitted_changes()) == 0
 
         # 5. Continue with more operations
         aggregate.perform_action("ship")
         assert len(aggregate.uncommitted_changes()) == 1
-        assert aggregate.version == 2  # Version only incremented on commit
+        assert aggregate.version.value == 2  # Version only incremented on commit
 
 
 class TestDomainEventManagement:
@@ -270,7 +305,7 @@ class TestDomainEventManagement:
         changes = aggregate.uncommitted_changes()
         original_count = len(changes)
 
-        # Try to modify returned list (should not affect aggregate)
+        # Try to modify returned List (should not affect aggregate)
         changes.append(FakeEvent("malicious_event"))
         changes.clear()
 

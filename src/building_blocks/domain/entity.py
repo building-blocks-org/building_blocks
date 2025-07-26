@@ -39,6 +39,8 @@ class Entity(Generic[TId], ABC):
     """
 
     def __init__(self, id_: TId) -> None:
+        if id_ is None:
+            raise ValueError("Entity ID cannot be None")
         self._id = id_
 
     def __eq__(self, other: object) -> bool:
