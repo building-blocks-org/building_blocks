@@ -7,12 +7,15 @@ from examples.tasker_primitives.src.application.ports import (
     TokenGeneratorRequest,
     TokenGeneratorResponse,
 )
+from examples.tasker_primitives.src.application.ports.common.token_algorithm import (
+    TokenAlgorithm,
+)
 from examples.tasker_primitives.src.infrastructure.config import get_app_settings
 
 
 class JwtTokenGenerator(TokenGenerator):
     def __init__(
-        self, expires_in: int, secret_key: str, algorithm: str = "HS256"
+        self, expires_in: int, secret_key: str, algorithm: str = TokenAlgorithm.HS256
     ) -> None:
         self._expires_in = expires_in
         self._secret_key = secret_key
@@ -25,21 +28,21 @@ class JwtTokenGenerator(TokenGenerator):
         try:
             token = self._jwt.encode(
                 {
-                    "user_id": request.user_id,
+                    "sub": request.user_id,
                     "purpose": request.purpose,
+                    "roles": expires_at.timestamp(),
                     "exp": int(expires_at.timestamp()),
                 },
                 self._secret_key,
                 algorithm=self._algorithm,
             )
 
+            return TokenGeneratorResponse(
+                token=token,
+                expires_in=self._expires_in,
+            )
         except Exception as exc:
             raise RuntimeError("Token generation failed") from exc
-
-        return TokenGeneratorResponse(
-            token=token,
-            expires_in=self._expires_in,
-        )
 
 
 app_settings = get_app_settings()
