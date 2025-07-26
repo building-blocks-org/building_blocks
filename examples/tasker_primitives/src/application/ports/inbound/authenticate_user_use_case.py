@@ -2,11 +2,7 @@ from abc import abstractmethod
 from dataclasses import dataclass
 
 from building_blocks.application.ports.inbound.use_case import AsyncUseCase as UseCase
-
-
-class AuthenticateUserTokenScheme:
-    BASIC = "Basic"
-    BEARER = "Bearer"
+from examples.tasker_primitives.src.application.ports import TokenScheme
 
 
 @dataclass(frozen=True)
@@ -21,7 +17,7 @@ class AuthenticateUserResponse:
     access_token_expires_in: int
     refresh_token: str
     refresh_token_expires_in: int
-    token_scheme: str = AuthenticateUserTokenScheme.BEARER
+    token_scheme: str = TokenScheme.BEARER
 
 
 class AuthenticateUserUseCase(
