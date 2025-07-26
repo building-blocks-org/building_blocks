@@ -17,7 +17,7 @@ To generate a migration for an example project:
 Example:
 ```bash
 docker compose exec tasker_primitives ./scripts/generate_migration.sh tasker_primitives "Add new feature"
-
+# After generating the migration, run the following command to apply it:
 docker compose exec tasker_primitives ./scripts/migrate.sh tasker_primitives
 ```
 
