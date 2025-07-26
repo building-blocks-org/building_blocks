@@ -7,7 +7,7 @@ To generate a migration for an example project:
    docker compose up --build
    ```
 
-2. Run generate migration inside the container:
+2. Run a migration generation inside the container:
    ```bash
    docker compose exec <example_name> ./scripts/generate_migration.sh <example_name> "<migration_message>"
    ```
