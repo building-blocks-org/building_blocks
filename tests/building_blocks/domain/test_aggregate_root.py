@@ -76,6 +76,26 @@ class FakeAggregateRoot(AggregateRoot[UUID]):
         self.record_event(FakeEvent("Operation completed"))
 
 
+class TestAggregateVersion:
+    """Tests for AggregateVersion class."""
+
+    def test_init_when_value_is_negative_then_raises_value_error(self):
+        """Test that initializing with a negative value raises ValueError."""
+        with pytest.raises(ValueError, match="Version cannot be negative"):
+            AggregateVersion(-1)
+
+    def test_init_when_value_is_not_int_then_raises_type_error(self):
+        """Test that initializing with a non-integer value raises TypeError."""
+        with pytest.raises(TypeError, match="Expected int, got str"):
+            AggregateVersion("invalid_value")
+
+    def test_increment_increases_version_by_one(self):
+        """Test that incrementing the version works correctly."""
+        version = AggregateVersion(1)
+        new_version = version.increment()
+        assert new_version.value == 2
+
+
 class TestAggregateRoot:
     """Tests for AggregateRoot class using Vernon's approach."""
 
