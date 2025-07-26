@@ -1,6 +1,6 @@
 ## Running Migration Scripts
 
-To generate a migration for an example project:
+To generate a migration for an example:
 
 1. Ensure your containers are running:
    ```bash
