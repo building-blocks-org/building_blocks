@@ -6,8 +6,6 @@ from examples.tasker_primitives.src.application.ports import (
     TokenAuthorizer,
     TokenAuthorizerRequest,
     TokenAuthorizerResponse,
-)
-from examples.tasker_primitives.src.application.ports.outbound.token_authorizer import (
     TokenClaims,
 )
 from examples.tasker_primitives.src.infrastructure.config import get_app_settings
