@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Optional
+from typing import List, Optional
 from uuid import UUID
 
 from building_blocks.domain.ports.outbound.repository import AsyncRepository
@@ -16,7 +16,7 @@ class UserRepository(AsyncRepository[User, UUID], ABC):
     """
 
     @abstractmethod
-    async def find_by_id(self, user_id: UUID) -> Optional[User]:
+    async def find_by_id(self, user_id: str) -> Optional[User]:
         pass
 
     @abstractmethod
@@ -40,12 +40,12 @@ class UserRepository(AsyncRepository[User, UUID], ABC):
         pass
 
     @abstractmethod
-    async def find_all(self) -> list[User]:
+    async def find_all(self) -> List[User]:
         """
         Find all User aggregates in the repository.
 
         Returns:
-            list[User]: A list of all User aggregates.
+            List[User]: A List of all User aggregates.
         """
         pass
 
@@ -53,6 +53,7 @@ class UserRepository(AsyncRepository[User, UUID], ABC):
     async def find_by_email(self, email: str) -> Optional[User]:
         """
         Find a User aggregate by email.
+        This method does no
 
         Args:
             email (str): The email address of the user.
