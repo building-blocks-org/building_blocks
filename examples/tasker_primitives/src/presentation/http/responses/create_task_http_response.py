@@ -9,4 +9,4 @@ class CreateTaskHttpResponse(BaseModel):
         task_id (str): The unique identifier of the created task.
     """
 
-    task_id: str  # Unique identifier for the created task
+    task_id: str

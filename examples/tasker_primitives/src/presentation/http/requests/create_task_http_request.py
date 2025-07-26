@@ -1,4 +1,5 @@
 import datetime
+from typing import List, Optional
 
 from pydantic import BaseModel
 
@@ -16,3 +17,7 @@ class CreateTaskHttpRequest(BaseModel):
     title: str
     description: str
     due_date: datetime.date  # ISO format date string
+    priority: str
+    tags: Optional[List[str]] = None
+    progresss: int = 0
+    assignee_email: Optional[str] = None

@@ -2,7 +2,8 @@
     "pythonVersion": "3.9",
     "typeCheckingMode": "basic",
     "include": [
-        "src"
+        "src",
+        "tests"
     ],
     "exclude": [
         "**/node_modules",
@@ -11,10 +12,9 @@
     ],
     "reportMissingImports": true,
     "reportMissingTypeStubs": false,
-    "pythonPlatform": "All",
     "executionEnvironments": [
         {
-            "root": "src",
+            "root": "./src",
             "pythonVersion": "3.9"
         }
     ]
