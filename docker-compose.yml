@@ -24,6 +24,7 @@ services:
       SECRET_KEY: supersecretkey
       ACCESS_TOKEN_EXPIRES_IN: 3600
       REFRESH_TOKEN_EXPIRES_IN: 604800
+      EXAMPLE: tasker_primitive_obsession
     depends_on:
       - postgres
     networks:
@@ -31,8 +32,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./examples/tasker_primitives:/app/examples/tasker_primitives
-    command: ["examples/tasker_primitives/docker-entrypoint.sh"]
+      - ./examples/tasker_primitive_obsession:/app/examples/tasker_primitive_obsession
 
 volumes:
   pgdata:
