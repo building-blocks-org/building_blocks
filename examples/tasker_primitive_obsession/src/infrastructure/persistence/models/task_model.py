@@ -7,8 +7,10 @@ from sqlalchemy import UUID as SQLUUID
 from sqlalchemy import Date, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
+from building_blocks.domain.aggregate_root import AggregateVersion
 from examples.tasker_primitive_obsession.src.domain.entities.task import Task
-from examples.tasker_primitive_obsession.src.infrastructure.persistence import (
+
+from .base import (
     OrmModel,
 )
 
@@ -55,7 +57,7 @@ class TaskModel(OrmModel[Task, uuid.UUID]):
             description=self.description,
             status=self.status,
             due_date=self.due_date,
-            version=self.version,
+            version=AggregateVersion(self.version),
         )
 
     @classmethod
@@ -66,5 +68,5 @@ class TaskModel(OrmModel[Task, uuid.UUID]):
             description=entity.description,
             status=entity.status,
             due_date=entity.due_date,
-            version=entity.version,
+            version=entity.version.value,
         )

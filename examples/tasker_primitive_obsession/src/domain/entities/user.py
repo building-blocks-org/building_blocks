@@ -17,7 +17,8 @@ class User(AggregateRoot[UUID]):
         email (str): Email address of the user.
         password (str): Password for the user account.
         role (str): Role of the user, default is "user".
-        version (int): Version number for optimistic concurrency control.
+        version (Optional[AggregateVersion]): Version number for optimistic concurrency
+        control.
     """
 
     USER_ROLE_ENGINEER = "engineer"

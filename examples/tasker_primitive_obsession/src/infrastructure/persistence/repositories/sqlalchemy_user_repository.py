@@ -6,8 +6,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from examples.tasker_primitive_obsession.src.domain.entities.user import User
 from examples.tasker_primitive_obsession.src.domain.ports import UserRepository
 from examples.tasker_primitive_obsession.src.infrastructure.persistence import (
-    UserModel,
     build_upsert_statement,
+)
+from examples.tasker_primitive_obsession.src.infrastructure.persistence.models import (
+    UserModel,
 )
 
 
@@ -15,7 +17,7 @@ class SQLAlchemyUserRepository(UserRepository):
     def __init__(self, session: AsyncSession) -> None:
         self._session = session
 
-    async def save(self, user: User) -> None:
+    async def save(self, user: User) -> Optional[User]:
         values = self._build_values(user)
 
         dialect_name = self._session.bind.dialect.name
@@ -64,5 +66,5 @@ class SQLAlchemyUserRepository(UserRepository):
             "email": user.email,
             "password": user.password,
             "role": user.role,
-            "version": user.version,
+            "version": user.version.value if user.version else 0,
         }

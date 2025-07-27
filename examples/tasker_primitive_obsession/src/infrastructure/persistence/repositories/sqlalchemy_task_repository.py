@@ -11,8 +11,10 @@ from examples.tasker_primitive_obsession.src.domain.ports import (
     TaskRepository,
 )
 from examples.tasker_primitive_obsession.src.infrastructure.persistence import (
-    TaskModel,
     build_upsert_statement,
+)
+from examples.tasker_primitive_obsession.src.infrastructure.persistence.models import (
+    TaskModel,
 )
 
 
@@ -76,5 +78,5 @@ class SQLAlchemyTaskRepository(TaskRepository):
             "description": task.description,
             "status": task.status,
             "due_date": task.due_date,
-            "version": task.version,
+            "version": task.version.value if task.version else 0,
         }
