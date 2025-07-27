@@ -8,7 +8,7 @@ useful for CQRS implementations where you separate command and query responsibil
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Generic, TypeVar
+from typing import Generic, List, Optional, TypeVar
 
 TAggregateRoot = TypeVar("TAggregateRoot")
 TId = TypeVar("TId")
@@ -32,8 +32,8 @@ class AsyncReadOnlyRepository(ABC, Generic[TAggregateRoot, TId]):
         >>> from building_blocks.domain.aggregate_root import AggregateRoot
         >>>
         >>> class Order(AggregateRoot[UUID]):
-        ...     def __init__(self, order_id: UUID, customer_id: str, total: float):
-        ...         super().__init__(order_id)
+        ...     def __init__(self, id: UUID, customer_id: str, total: float):
+        ...         super().__init__(id)
         ...         self._customer_id = customer_id
         ...         self._total = total
         ...
@@ -46,26 +46,26 @@ class AsyncReadOnlyRepository(ABC, Generic[TAggregateRoot, TId]):
         ...         return self._total
         >>>
         >>> class OrderQueryRepository(AsyncReadOnlyRepository[Order, UUID]):
-        ...     async def find_by_id(self, order_id: UUID) -> Order | None:
+        ...     async def find_by_id(self, id: UUID) -> Order | None:
         ...         # Query implementation - read from optimized read model
         ...         pass
         ...
-        ...     async def find_all(self) -> list[Order]:
+        ...     async def find_all(self) -> List[Order]:
         ...         # Query implementation
         ...         pass
         ...
         ...     # Add query-specific methods
-        ...     async def find_by_customer_id(self, customer_id: str) -> list[Order]:
+        ...     async def find_by_customer_id(self, customer_id: str) -> List[Order]:
         ...         # Optimized for queries
         ...         pass
         ...
-        ...     async def get_order_statistics(self) -> dict[str, int]:
+        ...     async def get_order_statistics(self) -> Dict[str, int]:
         ...         # Complex query operations
         ...         pass
     """
 
     @abstractmethod
-    async def find_by_id(self, aggregate_id: TId) -> TAggregateRoot | None:
+    async def find_by_id(self, id: TId) -> Optional[TAggregateRoot]:
         """
         Find an aggregate by its unique identifier.
 
@@ -76,14 +76,14 @@ class AsyncReadOnlyRepository(ABC, Generic[TAggregateRoot, TId]):
         - Optimized query databases
 
         Args:
-            aggregate_id: The unique identifier of the aggregate
+            id: The unique identifier of the aggregate
 
         Returns:
             The aggregate if found, None otherwise
         """
 
     @abstractmethod
-    async def find_all(self) -> list[TAggregateRoot]:
+    async def find_all(self) -> List[TAggregateRoot]:
         """
         Find all aggregates in the repository.
 
@@ -113,8 +113,8 @@ class SyncReadOnlyRepository(ABC, Generic[TAggregateRoot, TId]):
         >>> from building_blocks.domain.aggregate_root import AggregateRoot
         >>>
         >>> class Order(AggregateRoot[UUID]):
-        ...     def __init__(self, order_id: UUID, customer_id: str, total: float):
-        ...         super().__init__(order_id)
+        ...     def __init__(self, id: UUID, customer_id: str, total: float):
+        ...         super().__init__(id)
         ...         self._customer_id = customer_id
         ...         self._total = total
         ...
@@ -127,16 +127,16 @@ class SyncReadOnlyRepository(ABC, Generic[TAggregateRoot, TId]):
         ...         return self._total
         >>>
         >>> class OrderQueryRepository(SyncReadOnlyRepository[Order, UUID]):
-        ...     def find_by_id(self, order_id: UUID) -> Order | None:
+        ...     def find_by_id(self, id: UUID) -> Order | None:
         ...         # Query implementation - read from optimized read model
         ...         pass
         ...
-        ...     def find_all(self) -> list[Order]:
+        ...     def find_all(self) -> List[Order]:
         ...         # Query implementation
         ...         pass
         ...
         ...     # Add query-specific methods
-        ...     def find_by_customer_id(self, customer_id: str) -> list[Order]:
+        ...     def find_by_customer_id(self, customer_id: str) -> List[Order]:
         ...         # Optimized for queries
         ...         pass
         ...
@@ -146,7 +146,7 @@ class SyncReadOnlyRepository(ABC, Generic[TAggregateRoot, TId]):
     """
 
     @abstractmethod
-    def find_by_id(self, aggregate_id: TId) -> TAggregateRoot | None:
+    def find_by_id(self, id: TId) -> Optional[TAggregateRoot]:
         """
         Find an aggregate by its unique identifier.
 
@@ -157,14 +157,14 @@ class SyncReadOnlyRepository(ABC, Generic[TAggregateRoot, TId]):
         - Optimized query databases
 
         Args:
-            aggregate_id: The unique identifier of the aggregate
+            id: The unique identifier of the aggregate
 
         Returns:
             The aggregate if found, None otherwise
         """
 
     @abstractmethod
-    def find_all(self) -> list[TAggregateRoot]:
+    def find_all(self) -> List[TAggregateRoot]:
         """
         Find all aggregates in the repository.
 
