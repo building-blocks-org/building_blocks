@@ -13,6 +13,13 @@ from .inbound.authenticate_user_use_case import (
     AuthenticateUserResponse,
     AuthenticateUserUseCase,
 )
+from .inbound.change_user_role_use_case import (
+    ChangeUserRoleFailedResponse,
+    ChangeUserRoleRequest,
+    ChangeUserRoleResponse,
+    ChangeUserRoleSucceededResponse,
+    ChangeUserRoleUseCase,
+)
 from .inbound.create_task_use_case import (
     CreateTaskRequest,
     CreateTaskResponse,
@@ -61,6 +68,11 @@ __all__ = [
     "AuthenticateUserUseCase",
     "AuthenticateUserRequest",
     "AuthenticateUserResponse",
+    "ChangeUserRoleUseCase",
+    "ChangeUserRoleRequest",
+    "ChangeUserRoleResponse",
+    "ChangeUserRoleSucceededResponse",
+    "ChangeUserRoleFailedResponse",
     "PasswordHasher",
     "PasswordVerifier",
     "TokenGenerator",

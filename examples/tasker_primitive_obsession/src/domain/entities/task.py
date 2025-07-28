@@ -2,12 +2,11 @@ from __future__ import annotations
 
 import datetime
 from typing import List, Optional
-from uuid import UUID
 
 from building_blocks.domain.aggregate_root import AggregateRoot, AggregateVersion
 
 
-class Task(AggregateRoot[UUID]):
+class Task(AggregateRoot[Optional[int]]):
     """
     Represents a task in the domain model.
     This class extends AggregateRoot to provide a unique identifier and versioning
@@ -15,11 +14,17 @@ class Task(AggregateRoot[UUID]):
     It includes properties for task description and status, along with methods to
     mark the task as done, todo, or in progress.
     Args:
-        task_id (UUID): Unique identifier for the task.
+        id (Optional[int]): Unique identifier for the task. It will be incremented
+            automatically if not provided.
         title (str): Title of the task.
         description (str): Description of the task.
+        due_date (datetime.date): Due date for the task.
         status (str): Current status of the task, default is "todo".
-        version (int): Version number for optimistic concurrency control.
+        priority (str): Priority of the task, default is "medium".
+        tags (Optional[List[str]]): List of tags associated with the task.
+        progress (int): Progress percentage of the task, default is 0.
+        version (Optional[AggregateVersion]): Version number for optimistic concurrency
+        control.
     """
 
     """Task Statuses"""
@@ -44,7 +49,7 @@ class Task(AggregateRoot[UUID]):
 
     def __init__(
         self,
-        task_id: UUID,
+        id: Optional[int],
         title: str,
         description: str,
         due_date: datetime.date,
@@ -85,7 +90,7 @@ class Task(AggregateRoot[UUID]):
         if due_date < datetime.date.today():
             raise ValueError("Due date cannot be in the past")
 
-        super().__init__(task_id, version)
+        super().__init__(id, version)
         self._title = title
         self._description = description
 

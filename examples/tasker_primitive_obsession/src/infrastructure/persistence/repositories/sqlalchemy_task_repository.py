@@ -62,14 +62,12 @@ class SQLAlchemyTaskRepository(TaskRepository):
             return model.to_entity()
         return None
 
-    async def delete(self, task: Task) -> None:
-        model = await self._session.get(TaskModel, task.id)
+    async def delete_by_id(self, id: int) -> None:
+        model = await self._session.get(TaskModel, id)
 
         if model:
             await self._session.delete(model)
             await self._session.commit()
-        else:
-            raise ValueError(f"Task with id {task.id} not found")
 
     def _build_values(self, task: Task) -> dict:
         return {

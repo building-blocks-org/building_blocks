@@ -1,9 +1,8 @@
 from __future__ import annotations
 
 import datetime
-import uuid
+from typing import Optional
 
-from sqlalchemy import UUID as SQLUUID
 from sqlalchemy import Date, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -15,7 +14,7 @@ from .base import (
 )
 
 
-class TaskModel(OrmModel[Task, uuid.UUID]):
+class TaskModel(OrmModel[Task, int]):
     """
     SQLAlchemy model for Task aggregate.
 
@@ -25,9 +24,7 @@ class TaskModel(OrmModel[Task, uuid.UUID]):
 
     __tablename__ = "tasks"
 
-    id: Mapped[uuid.UUID] = mapped_column(
-        SQLUUID(as_uuid=True), primary_key=True, default=uuid.uuid4
-    )
+    id: Mapped[Optional[int]] = mapped_column(primary_key=True)
     title: Mapped[str] = mapped_column(String(255), nullable=False)
     description: Mapped[str] = mapped_column(String(1024), nullable=True)
     status: Mapped[str]
@@ -36,7 +33,7 @@ class TaskModel(OrmModel[Task, uuid.UUID]):
 
     def __init__(
         self,
-        id: uuid.UUID,
+        id: Optional[int],
         title: str,
         description: str,
         status: str,
@@ -52,7 +49,7 @@ class TaskModel(OrmModel[Task, uuid.UUID]):
 
     def to_entity(self) -> Task:
         return Task(
-            task_id=self.id,
+            id=self.id,
             title=self.title,
             description=self.description,
             status=self.status,

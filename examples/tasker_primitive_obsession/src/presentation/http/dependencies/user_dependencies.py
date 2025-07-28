@@ -3,10 +3,12 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from examples.tasker_primitive_obsession.src.application.ports import (
     AuthenticateUserUseCase,
+    ChangeUserRoleUseCase,
     RegisterUserUseCase,
 )
 from examples.tasker_primitive_obsession.src.application.services import (
     AuthenticateUserService,
+    ChangeUserRoleService,
     RegisterUserService,
 )
 from examples.tasker_primitive_obsession.src.infrastructure.hashing.bcrypt import (
@@ -50,3 +52,9 @@ async def get_authenticate_user_use_case(
         jwt_access_token_generator,
         jwt_refresh_token_generator,
     )
+
+
+async def get_change_user_role_use_case(
+    repo: SQLAlchemyUserRepository = Depends(get_user_repository),
+) -> ChangeUserRoleUseCase:
+    return ChangeUserRoleService(repo)

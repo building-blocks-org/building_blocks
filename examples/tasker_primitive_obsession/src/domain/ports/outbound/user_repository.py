@@ -34,16 +34,28 @@ class UserRepository(AsyncRepository[User, UUID], ABC):
 
         Args:
             aggregate (User): The User aggregate to save.
+
+        Returns:
+            None: This method does not return a value. It raises an exception if the
+            save operation fails, such as due to a database error, validation issue or
+            unique constrainr is violated.
+
+        Raises:
+            UserEmailAlreadyExists: If a user with the same email already exists in the
+            repository.
+            ValueError: If the User aggregate is invalid or cannot be saved for any
+            other reason.
         """
         pass
 
     @abstractmethod
-    async def delete(self, aggregate: User) -> None:
+    async def delete_by_id(self, id: UUID) -> None:
         """
-        Delete a User aggregate from the repository.
+        Attempt to delete User aggregate by its ID.
 
         Args:
-            aggregate (User): The User aggregate to delete.
+            None: This method does not return a value. If no User is found with the
+            given ID, it does nothing.
         """
         pass
 
