@@ -11,9 +11,10 @@ from abc import ABC, abstractmethod
 from typing import Generic, TypeVar
 
 TAggregateRoot = TypeVar("TAggregateRoot")
+TId = TypeVar("TId")
 
 
-class AsyncWriteOnlyRepository(ABC, Generic[TAggregateRoot]):
+class AsyncWriteOnlyRepository(ABC, Generic[TAggregateRoot, TId]):
     """
     Write-only async repository interface for CQRS command scenarios.
 
@@ -34,8 +35,8 @@ class AsyncWriteOnlyRepository(ABC, Generic[TAggregateRoot]):
         >>> from building_blocks.domain.aggregate_root import AggregateRoot
         >>>
         >>> class Order(AggregateRoot[UUID]):
-        ...     def __init__(self, order_id: UUID, customer_id: str):
-        ...         super().__init__(order_id)
+        ...     def __init__(self, id: UUID, customer_id: str):
+        ...         super().__init__(id)
         ...         self._customer_id = customer_id
         ...         self._status = "pending"
         ...
@@ -44,14 +45,12 @@ class AsyncWriteOnlyRepository(ABC, Generic[TAggregateRoot]):
         ...         # Record domain event
         ...         self.record_event(OrderConfirmedEvent(self.id))
         >>>
-        >>> class OrderCommandRepository(WriteOnlyRepository[Order]):
+        >>> class OrderWriteRepository(WriteOnlyRepository[Order, UUID]):
         ...     def save(self, order: Order) -> None:
-        ...         # Command implementation - save to event store
-        ...         # Publish domain events
         ...         pass
         ...
-        ...     def delete(self, order: Order) -> None:
-        ...         # Command implementation - mark as deleted
+        ...     def delete_by_id(self, id: ) -> None:
+        ...         # Command implementation - mark as delete_by_id
         ...         pass
     """
 
@@ -75,7 +74,7 @@ class AsyncWriteOnlyRepository(ABC, Generic[TAggregateRoot]):
         """
 
     @abstractmethod
-    async def delete(self, aggregate: TAggregateRoot) -> None:
+    async def delete_by_id(self, aggregate: TAggregateRoot) -> None:
         """
         Delete an aggregate from the command store.
 
@@ -85,7 +84,7 @@ class AsyncWriteOnlyRepository(ABC, Generic[TAggregateRoot]):
         - Publishing deletion events for read model cleanup
 
         Args:
-            aggregate: The aggregate to delete
+            aggregate: The aggregate to delete_by_id
 
         Raises:
             RepositoryException: If deletion fails
@@ -129,8 +128,8 @@ class SyncWriteOnlyRepository(ABC, Generic[TAggregateRoot]):
         ...         # Publish domain events
         ...         pass
         ...
-        ...     def delete(self, order: Order) -> None:
-        ...         # Command implementation - mark as deleted
+        ...     def delete_by_id(self, order: Order) -> None:
+        ...         # Command implementation - mark as delete_by_idd
         ...         pass
     """
 
@@ -154,7 +153,7 @@ class SyncWriteOnlyRepository(ABC, Generic[TAggregateRoot]):
         """
 
     @abstractmethod
-    def delete(self, aggregate: TAggregateRoot) -> None:
+    def delete_by_id(self, aggregate: TAggregateRoot) -> None:
         """
         Delete an aggregate from the command store.
 
@@ -164,7 +163,7 @@ class SyncWriteOnlyRepository(ABC, Generic[TAggregateRoot]):
         - Publishing deletion events for read model cleanup
 
         Args:
-            aggregate: The aggregate to delete
+            aggregate: The aggregate to delete_by_id
 
         Raises:
             RepositoryException: If deletion fails

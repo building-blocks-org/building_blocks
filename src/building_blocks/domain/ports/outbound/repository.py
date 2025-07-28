@@ -43,7 +43,7 @@ class SyncRepository(ABC, Generic[TAggregateRoot, TId]):
         ...         # Implementation accepts Order specifically
         ...         pass
         ...
-        ...     def delete(self, order: Order) -> None:
+        ...     def delete_by_id(self, id: UUID) -> None:
         ...         # Implementation accepts Order specifically
         ...         pass
         ...
@@ -93,15 +93,12 @@ class SyncRepository(ABC, Generic[TAggregateRoot, TId]):
         """
 
     @abstractmethod
-    def delete(self, aggregate: TAggregateRoot) -> None:
+    def delete_by_id(self, id: TId) -> None:
         """
-        Delete an aggregate from the repository.
+        Attempts to delete an aggregate using its id.
 
         Args:
-            aggregate: The aggregate to delete
-
-        Raises:
-            RepositoryException: If deletion fails
+            id: (TId) The primary key of the aggregate to delete.
         """
 
     @abstractmethod
@@ -145,8 +142,8 @@ class AsyncRepository(ABC, Generic[TAggregateRoot, TId]):
         ...         # Implementation accepts Order specifically
         ...         pass
         ...
-        ...     async def delete(self, order: Order) -> None:
-        ...         # Implementation accepts Order specifically
+        ...     async def delete_by_id(self, id: UUID) -> None:
+        ...         # Implementation accepts Order id
         ...         pass
         ...
         ...     async def find_all(self) -> List[Order]:
@@ -195,15 +192,12 @@ class AsyncRepository(ABC, Generic[TAggregateRoot, TId]):
         """
 
     @abstractmethod
-    async def delete(self, aggregate: TAggregateRoot) -> None:
+    async def delete_by_id(self, id: TId) -> None:
         """
-        Delete an aggregate from the repository.
+        Attempts to delete an aggregate using its id.
 
         Args:
-            aggregate: The aggregate to delete
-
-        Raises:
-            RepositoryException: If deletion fails
+            id: (TId) The primary key of the aggregate to delete.
         """
 
     @abstractmethod
