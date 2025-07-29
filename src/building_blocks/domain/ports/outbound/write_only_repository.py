@@ -105,13 +105,13 @@ class SyncWriteOnlyRepository(ABC, Generic[AggregateRootType, IdType]):
         ...         # Record domain event
         ...         self.record_event(OrderConfirmedEvent(self.id))
         >>>
-        >>> class OrderCommandRepository(WriteOnlyRepository[Order]):
+        >>> class OrderCommandRepository(WriteOnlyRepository[Order, UUID]):
         ...     def save(self, order: Order) -> None:
         ...         # Command implementation - save to event store
         ...         # Publish domain events
         ...         pass
         ...
-        ...     def delete_by_id(self, order: Order) -> None:
+        ...     def delete_by_id(self, id: UUID) -> None:
         ...         # Command implementation - mark as delete_by_id
         ...         pass
     """
