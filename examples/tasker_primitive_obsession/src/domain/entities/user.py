@@ -21,6 +21,7 @@ class User(AggregateRoot[UUID]):
         control.
     """
 
+    USER_ROLE_ADMIN = "admin"
     USER_ROLE_ENGINEER = "engineer"
     USER_ROLE_DESIGNER = "designer"
     USER_ROLE_MANAGER = "manager"
@@ -61,6 +62,7 @@ class User(AggregateRoot[UUID]):
             self.USER_ROLE_ENGINEER,
             self.USER_ROLE_DESIGNER,
             self.USER_ROLE_MANAGER,
+            self.USER_ROLE_ADMIN,
         ]
         if new_role not in valid_roles:
             raise ValueError(

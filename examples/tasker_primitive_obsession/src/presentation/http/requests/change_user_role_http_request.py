@@ -18,7 +18,10 @@ class ChangeUserRoleHttpRequest(BaseModel):
                     "new_role": "designer",
                 },
                 {
-                    "new_role": "designer",
+                    "new_role": "engineer",
+                },
+                {
+                    "new_role": "admin",
                 },
             ]
         }
