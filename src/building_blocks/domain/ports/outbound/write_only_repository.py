@@ -112,7 +112,7 @@ class SyncWriteOnlyRepository(ABC, Generic[AggregateRootType, IdType]):
         ...         pass
         ...
         ...     def delete_by_id(self, id: UUID) -> None:
-        ...         # Command implementation - mark as delete_by_id
+        ...         # Command implementation - mark as deleted
         ...         pass
     """
 
