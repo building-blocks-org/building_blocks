@@ -4,6 +4,12 @@ import datetime
 from typing import List, Optional
 
 from building_blocks.domain.aggregate_root import AggregateRoot, AggregateVersion
+from examples.tasker_primitive_obsession.src.domain.errors import (
+    InvalidEmailFormatError,
+    InvalidProgressError,
+    InvalidTagError,
+    TaskStatusTransitionError,
+)
 
 
 class Task(AggregateRoot[Optional[int]]):
@@ -73,18 +79,18 @@ class Task(AggregateRoot[Optional[int]]):
 
         # Validate progress
         if not self.MIN_PROGRESS <= progress <= self.MAX_PROGRESS:
-            raise ValueError(
+            raise InvalidProgressError(
                 f"Progress must be between {self.MIN_PROGRESS} and {self.MAX_PROGRESS}"
             )
 
         # Validate assignee email if provided
         if assignee_email is not None and "@" not in assignee_email:
-            raise ValueError("Invalid email format")
+            raise InvalidEmailFormatError()
 
         # Validate tags
         if tags is not None:
             if not all(isinstance(tag, str) and tag.strip() for tag in tags):
-                raise ValueError("All tags must be non-empty strings")
+                raise InvalidTagError("All tags must be non-empty strings")
 
         # Validate due date
         if due_date < datetime.date.today():
@@ -217,15 +223,15 @@ class Task(AggregateRoot[Optional[int]]):
             self._status = self.STATUS_IN_PROGRESS
             self._progress = 0
         else:
-            raise ValueError("Task must be in 'todo' status to start.")
+            raise TaskStatusTransitionError("Task must be in 'todo' status to start.")
 
     def assign_to(self, email: str) -> None:
         if not email or "@" not in email:
-            raise ValueError("Invalid email format")
+            raise InvalidEmailFormatError()
         self._assignee_email = email
 
     def add_tag(self, tag: str) -> None:
         if not tag or not isinstance(tag, str) or not tag.strip():
-            raise ValueError("Tag must be a non-empty string")
+            raise InvalidTagError()
         if tag not in self._tags:
             self._tags.append(tag)
