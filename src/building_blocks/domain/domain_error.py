@@ -1,4 +1,4 @@
-class DomainException(Exception):
+class DomainError(Exception):
     """Base class for all domain-related exceptions."""
 
     """
