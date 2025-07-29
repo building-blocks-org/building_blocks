@@ -78,5 +78,5 @@ class SQLAlchemyUserRepository(UserRepository):
             "email": user.email,
             "password": user.password,
             "role": user.role,
-            "version": user.version.value if user.version else 0,
+            "version": user.version.value,
         }
