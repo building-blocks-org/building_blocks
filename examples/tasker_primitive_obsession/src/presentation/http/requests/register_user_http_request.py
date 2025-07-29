@@ -9,6 +9,7 @@ class RegisterUserHttpRequest(BaseModel):
         username (str): The username of the user.
         email (str): The email address of the user.
         password (str): The password for the user account.
+        role (str): The role of the user, default is "engineer".
     """
 
     name: str
