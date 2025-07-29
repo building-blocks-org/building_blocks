@@ -87,7 +87,7 @@ class TestAggregateVersion:
     def test_init_when_value_is_not_int_then_raises_type_error(self):
         """Test that initializing with a non-integer value raises TypeError."""
         with pytest.raises(TypeError, match="Expected int, got str"):
-            AggregateVersion("invalid_value")
+            AggregateVersion("invalid_value")  # type: ignore
 
     def test_increment_increases_version_by_one(self):
         """Test that incrementing the version works correctly."""
@@ -120,12 +120,12 @@ class TestAggregateRoot:
     def test_init_when_no_id_then_raises_type_error(self):
         """Test that initializing without an ID raises ValueError."""
         with pytest.raises(ValueError, match="Entity ID cannot be None"):
-            FakeAggregateRoot(None, self._name)
+            FakeAggregateRoot(None, self._name)  # type: ignore
 
     def test_init_when_invalid_id_type_then_raises_type_error(self):
         """Test that initializing with an invalid ID type raises TypeError."""
         with pytest.raises(TypeError, match="Expected UUID, got str"):
-            FakeAggregateRoot("invalid_id", self._name)
+            FakeAggregateRoot("invalid_id", self._name)  # type: ignore
 
     def test_init_when_no_version_then_starts_at_zero(self):
         aggregate_id = uuid4()
