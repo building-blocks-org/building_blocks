@@ -10,11 +10,11 @@ from __future__ import annotations
 from abc import ABC, abstractmethod
 from typing import Generic, TypeVar
 
-TAggregateRoot = TypeVar("TAggregateRoot")
-TId = TypeVar("TId")
+AggregateRootType = TypeVar("AggregateRootType")
+IdType = TypeVar("IdType")
 
 
-class AsyncWriteOnlyRepository(ABC, Generic[TAggregateRoot, TId]):
+class AsyncWriteOnlyRepository(ABC, Generic[AggregateRootType, IdType]):
     """
     Write-only async repository interface for CQRS command scenarios.
 
@@ -47,41 +47,24 @@ class AsyncWriteOnlyRepository(ABC, Generic[TAggregateRoot, TId]):
         >>>
         >>> class OrderWriteRepository(WriteOnlyRepository[Order, UUID]):
         ...     def save(self, order: Order) -> None:
+        ...         # Save an Order aggregate
         ...         pass
         ...
-        ...     def delete_by_id(self, id: ) -> None:
-        ...         # Command implementation - mark as delete_by_id
+        ...     def delete_by_id(self, id: UUID) -> None:
+        ...         # Delete an Order aggregate by ID
         ...         pass
     """
 
     @abstractmethod
-    async def save(self, aggregate: TAggregateRoot) -> None:
+    async def save(self, aggregate: AggregateRootType) -> None:
         """
-        Save an aggregate to the command store.
-
-        In CQRS scenarios, this typically involves:
-        - Persisting to the authoritative command database
-        - Storing events in an event store
-        - Publishing domain events for read model updates
-        - Handling optimistic concurrency control
-
-        Args:
-            aggregate: The aggregate to save
-
-        Raises:
-            ConcurrencyException: If optimistic locking fails
-            RepositoryException: If persistence fails
+        Save an aggregate.
         """
 
     @abstractmethod
-    async def delete_by_id(self, aggregate: TAggregateRoot) -> None:
+    async def delete_by_id(self, id: IdType) -> None:
         """
-        Delete an aggregate from the command store.
-
-        In CQRS scenarios, this might involve:
-        - Soft deletion with domain events
-        - Hard deletion from command store
-        - Publishing deletion events for read model cleanup
+        Delete an aggregate using its id.
 
         Args:
             aggregate: The aggregate to delete_by_id
@@ -91,7 +74,7 @@ class AsyncWriteOnlyRepository(ABC, Generic[TAggregateRoot, TId]):
         """
 
 
-class SyncWriteOnlyRepository(ABC, Generic[TAggregateRoot]):
+class SyncWriteOnlyRepository(ABC, Generic[AggregateRootType, IdType]):
     """
     Write-only repository interface for CQRS command scenarios.
 
@@ -134,7 +117,7 @@ class SyncWriteOnlyRepository(ABC, Generic[TAggregateRoot]):
     """
 
     @abstractmethod
-    def save(self, aggregate: TAggregateRoot) -> None:
+    def save(self, aggregate: AggregateRootType) -> None:
         """
         Save an aggregate to the command store.
 
@@ -153,7 +136,7 @@ class SyncWriteOnlyRepository(ABC, Generic[TAggregateRoot]):
         """
 
     @abstractmethod
-    def delete_by_id(self, aggregate: TAggregateRoot) -> None:
+    def delete_by_id(self, id: IdType) -> None:
         """
         Delete an aggregate from the command store.
 

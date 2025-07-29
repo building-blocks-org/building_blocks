@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from abc import ABC, abstractmethod
 from datetime import datetime, timezone
-from typing import Any
+from typing import Any, Dict, Optional, Tuple
 from uuid import UUID, uuid4
 
 from building_blocks.domain.value_object import ValueObject
@@ -31,13 +31,13 @@ class MessageMetadata(ValueObject):
         >>> metadata = MessageMetadata()
         >>> # Or with custom values
         >>> custom_metadata = MessageMetadata(
-        ...     message_id=UUID('123e4567-e89b-12d3-a456-426614174000'),
+        ...     message_id=UUID("123e4567-e89b-12d3-a456-426614174000"),
         ...     created_at=datetime(2025, 6, 11, 19, 36, 6, tzinfo=timezone.utc)
         ... )
     """
 
     def __init__(
-        self, message_id: UUID | None = None, created_at: datetime | None = None
+        self, message_id: Optional[UUID] = None, created_at: Optional[datetime] = None
     ) -> None:
         """
         Initialize message metadata.
@@ -69,7 +69,7 @@ class MessageMetadata(ValueObject):
         """
         return self._created_at
 
-    def _equality_components(self) -> tuple[Any, ...]:
+    def _equality_components(self) -> Tuple[Any, ...]:
         """
         Message metadata equality is based on message ID and timestamp.
 
@@ -78,7 +78,7 @@ class MessageMetadata(ValueObject):
         """
         return (self._message_id, self._created_at)
 
-    def to_dict(self) -> dict[str, Any]:
+    def to_dict(self) -> Dict[str, Any]:
         """
         Convert metadata to dictionary representation.
 
@@ -108,7 +108,7 @@ class Message(ValueObject, ABC):
     This class should not be used directly. Use Event or Command instead.
     """
 
-    def __init__(self, metadata: MessageMetadata | None = None) -> None:
+    def __init__(self, metadata: Optional[MessageMetadata] = None) -> None:
         """
         Initialize the message with metadata.
 
@@ -162,7 +162,7 @@ class Message(ValueObject, ABC):
 
     @property
     @abstractmethod
-    def payload(self) -> dict[str, Any]:
+    def payload(self) -> Dict[str, Any]:
         """
         Get the domain-specific data carried by this message.
 
@@ -174,7 +174,7 @@ class Message(ValueObject, ABC):
         """
         pass
 
-    def _equality_components(self) -> tuple[Any, ...]:
+    def _equality_components(self) -> Tuple[Any, ...]:
         """
         Messages are equal if they have the same message ID.
 
@@ -185,7 +185,7 @@ class Message(ValueObject, ABC):
         """
         return (self._metadata.message_id,)
 
-    def to_dict(self) -> dict[str, Any]:
+    def to_dict(self) -> Dict[str, Any]:
         """
         Convert the message to a dictionary representation.
 
