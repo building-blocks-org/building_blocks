@@ -57,7 +57,8 @@ class UserRepository(AsyncRepository[User, UUID], ABC):
             id (UUID): The unique identifier of the user to delete.
         Returns:
             None: This method does not return a value. It raises an exception if the
-
+            the operation fails, such as some database issue. If the error doesn't
+            exists, it simply does nothing.
         """
         pass
 
