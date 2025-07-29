@@ -1,8 +1,9 @@
 from __future__ import annotations
 
+from typing import Optional
 from uuid import UUID
 
-from building_blocks.domain.aggregate_root import AggregateRoot
+from building_blocks.domain.aggregate_root import AggregateRoot, AggregateVersion
 
 
 class User(AggregateRoot[UUID]):
@@ -16,9 +17,11 @@ class User(AggregateRoot[UUID]):
         email (str): Email address of the user.
         password (str): Password for the user account.
         role (str): Role of the user, default is "user".
-        version (int): Version number for optimistic concurrency control.
+        version (Optional[AggregateVersion]): Version number for optimistic concurrency
+        control.
     """
 
+    USER_ROLE_ADMIN = "admin"
     USER_ROLE_ENGINEER = "engineer"
     USER_ROLE_DESIGNER = "designer"
     USER_ROLE_MANAGER = "manager"
@@ -30,7 +33,7 @@ class User(AggregateRoot[UUID]):
         email: str,
         password: str,
         role: str = "engineer",
-        version: int = 0,
+        version: Optional[AggregateVersion] = None,
     ) -> None:
         super().__init__(user_id, version)
         self._name = name
@@ -59,6 +62,7 @@ class User(AggregateRoot[UUID]):
             self.USER_ROLE_ENGINEER,
             self.USER_ROLE_DESIGNER,
             self.USER_ROLE_MANAGER,
+            self.USER_ROLE_ADMIN,
         ]
         if new_role not in valid_roles:
             raise ValueError(

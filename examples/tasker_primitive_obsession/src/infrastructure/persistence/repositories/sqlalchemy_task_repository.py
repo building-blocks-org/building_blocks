@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-from typing import List, Optional
-from uuid import UUID
+from typing import List, Optional, cast
 
-from sqlalchemy import select
+from sqlalchemy import Table, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from examples.tasker_primitive_obsession.src.domain.entities.task import Task
@@ -11,8 +10,10 @@ from examples.tasker_primitive_obsession.src.domain.ports import (
     TaskRepository,
 )
 from examples.tasker_primitive_obsession.src.infrastructure.persistence import (
-    TaskModel,
     build_upsert_statement,
+)
+from examples.tasker_primitive_obsession.src.infrastructure.persistence.models import (
+    TaskModel,
 )
 
 
@@ -35,13 +36,13 @@ class SQLAlchemyTaskRepository(TaskRepository):
         """
         self._session = session
 
-    async def save(self, task: Task) -> None:
-        values = self._build_values(task)
+    async def save(self, aggregate: Task) -> None:
+        values = self._build_values(aggregate)
 
         dialect_name = self._session.bind.dialect.name
 
         upsert_statement = build_upsert_statement(
-            dialect_name, TaskModel.__table__, values
+            dialect_name, cast(Table, TaskModel.__table__), values
         )
 
         await self._session.execute(upsert_statement)
@@ -53,21 +54,19 @@ class SQLAlchemyTaskRepository(TaskRepository):
         models = result.scalars().all()
         return [model.to_entity() for model in models]
 
-    async def find_by_id(self, task_id: UUID) -> Optional[Task]:
-        model = await self._session.get(TaskModel, task_id)
+    async def find_by_id(self, id: int) -> Optional[Task]:
+        model = await self._session.get(TaskModel, id)
 
         if model:
             return model.to_entity()
         return None
 
-    async def delete(self, task: Task) -> None:
-        model = await self._session.get(TaskModel, task.id)
+    async def delete_by_id(self, id: int) -> None:
+        model = await self._session.get(TaskModel, id)
 
         if model:
             await self._session.delete(model)
             await self._session.commit()
-        else:
-            raise ValueError(f"Task with id {task.id} not found")
 
     def _build_values(self, task: Task) -> dict:
         return {
@@ -76,5 +75,5 @@ class SQLAlchemyTaskRepository(TaskRepository):
             "description": task.description,
             "status": task.status,
             "due_date": task.due_date,
-            "version": task.version,
+            "version": task.version.value,
         }

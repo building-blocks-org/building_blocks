@@ -33,13 +33,15 @@ class Entity(Generic[TId], ABC):
 
     Example:
         >>> class User(Entity[str]):
-        ...     def __init__(self, user_id: str, name: str):
-        ...         super().__init__(user_id)
+        ...     def __init__(self, id: str, name: str):
+        ...         super().__init__(id)
         ...         self.name = name
     """
 
-    def __init__(self, id_: TId) -> None:
-        self._id = id_
+    def __init__(self, id: TId) -> None:
+        if id is None:
+            raise ValueError("Entity ID cannot be None")
+        self._id = id
 
     def __eq__(self, other: object) -> bool:
         if not isinstance(other, Entity):

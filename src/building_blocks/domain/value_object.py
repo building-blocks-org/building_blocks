@@ -1,6 +1,5 @@
 """
 Domain value objects module.
-
 This module provides the base ValueObject class for implementing domain value objects
 following the principles of Domain-Driven Design (DDD).
 """

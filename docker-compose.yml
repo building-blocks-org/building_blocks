@@ -5,24 +5,26 @@ services:
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_DB: app_db
+      POSTGRES_DB: postgres
     ports:
       - "5432:5432"
     networks:
       - shared_net
     volumes:
       - pgdata:/var/lib/postgresql/data
+      - ./postgres-initdb:/docker-entrypoint-initdb.d
 
-  tasker_primitives:
+  tasker_primitive_obsession:
     build:
       context: .
-      dockerfile: examples/tasker_primitives/Dockerfile
+      dockerfile: Dockerfile
     environment:
       ENVIRONMENT: development
-      DATABASE_URL: postgresql+asyncpg://postgres:password@postgres:5432/app_db
+      DATABASE_URL: postgresql+asyncpg://postgres:password@postgres:5432/postgres
       SECRET_KEY: supersecretkey
       ACCESS_TOKEN_EXPIRES_IN: 3600
       REFRESH_TOKEN_EXPIRES_IN: 604800
+      EXAMPLE: tasker_primitive_obsession
     depends_on:
       - postgres
     networks:
@@ -30,8 +32,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./examples/tasker_primitives:/app/examples/tasker_primitives
-    command: ["examples/tasker_primitives/docker-entrypoint.sh"]
+      - ./examples/tasker_primitive_obsession:/app/examples/tasker_primitive_obsession
 
 volumes:
   pgdata:

@@ -11,7 +11,7 @@ This layer models your problem space using core DDD patterns: **Entities, Value 
 ```
 domain/
 ├── aggregate_root.py            # Base class for aggregate roots
-├── domain_exception.py          # Base class for domain-specific exceptions
+├── domain_error.py              # Base class for domain-specific exceptions
 ├── entity.py                    # Base class for entities with identity
 ├── value_object.py              # Base class for value objects (immutables)
 ├── messages/

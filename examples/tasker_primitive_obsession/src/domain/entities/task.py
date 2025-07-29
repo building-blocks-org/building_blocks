@@ -2,12 +2,17 @@ from __future__ import annotations
 
 import datetime
 from typing import List, Optional
-from uuid import UUID
 
-from building_blocks.domain.aggregate_root import AggregateRoot
+from building_blocks.domain.aggregate_root import AggregateRoot, AggregateVersion
+from examples.tasker_primitive_obsession.src.domain.errors import (
+    InvalidEmailFormatError,
+    InvalidProgressError,
+    InvalidTagError,
+    TaskStatusTransitionError,
+)
 
 
-class Task(AggregateRoot[UUID]):
+class Task(AggregateRoot[Optional[int]]):
     """
     Represents a task in the domain model.
     This class extends AggregateRoot to provide a unique identifier and versioning
@@ -15,11 +20,17 @@ class Task(AggregateRoot[UUID]):
     It includes properties for task description and status, along with methods to
     mark the task as done, todo, or in progress.
     Args:
-        task_id (UUID): Unique identifier for the task.
+        id (Optional[int]): Unique identifier for the task. It will be incremented
+            automatically if not provided.
         title (str): Title of the task.
         description (str): Description of the task.
+        due_date (datetime.date): Due date for the task.
         status (str): Current status of the task, default is "todo".
-        version (int): Version number for optimistic concurrency control.
+        priority (str): Priority of the task, default is "medium".
+        tags (Optional[List[str]]): List of tags associated with the task.
+        progress (int): Progress percentage of the task, default is 0.
+        version (Optional[AggregateVersion]): Version number for optimistic concurrency
+        control.
     """
 
     """Task Statuses"""
@@ -44,7 +55,7 @@ class Task(AggregateRoot[UUID]):
 
     def __init__(
         self,
-        task_id: UUID,
+        id: Optional[int],
         title: str,
         description: str,
         due_date: datetime.date,
@@ -53,7 +64,7 @@ class Task(AggregateRoot[UUID]):
         tags: Optional[List[str]] = None,
         progress: int = 0,
         assignee_email: Optional[str] = None,
-        version: int = 0,
+        version: Optional[AggregateVersion] = None,
     ) -> None:
         # Validate priority
         valid_priorities = [
@@ -68,24 +79,24 @@ class Task(AggregateRoot[UUID]):
 
         # Validate progress
         if not self.MIN_PROGRESS <= progress <= self.MAX_PROGRESS:
-            raise ValueError(
+            raise InvalidProgressError(
                 f"Progress must be between {self.MIN_PROGRESS} and {self.MAX_PROGRESS}"
             )
 
         # Validate assignee email if provided
         if assignee_email is not None and "@" not in assignee_email:
-            raise ValueError("Invalid email format")
+            raise InvalidEmailFormatError()
 
         # Validate tags
         if tags is not None:
             if not all(isinstance(tag, str) and tag.strip() for tag in tags):
-                raise ValueError("All tags must be non-empty strings")
+                raise InvalidTagError("All tags must be non-empty strings")
 
         # Validate due date
         if due_date < datetime.date.today():
             raise ValueError("Due date cannot be in the past")
 
-        super().__init__(task_id, version)
+        super().__init__(id, version)
         self._title = title
         self._description = description
 
@@ -212,15 +223,15 @@ class Task(AggregateRoot[UUID]):
             self._status = self.STATUS_IN_PROGRESS
             self._progress = 0
         else:
-            raise ValueError("Task must be in 'todo' status to start.")
+            raise TaskStatusTransitionError("Task must be in 'todo' status to start.")
 
     def assign_to(self, email: str) -> None:
         if not email or "@" not in email:
-            raise ValueError("Invalid email format")
+            raise InvalidEmailFormatError()
         self._assignee_email = email
 
     def add_tag(self, tag: str) -> None:
         if not tag or not isinstance(tag, str) or not tag.strip():
-            raise ValueError("Tag must be a non-empty string")
+            raise InvalidTagError()
         if tag not in self._tags:
             self._tags.append(tag)

@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from typing import Optional
+from typing import List, Optional
 from uuid import UUID
 
 from building_blocks.domain.ports.outbound.repository import AsyncRepository
@@ -16,36 +16,59 @@ class UserRepository(AsyncRepository[User, UUID], ABC):
     """
 
     @abstractmethod
-    async def find_by_id(self, user_id: UUID) -> Optional[User]:
+    async def find_by_id(self, id_: UUID) -> Optional[User]:
+        """
+        Find a User aggregate by its ID.
+
+        Args:
+            id_ (UUID): The unique identifier of the user.
+        Returns:
+            Optional[User]: The User aggregate if found, otherwise None.
+        """
         pass
 
     @abstractmethod
-    async def save(self, user: User) -> None:
+    async def save(self, aggregate: User) -> None:
         """
         Save a User aggregate to the repository.
 
         Args:
-            user (User): The User aggregate to save.
+            aggregate (User): The User aggregate to save.
+
+        Returns:
+            None: This method does not return a value. It raises an exception if the
+            save operation fails, such as due to a database error, validation issue or
+            unique constrainr is violated.
+
+        Raises:
+            UserEmailAlreadyExists: If a user with the same email already exists in the
+            repository.
+            ValueError: If the User aggregate is invalid or cannot be saved for any
+            other reason.
         """
         pass
 
     @abstractmethod
-    async def delete(self, user: User) -> None:
+    async def delete_by_id(self, id: UUID) -> None:
         """
-        Delete a User aggregate from the repository.
+        Attempt to delete User aggregate by its ID.
 
         Args:
-            user (User): The User aggregate to delete.
+            id (UUID): The unique identifier of the user to delete.
+        Returns:
+            None: This method does not return a value. It raises an exception if the
+            the operation fails, such as some database issue. If the error doesn't
+            exists, it simply does nothing.
         """
         pass
 
     @abstractmethod
-    async def find_all(self) -> list[User]:
+    async def find_all(self) -> List[User]:
         """
         Find all User aggregates in the repository.
 
         Returns:
-            list[User]: A list of all User aggregates.
+            List[User]: A List of all User aggregates.
         """
         pass
 
@@ -53,6 +76,8 @@ class UserRepository(AsyncRepository[User, UUID], ABC):
     async def find_by_email(self, email: str) -> Optional[User]:
         """
         Find a User aggregate by email.
+        This method does not modify the repository or create a new User. It only
+        retrieves an existing User based on the provided email.
 
         Args:
             email (str): The email address of the user.

@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-EXAMPLE=tasker_primitive_obsession
+EXAMPLE=${EXAMPLE:-tasker_primitive_obsession}
 
 ./scripts/migrate.sh "$EXAMPLE"
 

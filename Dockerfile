@@ -20,4 +20,4 @@ RUN poetry install --with dev --no-interaction
 
 ENV PYTHONPATH=/app/src
 
-ENTRYPOINT ["examples/tasker_primitive_obsession/docker-entrypoint.sh"]
+ENTRYPOINT ["./docker-entrypoint.sh"]

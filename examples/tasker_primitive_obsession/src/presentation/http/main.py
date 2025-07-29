@@ -14,9 +14,13 @@ from examples.tasker_primitive_obsession.src.presentation.http.routes import (
     user_router,
 )
 
+from .exception_handlers import (
+    generic_error_handler,
+)
+
 
 @asynccontextmanager
-async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
+async def lifespan(_: FastAPI) -> AsyncGenerator[None, None]:
     print("🚀 Starting Tasker Primitives Example")
     yield
     print("🛑 Shutting down Tasker Primitives Example")
@@ -27,6 +31,7 @@ app = FastAPI(
     version="1.0.0",
     lifespan=lifespan,
 )
+app.add_exception_handler(Exception, generic_error_handler)
 
 validate_token_use_case = get_validate_token_use_case()
 

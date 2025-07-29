@@ -9,7 +9,7 @@ and type safety.
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Generic, TypeVar
+from typing import Generic, List, Optional, TypeVar
 
 TAggregateRoot = TypeVar("TAggregateRoot")
 TId = TypeVar("TId")
@@ -30,12 +30,12 @@ class SyncRepository(ABC, Generic[TAggregateRoot, TId]):
         >>> from building_blocks.domain.aggregate_root import AggregateRoot
         >>>
         >>> class Order(AggregateRoot[UUID]):
-        ...     def __init__(self, order_id: UUID, customer_id: str):
-        ...         super().__init__(order_id)
+        ...     def __init__(self, id: UUID, customer_id: UUID):
+        ...         super().__init__(id)
         ...         self._customer_id = customer_id
         >>>
         >>> class OrderRepository(SyncRepository[Order, UUID]):
-        ...     def find_by_id(self, order_id: UUID) -> Order | None:
+        ...     def find_by_id(self, id: UUID) -> Optional[Order]:
         ...         # Implementation returns Order or None
         ...         pass
         ...
@@ -43,22 +43,22 @@ class SyncRepository(ABC, Generic[TAggregateRoot, TId]):
         ...         # Implementation accepts Order specifically
         ...         pass
         ...
-        ...     def delete(self, order: Order) -> None:
+        ...     def delete_by_id(self, id: UUID) -> None:
         ...         # Implementation accepts Order specifically
         ...         pass
         ...
-        ...     def find_all(self) -> list[Order]:
-        ...         # Implementation returns list of Orders
+        ...     def find_all(self) -> List[Order]:
+        ...         # Implementation returns List of Orders
         ...         pass
         ...
         ...     # Add aggregate-specific methods with full type safety
-        ...     def find_by_customer_id(self, customer_id: str) -> list[Order]:
+        ...     def find_by_customer_id(self, id: UUID) -> List[Order]:
         ...         # Aggregate-specific query - still type safe!
         ...         pass
     """
 
     @abstractmethod
-    def find_by_id(self, aggregate_id: TId) -> TAggregateRoot | None:
+    def find_by_id(self, id: TId) -> Optional[TAggregateRoot]:
         """
         Find an aggregate by its unique identifier.
 
@@ -67,7 +67,7 @@ class SyncRepository(ABC, Generic[TAggregateRoot, TId]):
         allows the domain to handle missing aggregates appropriately.
 
         Args:
-            aggregate_id: The unique identifier of the aggregate
+            id: The unique identifier of the aggregate
 
         Returns:
             The aggregate if found, None otherwise
@@ -93,19 +93,16 @@ class SyncRepository(ABC, Generic[TAggregateRoot, TId]):
         """
 
     @abstractmethod
-    def delete(self, aggregate: TAggregateRoot) -> None:
+    def delete_by_id(self, id: TId) -> None:
         """
-        Delete an aggregate from the repository.
+        Attempts to delete an aggregate using its id.
 
         Args:
-            aggregate: The aggregate to delete
-
-        Raises:
-            RepositoryException: If deletion fails
+            id: (TId) The primary key of the aggregate to delete.
         """
 
     @abstractmethod
-    def find_all(self) -> list[TAggregateRoot]:
+    def find_all(self) -> List[TAggregateRoot]:
         """
         Find all aggregates in the repository.
 
@@ -132,12 +129,12 @@ class AsyncRepository(ABC, Generic[TAggregateRoot, TId]):
         >>> from building_blocks.domain.aggregate_root import AggregateRoot
         >>>
         >>> class Order(AggregateRoot[UUID]):
-        ...     def __init__(self, order_id: UUID, customer_id: str):
+        ...     def __init__(self, order_id_: UUID, customer_id: UUID):
         ...         super().__init__(order_id)
         ...         self._customer_id = customer_id
         >>>
         >>> class OrderRepository(AsyncRepository[Order, UUID]):
-        ...     def find_by_id(self, order_id: UUID) -> Order | None:
+        ...     def find_by_id(self, id: UUID) -> Optional[Order]:
         ...         # Implementation returns Order or None
         ...         pass
         ...
@@ -145,22 +142,22 @@ class AsyncRepository(ABC, Generic[TAggregateRoot, TId]):
         ...         # Implementation accepts Order specifically
         ...         pass
         ...
-        ...     async def delete(self, order: Order) -> None:
-        ...         # Implementation accepts Order specifically
+        ...     async def delete_by_id(self, id: UUID) -> None:
+        ...         # Implementation accepts Order id
         ...         pass
         ...
-        ...     async def find_all(self) -> list[Order]:
-        ...         # Implementation returns list of Orders
+        ...     async def find_all(self) -> List[Order]:
+        ...         # Implementation returns List of Orders
         ...         pass
         ...
         ...     # Add aggregate-specific methods with full type safety
-        ...     async def find_by_customer_id(self, customer_id: str) -> list[Order]:
+        ...     async def find_by_customer_id(self, customer_id_: UUID) -> List[Order]:
         ...         # Aggregate-specific query - still type safe!
         ...         pass
     """
 
     @abstractmethod
-    async def find_by_id(self, aggregate_id: TId) -> TAggregateRoot | None:
+    async def find_by_id(self, id: TId) -> Optional[TAggregateRoot]:
         """
         Find an aggregate by its unique identifier.
 
@@ -169,7 +166,7 @@ class AsyncRepository(ABC, Generic[TAggregateRoot, TId]):
         allows the domain to handle missing aggregates appropriately.
 
         Args:
-            aggregate_id: The unique identifier of the aggregate
+            id: The unique identifier of the aggregate
 
         Returns:
             The aggregate if found, None otherwise
@@ -195,19 +192,16 @@ class AsyncRepository(ABC, Generic[TAggregateRoot, TId]):
         """
 
     @abstractmethod
-    async def delete(self, aggregate: TAggregateRoot) -> None:
+    async def delete_by_id(self, id: TId) -> None:
         """
-        Delete an aggregate from the repository.
+        Attempts to delete an aggregate using its id.
 
         Args:
-            aggregate: The aggregate to delete
-
-        Raises:
-            RepositoryException: If deletion fails
+            id: (TId) The primary key of the aggregate to delete.
         """
 
     @abstractmethod
-    async def find_all(self) -> list[TAggregateRoot]:
+    async def find_all(self) -> List[TAggregateRoot]:
         """
         Find all aggregates in the repository.
 

@@ -1,13 +1,20 @@
-from typing import Any, List, Optional
+from typing import Any, Dict, List, Optional, cast
+from uuid import UUID
 
-from sqlalchemy import select
+from sqlalchemy import Table, select
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from examples.tasker_primitive_obsession.src.domain.entities.user import User
+from examples.tasker_primitive_obsession.src.domain.errors import (
+    UserEmailAlreadyExistsError,
+)
 from examples.tasker_primitive_obsession.src.domain.ports import UserRepository
 from examples.tasker_primitive_obsession.src.infrastructure.persistence import (
-    UserModel,
     build_upsert_statement,
+)
+from examples.tasker_primitive_obsession.src.infrastructure.persistence.models import (
+    UserModel,
 )
 
 
@@ -16,16 +23,23 @@ class SQLAlchemyUserRepository(UserRepository):
         self._session = session
 
     async def save(self, user: User) -> None:
-        values = self._build_values(user)
+        try:
+            values = self._build_values(user)
 
-        dialect_name = self._session.bind.dialect.name
+            dialect_name = self._session.bind.dialect.name
 
-        upsert_statement = build_upsert_statement(
-            dialect_name, UserModel.__table__, values
-        )
+            upsert_statement = build_upsert_statement(
+                dialect_name, cast(Table, UserModel.__table__), values
+            )
 
-        await self._session.execute(upsert_statement)
-        await self._session.commit()
+            await self._session.execute(upsert_statement)
+            await self._session.commit()
+        except IntegrityError as exc:
+            await self._session.rollback()
+
+            if "email" in str(exc.orig):
+                raise UserEmailAlreadyExistsError(user.email) from exc
+            raise ValueError(f"Failed to save user: {exc.orig}") from exc
 
     async def find_all(self) -> List[User]:
         statement = select(UserModel)
@@ -34,15 +48,15 @@ class SQLAlchemyUserRepository(UserRepository):
 
         return [model.to_entity() for model in models]
 
-    async def find_by_id(self, user_id: str) -> Optional[User]:
+    async def find_by_id(self, user_id: UUID) -> Optional[User]:
         model = await self._session.get(UserModel, user_id)
 
         if model:
             return model.to_entity()
         return None
 
-    async def delete(self, user: User) -> None:
-        model = await self._session.get(UserModel, user.id)
+    async def delete_by_id(self, id: UUID) -> None:
+        model = await self._session.get(UserModel, id)
 
         if model:
             await self._session.delete(model)
@@ -57,12 +71,12 @@ class SQLAlchemyUserRepository(UserRepository):
             return model.to_entity()
         return None
 
-    def _build_values(self, user: User) -> dict[str, Any]:
+    def _build_values(self, user: User) -> Dict[str, Any]:
         return {
             "id": user.id,
             "name": user.name,
             "email": user.email,
             "password": user.password,
             "role": user.role,
-            "version": user.version,
+            "version": user.version.value,
         }
