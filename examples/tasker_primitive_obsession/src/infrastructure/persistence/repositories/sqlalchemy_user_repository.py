@@ -22,7 +22,7 @@ class SQLAlchemyUserRepository(UserRepository):
     def __init__(self, session: AsyncSession) -> None:
         self._session = session
 
-    async def save(self, user: User) -> Optional[User]:
+    async def save(self, user: User) -> None:
         try:
             values = self._build_values(user)
 

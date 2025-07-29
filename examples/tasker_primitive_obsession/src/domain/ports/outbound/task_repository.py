@@ -54,8 +54,8 @@ class TaskRepository(AsyncRepository[Task, int], ABC):
         Attempt to delete Task aggregate by its ID.
 
         Args:
-            None: This method does not return a value. If no Task is found with the
-            given ID, it does nothing.
+            id (int): The unique identifier of the task to delete.
+
         """
         pass
 
