@@ -67,7 +67,7 @@ class AsyncWriteOnlyRepository(ABC, Generic[AggregateRootType, IdType]):
         Delete an aggregate using its id.
 
         Args:
-            aggregate: The aggregate to delete_by_id
+            id: The ID of the aggregate to delete.
 
         Raises:
             RepositoryException: If deletion fails
@@ -112,7 +112,7 @@ class SyncWriteOnlyRepository(ABC, Generic[AggregateRootType, IdType]):
         ...         pass
         ...
         ...     def delete_by_id(self, order: Order) -> None:
-        ...         # Command implementation - mark as delete_by_idd
+        ...         # Command implementation - mark as delete_by_id
         ...         pass
     """
 
@@ -146,7 +146,7 @@ class SyncWriteOnlyRepository(ABC, Generic[AggregateRootType, IdType]):
         - Publishing deletion events for read model cleanup
 
         Args:
-            aggregate: The aggregate to delete_by_id
+            id: The identifier of the aggregate to delete.
 
         Raises:
             RepositoryException: If deletion fails
