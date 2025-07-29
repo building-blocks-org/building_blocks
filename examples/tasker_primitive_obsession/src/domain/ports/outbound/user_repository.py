@@ -54,8 +54,10 @@ class UserRepository(AsyncRepository[User, UUID], ABC):
         Attempt to delete User aggregate by its ID.
 
         Args:
-            None: This method does not return a value. If no User is found with the
-            given ID, it does nothing.
+            id (UUID): The unique identifier of the user to delete.
+        Returns:
+            None: This method does not return a value. It raises an exception if the
+
         """
         pass
 
@@ -73,7 +75,8 @@ class UserRepository(AsyncRepository[User, UUID], ABC):
     async def find_by_email(self, email: str) -> Optional[User]:
         """
         Find a User aggregate by email.
-        This method does no
+        This method does not modify the repository or create a new User. It only
+        retrieves an existing User based on the provided email.
 
         Args:
             email (str): The email address of the user.
