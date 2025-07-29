@@ -12,15 +12,12 @@ class ChangeUserRoleHttpRequest(BaseModel):
         "json_schema_extra": {
             "examples": [
                 {
-                    "user_id": "123e4567-e89b-12d3-a456-426614174000",
                     "new_role": "manager",
                 },
                 {
-                    "user_id": "123e4567-e89b-12d3-a456-426614174001",
                     "new_role": "designer",
                 },
                 {
-                    "user_id": "123e4567-e89b-12d3-a456-426614174000",
                     "new_role": "designer",
                 },
             ]
