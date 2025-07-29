@@ -93,7 +93,16 @@ async def change_user_role(
     user_id: str,
     use_case: ChangeUserRoleUseCase = Depends(get_change_user_role_use_case),
 ) -> ChangeUserRoleHttpResponse:
-    """ """
+    """
+    Endpoint to change the role of a user.
+    Args:
+        request (ChangeUserRoleHttpRequest): The request containing the new role
+        details.
+        user_id (str): The ID of the user whose role is being changed.
+    Returns:
+        ChangeUserRoleHttpResponse: The response containing the updated user role
+        details.
+    """
     http_input = ChangeUserRoleHttpInput(
         user_id=user_id,
         request=request,
