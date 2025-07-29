@@ -68,6 +68,8 @@ class AggregateRoot(Entity[TId], Generic[TId], ABC):
     "Implementing Domain-Driven Design".
     """
 
+    _uncommitted_events: List[Event]
+
     def __init__(
         self, aggregate_id: TId, version: Optional[AggregateVersion] = None
     ) -> None:
