@@ -47,7 +47,7 @@ class ChangeUserRoleService(ChangeUserRoleUseCase):
 
         previous_role = user.role
 
-        user.change_role(request.new_role)
+        user.role = request.new_role
 
         await self._user_repository.save(user)
 

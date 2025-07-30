@@ -1,5 +1,4 @@
 import logging
-from uuid import uuid4
 
 from examples.tasker_primitive_obsession.src.application.ports import (
     PasswordHasher,
@@ -9,6 +8,8 @@ from examples.tasker_primitive_obsession.src.application.ports import (
 )
 from examples.tasker_primitive_obsession.src.domain.entities.user import User
 from examples.tasker_primitive_obsession.src.domain.ports import UserRepository
+
+from building_blocks.abstractions.result import Err
 
 logger = logging.getLogger(__name__)
 
@@ -52,12 +53,24 @@ class RegisterUserService(RegisterUserUseCase):
         Returns:
             User: The created User entity.
         """
-        encrypted_password = await self._password_hasher.hash(request.password)
-
-        return User(
-            user_id=uuid4(),
+        user_result = User.register(
             name=request.name,
             email=request.email,
-            password=encrypted_password,
+            password=request.password,
             role=request.role,
         )
+
+        if isinstance(user_result, Err):
+            self._logger.error("Failed to create user: %s", user_result.error.message)
+            raise user_result.error
+        else:
+            print(user_result)
+            user = user_result.value
+            encrypted_password = await self._password_hasher.hash(user.password)
+
+            user.password = encrypted_password
+
+            self._logger.info("User created successfully: %s", user)
+            print(user)
+
+            return user
