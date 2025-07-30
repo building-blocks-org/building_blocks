@@ -40,7 +40,6 @@ class Result(ABC, Generic[ResultType, ErrorType]):
 class Ok(Result, Generic[ResultType, ErrorType]):
     def __init__(self, value: ResultType) -> None:
         self._value = value
-        self._error = None
 
     @property
     def value(self) -> ResultType:
@@ -57,7 +56,6 @@ class Ok(Result, Generic[ResultType, ErrorType]):
 class Err(Result, Generic[ResultType, ErrorType]):
     def __init__(self, error: ErrorType) -> None:
         self._error = error
-        self._value = None
 
     @property
     def value(self) -> ResultType:
