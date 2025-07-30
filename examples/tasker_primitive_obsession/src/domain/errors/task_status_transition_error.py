@@ -23,6 +23,5 @@ class TaskStatusTransitionError(DomainRuleViolationError):
             message=message,
             context=extra_context,
         )
-        self.message = message
 
 # Removed the __str__ method as it duplicates the logic from the parent class.
