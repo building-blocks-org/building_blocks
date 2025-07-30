@@ -18,6 +18,7 @@ class ResultAccessError(ResultError):
 
 
 class Result(ABC, Generic[ResultType, ErrorType]):
+    @property
     @abstractmethod
     def value(self) -> ResultType:
         """
@@ -26,6 +27,7 @@ class Result(ABC, Generic[ResultType, ErrorType]):
         """
         pass
 
+    @property
     @abstractmethod
     def error(self) -> ErrorType:
         """
@@ -48,7 +50,7 @@ class Ok(Result, Generic[ResultType, ErrorType]):
     def error(self) -> ErrorType:
         raise ResultAccessError("Cannot access error from an Ok Result.")
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return f"Ok({self.value!r})"
 
 
