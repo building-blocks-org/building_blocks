@@ -1,7 +1,7 @@
-from building_blocks.domain.domain_error import DomainError
+from building_blocks.domain.errors import DomainValidationError
 
 
-class InvalidTagError(DomainError):
+class InvalidTagError(DomainValidationError):
     """
     Exception raised when a tag is invalid.
 
@@ -9,5 +9,5 @@ class InvalidTagError(DomainError):
     criteria for validity, such as being empty or exceeding length limits.
     """
 
-    def __init__(self, message: str = "Tag must be a non-empty string") -> None:
+    def __init__(self, message: str = "Tag is invalid.") -> None:
         super().__init__(message)

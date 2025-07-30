@@ -1,7 +1,7 @@
-from building_blocks.domain.domain_error import DomainError
+from building_blocks.domain.errors import DomainValidationError
 
 
-class InvalidEmailFormatError(DomainError):
+class InvalidEmailFormatError(DomainValidationError):
     """Exception raised for errors in the input email format."""
 
     def __init__(self, message: str = "Invalid email format."):

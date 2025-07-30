@@ -1,7 +1,7 @@
-from building_blocks.domain.domain_error import DomainError
+from building_blocks.domain.errors import DomainValidationError
 
 
-class InvalidProgressError(DomainError):
+class InvalidProgressError(DomainValidationError):
     """Exception raised for errors related to invalid  progress values."""
 
     def __init__(self, message: str = "Invalid progress value."):
