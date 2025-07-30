@@ -25,10 +25,4 @@ class TaskStatusTransitionError(DomainRuleViolationError):
         )
         self.message = message
 
-    def __str__(self):
-        base = self.message
-        if self.rule:
-            base = f"[{self.rule}] {base}"
-        if self.context:
-            base = f"{base} | Context: {self.context}"
-        return base
+# Removed the __str__ method as it duplicates the logic from the parent class.
