@@ -12,5 +12,4 @@ __all__ = [
     "InvalidTagError",
     "TaskStatusTransitionError",
     "InvalidProgressError",
-    "InvalidEmailFormatError",
 ]

@@ -64,13 +64,11 @@ class RegisterUserService(RegisterUserUseCase):
             self._logger.error("Failed to create user: %s", user_result.error.message)
             raise user_result.error
         else:
-            print(user_result)
             user = user_result.value
             encrypted_password = await self._password_hasher.hash(user.password)
 
             user.password = encrypted_password
 
             self._logger.info("User created successfully: %s", user)
-            print(user)
 
             return user
