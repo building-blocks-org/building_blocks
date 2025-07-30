@@ -6,7 +6,7 @@ from .domain_error import DomainError
 class DomainValidationError(DomainError):
     """
     Raised when one or more fields fail domain validation.
-    Contains a mapping of field_name -> error_message.
+    Contains a mapping of field_name -> error_message(s).
     """
 
     def __init__(
@@ -23,7 +23,6 @@ class DomainValidationError(DomainError):
         self.context = context or {}
 
     def __str__(self) -> str:
-        base = self.message
         if self.context:
-            base = f"{base} | Context: {self.context}"
-        return base
+            return f"{self.message} | Context: {self.context}"
+        return self.message

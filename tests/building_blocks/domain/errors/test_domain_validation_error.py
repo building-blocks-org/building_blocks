@@ -30,3 +30,10 @@ class TestDomainValidationError:
         error = DomainValidationError(message=error_message, context={"key": "value"})
 
         assert str(error) == f"{error_message} | Context: {{'key': 'value'}}"
+
+    def test_str_representation_without_context(self):
+        error_message = "This is a validation error."
+
+        error = DomainValidationError(message=error_message)
+
+        assert str(error) == error_message
