@@ -191,7 +191,7 @@ class User(AggregateRoot[UUID]):
         if not name or not name.strip():
             errors.append("cannot be empty.")
         if len(name) < 3:
-            errors.append("must be at least 3 character long.")
+            errors.append("must be at least 3 characters long.")
         if not all(char.isalpha() or char.isspace() for char in name):
             errors.append("must contain only alphabetic characters.")
 
