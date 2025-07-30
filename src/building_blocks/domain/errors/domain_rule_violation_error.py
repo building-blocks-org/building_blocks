@@ -15,7 +15,7 @@ class DomainRuleViolationError(DomainError):
         self.context = context or {}
 
     def __str__(self) -> str:
-        base = self.args[0] if self.args else self.__class__.__name__
+        base = self.message if self.message else self.__class__.__name__
         if self.rule:
             base = f"[{self.rule}] {base}"
         if self.context:
