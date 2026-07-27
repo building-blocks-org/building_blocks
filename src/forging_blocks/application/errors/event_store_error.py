@@ -1,10 +1,12 @@
 """Event store error type for application-level operations."""
+from collections.abc import Mapping
+
 
 from forging_blocks.foundation.errors.core import ErrorMessage
 from forging_blocks.foundation.errors.error import Error
 
 
-class EventStoreError(Error[dict[str, object]]):
+class EventStoreError[MetadataType: Mapping[str, object] = dict[str, object]](Error[MetadataType]):
     """Base error for event store operations."""
 
     def __init__(self, message: str) -> None:
