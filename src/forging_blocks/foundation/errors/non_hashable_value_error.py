@@ -3,12 +3,16 @@
 Used by `HashableConverter` when a value is neither natively hashable
 nor one of the supported convertible types (``list``, ``dict``).
 """
+from collections.abc import Mapping
+from typing import cast
+
+
 
 from forging_blocks.foundation.errors.core import ErrorMessage, ErrorMetadata
 from forging_blocks.foundation.errors.error import Error
 
 
-class NonHashableValueError(Error[dict[str, object]]):
+class NonHashableValueError[MetadataType: Mapping[str, object] = dict[str, object]](Error[MetadataType]):
     """Raised when a value cannot be made hashable during ``__hash__`` computation.
 
     ``@auto_hash`` converts ``list`` → ``tuple`` and ``dict`` →
@@ -29,5 +33,5 @@ class NonHashableValueError(Error[dict[str, object]]):
             f"Use tuple, frozenset, or immutable types "
             f"in fields hashed by @auto_hash."
         )
-        metadata = ErrorMetadata[dict[str, object]]({"type_name": type_name})
+        metadata = cast(ErrorMetadata[MetadataType], ErrorMetadata({"type_name": type_name}))
         super().__init__(message, metadata)
