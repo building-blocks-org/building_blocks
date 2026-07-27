@@ -32,7 +32,7 @@ class FieldErrors[ContainedErrorType: Error[dict[str, object]]](Error[dict[str, 
                 ErrorMessage("FieldErrors must contain at least one error and field defined.")
             )
 
-        message = ErrorMessage(f"{len(self._errors)} error(s) for field '{field}'.")
+        message = ErrorMessage(f"{len(self._errors)} error(s) for field '{field.value}'.")
 
         super().__init__(message=message)
 
