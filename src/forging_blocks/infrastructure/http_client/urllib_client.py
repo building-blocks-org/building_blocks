@@ -1,6 +1,6 @@
 """Standard-library HTTP client implementation of HttpClientPort.
 
-Uses ``urllib.request`` wrapped in ``asyncio.to_thread()`` to provide an
+Uses ``http.client`` wrapped in ``asyncio.to_thread()`` to provide an
 async HTTP client with zero external dependencies.
 
 This adapter is constrained to ``str`` request/response bodies — it natively
@@ -20,7 +20,7 @@ from forging_blocks.foundation.errors.configuration_error import ConfigurationEr
 
 
 class URLLibClient(HttpClientPort[str, str]):
-    """HTTP client backed by Python's ``urllib.request`` + ``asyncio.to_thread``.
+    """HTTP client backed by Python's ``http.client`` + ``asyncio.to_thread``.
 
     This adapter provides async HTTP methods without requiring external
     dependencies like ``httpx`` or ``aiohttp``. Request and response bodies
@@ -32,6 +32,7 @@ class URLLibClient(HttpClientPort[str, str]):
 
     Raises:
         OSError: On network or connection failures.
+        HTTPException: On HTTP protocol errors.
         ConfigurationError: On misconfigured URLs (e.g., non-HTTP schemes).
 
     """
@@ -53,10 +54,9 @@ class URLLibClient(HttpClientPort[str, str]):
 
         Returns:
             The response body decoded as UTF-8 string.
-
         Raises:
-            HTTPError: On 4xx/5xx HTTP responses.
-            URLError: On network or connection failures.
+            OSError: On network or connection failures.
+            HTTPException: On HTTP protocol errors.
 
         """
         http_headers: dict[str, str] = headers or {}
