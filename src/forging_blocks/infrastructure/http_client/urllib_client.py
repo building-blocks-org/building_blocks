@@ -30,6 +30,9 @@ class URLLibClient(HttpClientPort[str, str]):
         For production use with high concurrency or non-string payloads,
         consider an adapter backed by ``httpx`` or ``aiohttp`` instead.
 
+        The module and class names reference ``urllib`` for historical
+        compatibility; the implementation uses ``http.client`` internally.
+
     Raises:
         OSError: On network or connection failures.
         HTTPException: On HTTP protocol errors.
