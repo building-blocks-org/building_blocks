@@ -1,8 +1,8 @@
 from forging_blocks.foundation.errors.core import ErrorMessage
-from forging_blocks.foundation.errors.rule_violation_error import RuleViolationError
+from forging_blocks.foundation.errors.rule_violations.rule_violated_error import RuleViolatedError
 
 
-class ChangelogGenerationError(RuleViolationError):
+class ChangelogGenerationError(RuleViolatedError):
     """Raised when changelog generation fails."""
 
     def __init__(self, details: str) -> None:

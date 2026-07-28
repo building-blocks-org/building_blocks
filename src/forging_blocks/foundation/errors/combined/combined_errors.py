@@ -5,11 +5,11 @@ Defines CombinedErrors which aggregates multiple Error instances into one.
 
 from typing import Iterable, Iterator, Sequence
 
-from forging_blocks.foundation.errors.core import ErrorMessage
-from forging_blocks.foundation.errors.error import Error
+from ..base.error import Error
+from ..core import ErrorMessage
 
 
-class CombinedErrors[ErrorType: Error[dict[str, object]]](Error[dict[str, object]]):
+class CombinedErrors[ErrorType: Error[object]](Error[object]):
     """Base class for combining multiple errors into one."""
 
     def __init__(self, errors: Iterable[ErrorType]) -> None:

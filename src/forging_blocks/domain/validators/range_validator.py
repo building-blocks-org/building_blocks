@@ -2,8 +2,9 @@
 
 from typing import Any
 
+from forging_blocks.foundation.errors.base.rule_violation_error import RuleViolationError
 from forging_blocks.foundation.errors.core import ErrorMessage, ErrorMetadata
-from forging_blocks.foundation.errors.rule_violation_error import RuleViolationError
+from forging_blocks.foundation.errors.rule_violations.rule_violated_error import RuleViolatedError
 from forging_blocks.foundation.rules import ValidationRule
 
 
@@ -23,7 +24,7 @@ class RangeValidator(ValidationRule):
     def validate(self, value: Any) -> list[RuleViolationError]:
         if not isinstance(value, (int, float)):
             return [
-                RuleViolationError(
+                RuleViolatedError(
                     ErrorMessage(f"'{self._field}' must be a number."),
                     ErrorMetadata(context={"field": self._field, "code": "invalid_type"}),
                 )
@@ -33,7 +34,7 @@ class RangeValidator(ValidationRule):
 
         if self._minimum_value is not None and value < self._minimum_value:
             errors.append(
-                RuleViolationError(
+                RuleViolatedError(
                     ErrorMessage(f"'{self._field}' must be at least {self._minimum_value}."),
                     ErrorMetadata(context={"field": self._field, "code": "minimum_value"}),
                 )
@@ -41,7 +42,7 @@ class RangeValidator(ValidationRule):
 
         if self._maximum_value is not None and value > self._maximum_value:
             errors.append(
-                RuleViolationError(
+                RuleViolatedError(
                     ErrorMessage(f"'{self._field}' must be at most {self._maximum_value}."),
                     ErrorMetadata(context={"field": self._field, "code": "maximum_value"}),
                 )

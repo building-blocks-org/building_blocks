@@ -227,7 +227,7 @@ Abstract classes are skipped by `@auto_freeze`; only concrete leaf classes are f
 ### Errors
 
 ```python
-from forging_blocks.foundation.errors.error import Error
+from forging_blocks.foundation.errors.base.error import Error
 from forging_blocks.foundation.errors.core import ErrorMessage, ErrorMetadata
 
 class DomainRuleViolated(Error[dict[str, object]]):

@@ -63,10 +63,10 @@ class ResultSuccessUseCase(UseCasePort[str, Result[str, object]]):
         return Ok(f"result:{request}")
 
 
-class ResultErrorUseCase(UseCasePort[str, Result[str, Error[dict[str, object]]]]):
+class ResultErrorUseCase(UseCasePort[str, Result[str, Error[object]]]):
     """Returns Err with a framework Error."""
 
-    async def execute(self, request: str) -> Result[str, Error[dict[str, object]]]:
+    async def execute(self, request: str) -> Result[str, Error[object]]:
         error = Error(ErrorMessage("Use case failed"))
         return Err(error)
 

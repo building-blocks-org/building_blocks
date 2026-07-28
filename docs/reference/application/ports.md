@@ -58,7 +58,17 @@ class GetOrderHandler(QueryHandlerPort[GetOrderPayload, OrderDTO]):
 ### ValidationPort
 
 Validates commands and queries against business rules, returning structured
-`RuleViolationError` instances. No generic type parameters.
+``RuleViolationError`` instances. Parameterized on command and query payload types
+(``ValidationPort[CommandPayloadType, QueryPayloadType]``).
+
+```python
+class OrderValidator(ValidationPort[dict[str, object], dict[str, object]]):
+    async def validate_command(self, command: Command[dict[str, object]]) -> list[RuleViolationError]:
+        ...
+
+    async def validate_query(self, query: Query[dict[str, object]]) -> list[RuleViolationError]:
+        ...
+```
 
 ### AuthorizationPort
 

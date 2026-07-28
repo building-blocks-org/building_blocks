@@ -1,12 +1,10 @@
 """Event bus error type for application-level operations."""
 
-from collections.abc import Mapping
-
+from forging_blocks.foundation.errors.base.error import Error
 from forging_blocks.foundation.errors.core import ErrorMessage
-from forging_blocks.foundation.errors.error import Error
 
 
-class EventBusError[MetadataType: Mapping[str, object] = dict[str, object]](Error[MetadataType]):
+class EventBusError[MetadataValueType = object](Error[MetadataValueType]):
     """Base error for event bus operations."""
 
     def __init__(self, message: str) -> None:
