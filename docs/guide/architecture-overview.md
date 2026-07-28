@@ -1,11 +1,11 @@
 # ForgingBlocks — Simplified Architecture Overview
 
-This document provides a clear, layered explanation of how applications built with ForgingBlocks are typically structured.
+This document provides a clear, layered explanation of forging-blocks' internal structure using **three focused diagrams**, each capturing a single conceptual dimension.
 It replaces the previous all-in-one diagram with **three focused diagrams**, each capturing a single conceptual dimension.
 ---
 ## Quick summary
 
-This document provides a **clear, layered explanation** of how ForgingBlocks applications are typically structured, using **three focused diagrams** (each capturing one conceptual dimension) instead of one overwhelming diagram.
+This document provides a **clear, layered explanation** of forging-blocks' internal structure using **three focused diagrams** (each capturing one conceptual dimension) instead of one overwhelming diagram.
 
 Diagrams:
 1. **High-Level Architectural Layers** — Request flow: Presentation → Application → Domain; Infrastructure implements outbound ports
@@ -82,7 +82,7 @@ flowchart LR
 
 # 4. Summary
 
-These three diagrams together provide a cohesive view of how ForgingBlocks applications are structured:
+These three diagrams together provide a cohesive view of forging-blocks' internal structure:
 
 - **Layers Diagram** → overall system flow
 - **Domain Composition Diagram** → internal domain structure
