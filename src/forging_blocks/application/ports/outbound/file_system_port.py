@@ -15,8 +15,6 @@ class FileSystemPort(
 ):
     """Abstract contract for file system operations.
 
-    Infrastructure implementations must explicitly inherit this class.
-
     Responsibilities:
         - Read and write file contents as bytes.
         - Delete files and check existence.

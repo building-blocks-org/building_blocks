@@ -23,7 +23,7 @@ class QueryFetcherPort[QueryPayloadType, QueryFetcherResult](
 ):
     """ABC for dispatching query messages asynchronously.
 
-    Infrastructure implementations determine delivery semantics.
+    Delivery semantics are decoupled from this contract.
     """
 
     @abstractmethod

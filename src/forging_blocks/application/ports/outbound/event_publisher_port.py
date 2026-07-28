@@ -21,10 +21,7 @@ from forging_blocks.foundation.ports import OutboundPort
 class EventPublisherPort[EventPayloadType](
     OutboundPort,
 ):
-    """ABC for publishing domain events asynchronously.
-
-    Infrastructure implementations must explicitly inherit this class.
-    """
+    """ABC for publishing domain events asynchronously."""
 
     @abstractmethod
     async def publish(self, event: Event[EventPayloadType]) -> None:

@@ -25,7 +25,8 @@ class MessageBusPort[MessageType, MessageBusResultType](
     """Outbound port representing a generic asynchronous message bus.
 
     A MessageBusPort dispatches messages to infrastructure or internal handlers.
-    Implementations vary from simple function routers to networked brokers.
+    Dispatch routing is decoupled from message structure — the bus may route
+    synchronously or asynchronously without changing the contract.
     """
 
     @abstractmethod

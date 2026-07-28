@@ -22,9 +22,8 @@ class NotifierPort[NotificationType](
 ):
     """Outbound port for sending asynchronous notifications.
 
-    Implementers integrate with concrete notification systems. The
-    application blocks must not depend on infrastructure details beyond this
-    abstraction.
+    Defines an asynchronous notification boundary decoupled from delivery
+    mechanisms.
     """
 
     @abstractmethod
