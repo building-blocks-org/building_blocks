@@ -377,23 +377,7 @@
          <lastmod>2026-07-28</lastmod>
     </url>
     <url>
-         <loc>https://forging-blocks-org.github.io/dev/reference/autodoc/foundation/errors/combined_errors/</loc>
-         <lastmod>2026-07-28</lastmod>
-    </url>
-    <url>
          <loc>https://forging-blocks-org.github.io/dev/reference/autodoc/foundation/errors/configuration_error/</loc>
-         <lastmod>2026-07-28</lastmod>
-    </url>
-    <url>
-         <loc>https://forging-blocks-org.github.io/dev/reference/autodoc/foundation/errors/core/</loc>
-         <lastmod>2026-07-28</lastmod>
-    </url>
-    <url>
-         <loc>https://forging-blocks-org.github.io/dev/reference/autodoc/foundation/errors/error/</loc>
-         <lastmod>2026-07-28</lastmod>
-    </url>
-    <url>
-         <loc>https://forging-blocks-org.github.io/dev/reference/autodoc/foundation/errors/field_errors/</loc>
          <lastmod>2026-07-28</lastmod>
     </url>
     <url>
@@ -413,11 +397,55 @@
          <lastmod>2026-07-28</lastmod>
     </url>
     <url>
-         <loc>https://forging-blocks-org.github.io/dev/reference/autodoc/foundation/errors/rule_violation_error/</loc>
+         <loc>https://forging-blocks-org.github.io/dev/reference/autodoc/foundation/errors/base/error/</loc>
          <lastmod>2026-07-28</lastmod>
     </url>
     <url>
-         <loc>https://forging-blocks-org.github.io/dev/reference/autodoc/foundation/errors/validation_error/</loc>
+         <loc>https://forging-blocks-org.github.io/dev/reference/autodoc/foundation/errors/base/rule_violation_error/</loc>
+         <lastmod>2026-07-28</lastmod>
+    </url>
+    <url>
+         <loc>https://forging-blocks-org.github.io/dev/reference/autodoc/foundation/errors/base/validation_error/</loc>
+         <lastmod>2026-07-28</lastmod>
+    </url>
+    <url>
+         <loc>https://forging-blocks-org.github.io/dev/reference/autodoc/foundation/errors/combined/combined_errors/</loc>
+         <lastmod>2026-07-28</lastmod>
+    </url>
+    <url>
+         <loc>https://forging-blocks-org.github.io/dev/reference/autodoc/foundation/errors/combined/combined_rule_violation_errors/</loc>
+         <lastmod>2026-07-28</lastmod>
+    </url>
+    <url>
+         <loc>https://forging-blocks-org.github.io/dev/reference/autodoc/foundation/errors/combined/combined_validation_errors/</loc>
+         <lastmod>2026-07-28</lastmod>
+    </url>
+    <url>
+         <loc>https://forging-blocks-org.github.io/dev/reference/autodoc/foundation/errors/combined/field_errors/</loc>
+         <lastmod>2026-07-28</lastmod>
+    </url>
+    <url>
+         <loc>https://forging-blocks-org.github.io/dev/reference/autodoc/foundation/errors/combined/validation_field_errors/</loc>
+         <lastmod>2026-07-28</lastmod>
+    </url>
+    <url>
+         <loc>https://forging-blocks-org.github.io/dev/reference/autodoc/foundation/errors/core/error_message/</loc>
+         <lastmod>2026-07-28</lastmod>
+    </url>
+    <url>
+         <loc>https://forging-blocks-org.github.io/dev/reference/autodoc/foundation/errors/core/error_metadata/</loc>
+         <lastmod>2026-07-28</lastmod>
+    </url>
+    <url>
+         <loc>https://forging-blocks-org.github.io/dev/reference/autodoc/foundation/errors/core/field_reference/</loc>
+         <lastmod>2026-07-28</lastmod>
+    </url>
+    <url>
+         <loc>https://forging-blocks-org.github.io/dev/reference/autodoc/foundation/errors/rule_violations/rule_violated_error/</loc>
+         <lastmod>2026-07-28</lastmod>
+    </url>
+    <url>
+         <loc>https://forging-blocks-org.github.io/dev/reference/autodoc/foundation/errors/validation/validation_failed_error/</loc>
          <lastmod>2026-07-28</lastmod>
     </url>
     <url>
