@@ -3,18 +3,16 @@
 Defines the base Error type that all structured errors inherit from.
 """
 
-from collections.abc import Mapping
-from typing import cast
-
 from forging_blocks.foundation.debuggable import Debuggable
-from forging_blocks.foundation.errors.core import ErrorMessage, ErrorMetadata
+
+from ..core import ErrorMessage, ErrorMetadata
 
 
-class Error[MetadataType: Mapping[str, object]](Exception, Debuggable):
+class Error[MetadataValueType](Exception, Debuggable):
     """Base class for all structured errors that can be raised like standard Exceptions."""
 
     def __init__(
-        self, message: ErrorMessage, metadata: ErrorMetadata[MetadataType] | None = None
+        self, message: ErrorMessage, metadata: ErrorMetadata[MetadataValueType] | None = None
     ) -> None:
         """Initialise the error with a structured message and optional metadata.
 
@@ -27,7 +25,7 @@ class Error[MetadataType: Mapping[str, object]](Exception, Debuggable):
         """
         super().__init__(message.value)
         self._message = message
-        self._metadata = metadata or ErrorMetadata[MetadataType](context=cast(MetadataType, {}))
+        self._metadata = metadata or ErrorMetadata[MetadataValueType]()
 
     def __str__(self) -> str:
         context_str = f" | Context: {self._metadata.context}" if self._metadata.context else ""
@@ -45,12 +43,12 @@ class Error[MetadataType: Mapping[str, object]](Exception, Debuggable):
         return self._message
 
     @property
-    def metadata(self) -> ErrorMetadata[MetadataType]:
+    def metadata(self) -> ErrorMetadata[MetadataValueType]:
         """Structured metadata with additional context."""
         return self._metadata
 
     @property
-    def context(self) -> MetadataType:
+    def context(self) -> dict[str, MetadataValueType]:
         """Shortcut for accessing the metadata context."""
         return self._metadata.context
 

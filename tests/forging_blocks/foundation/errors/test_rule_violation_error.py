@@ -4,6 +4,7 @@ import pytest
 from forging_blocks.foundation import (
     CombinedRuleViolationErrors,
     ErrorMessage,
+    RuleViolatedError,
     RuleViolationError,
 )
 
@@ -13,7 +14,7 @@ class TestRuleViolationError:
     def test_constructor(self) -> None:
         error_message = ErrorMessage("Test rule violation error")
 
-        error = RuleViolationError(error_message)
+        error = RuleViolatedError(error_message)
 
         assert isinstance(error, RuleViolationError)
 
@@ -22,7 +23,7 @@ class TestRuleViolationError:
 class TestCombinedRuleViolationErrors:
     def test_constructor(self) -> None:
         error_message = ErrorMessage("Test rule violation error")
-        error = RuleViolationError(error_message)
+        error = RuleViolatedError(error_message)
 
         combined_errors = CombinedRuleViolationErrors([error])
 

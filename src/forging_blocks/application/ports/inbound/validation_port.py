@@ -10,13 +10,14 @@ Non-Responsibilities:
 """
 
 from abc import abstractmethod
-from typing import Any
 
-from forging_blocks.foundation.errors.rule_violation_error import RuleViolationError
+from forging_blocks.domain.messages.command import Command
+from forging_blocks.domain.messages.query import Query
+from forging_blocks.foundation.errors.base.rule_violation_error import RuleViolationError
 from forging_blocks.foundation.ports import InboundPort
 
 
-class ValidationPort(InboundPort):
+class ValidationPort[CommandPayloadType, QueryPayloadType](InboundPort):
     """Inbound port for domain command and query validation.
 
     Responsibilities:
@@ -29,11 +30,13 @@ class ValidationPort(InboundPort):
     """
 
     @abstractmethod
-    async def validate_command(self, command: Any) -> list[RuleViolationError]:
+    async def validate_command(
+        self, command: Command[CommandPayloadType]
+    ) -> list[RuleViolationError]:
         """Validate a domain command."""
         ...
 
     @abstractmethod
-    async def validate_query(self, query: Any) -> list[RuleViolationError]:
+    async def validate_query(self, query: Query[QueryPayloadType]) -> list[RuleViolationError]:
         """Validate a domain query."""
         ...

@@ -1,10 +1,10 @@
 """Error raised when a release branch already exists with the same changes."""
 
+from forging_blocks.foundation.errors.base.error import Error
 from forging_blocks.foundation.errors.core import ErrorMessage
-from forging_blocks.foundation.errors.error import Error
 
 
-class ReleaseBranchExistsError(Error[dict[str, object]]):
+class ReleaseBranchExistsError(Error[str]):
     """Raised when attempting to create a release branch that already exists with same changes."""
 
     def __init__(self, branch_name: str) -> None:

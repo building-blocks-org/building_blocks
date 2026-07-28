@@ -5,13 +5,11 @@ used with invalid configuration (e.g., disallowed URL schemes, invalid
 paths, or misconfigured parameters).
 """
 
-from collections.abc import Mapping
-
+from forging_blocks.foundation.errors.base.error import Error
 from forging_blocks.foundation.errors.core import ErrorMessage
-from forging_blocks.foundation.errors.error import Error
 
 
-class ConfigurationError(Error[Mapping[str, object]]):
+class ConfigurationError(Error[object]):
     """Raised when an infrastructure adapter receives invalid configuration.
 
     This error signals operational misconfiguration at runtime — for example,

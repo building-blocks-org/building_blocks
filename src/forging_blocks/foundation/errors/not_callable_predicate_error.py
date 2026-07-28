@@ -5,13 +5,11 @@ predicate is not callable. This error is typically raised by ExpressionSpecifica
 when an invalid predicate is provided during initialization.
 """
 
-from typing import Mapping
-
+from forging_blocks.foundation.errors.base.error import Error
 from forging_blocks.foundation.errors.core import ErrorMessage
-from forging_blocks.foundation.errors.error import Error
 
 
-class NotCallablePredicateError[MetadataType: Mapping[str, object]](Error[MetadataType]):
+class NotCallablePredicateError(Error[object]):
     """Exception raised when a specification predicate is not callable.
 
     This error is raised by ExpressionSpecification when the provided predicate

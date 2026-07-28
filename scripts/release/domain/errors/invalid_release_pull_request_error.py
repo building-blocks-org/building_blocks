@@ -1,6 +1,6 @@
-from forging_blocks.foundation import ErrorMessage, ValidationError
+from forging_blocks.foundation import ErrorMessage, ValidationFailedError
 
 
-class InvalidReleasePullRequestError(ValidationError):
+class InvalidReleasePullRequestError(ValidationFailedError):
     def __init__(self, reason: str) -> None:
         super().__init__(ErrorMessage(reason))

@@ -1,7 +1,7 @@
-from forging_blocks.foundation import ErrorMessage, ValidationError
+from forging_blocks.foundation import ErrorMessage, ValidationFailedError
 
 
-class InvalidReleaseBranchNameError(ValidationError):
+class InvalidReleaseBranchNameError(ValidationFailedError):
     def __init__(self, value: str) -> None:
         super().__init__(
             ErrorMessage(

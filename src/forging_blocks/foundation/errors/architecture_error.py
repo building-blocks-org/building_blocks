@@ -4,13 +4,11 @@ Defines ``ArchitectureError``, raised at class-definition time when a port
 subclass violates Clean Architecture dependency rules.
 """
 
-from collections.abc import Mapping
-
+from forging_blocks.foundation.errors.base.error import Error
 from forging_blocks.foundation.errors.core import ErrorMessage
-from forging_blocks.foundation.errors.error import Error
 
 
-class ArchitectureError(Error[Mapping[str, object]]):
+class ArchitectureError(Error[object]):
     """Raised when a port subclass violates dependency direction rules.
 
     Inbound ports may only depend on OutboundPort instances; Outbound ports

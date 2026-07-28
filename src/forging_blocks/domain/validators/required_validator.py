@@ -2,8 +2,9 @@
 
 from typing import Any
 
+from forging_blocks.foundation.errors.base.rule_violation_error import RuleViolationError
 from forging_blocks.foundation.errors.core import ErrorMessage, ErrorMetadata
-from forging_blocks.foundation.errors.rule_violation_error import RuleViolationError
+from forging_blocks.foundation.errors.rule_violations.rule_violated_error import RuleViolatedError
 from forging_blocks.foundation.rules import ValidationRule
 
 
@@ -16,7 +17,7 @@ class RequiredValidator(ValidationRule):
     def validate(self, value: Any) -> list[RuleViolationError]:
         if value is None or value == "":
             return [
-                RuleViolationError(
+                RuleViolatedError(
                     ErrorMessage(f"'{self._field}' is required."),
                     ErrorMetadata(context={"field": self._field, "code": "required"}),
                 )
