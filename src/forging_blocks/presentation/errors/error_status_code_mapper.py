@@ -10,8 +10,8 @@ class ErrorStatusCodeMapper:
     the error type.
 
     Default mapping:
-        - ``ValidationError`` / ``ValidationFailed`` → 400
-        - ``RuleViolationError`` / ``RuleViolated``   → 409
+        - ``ValidationError`` / ``ValidationFailedError`` → 400
+        - ``RuleViolationError`` / ``RuleViolatedError``   → 409
         - ``CombinedErrors``/group                    → 422
         - anything else                               → 500
     """
@@ -39,11 +39,11 @@ class ErrorStatusCodeMapper:
             return 500
         status_map: dict[str, int] = {
             "ValidationError": 400,
-            "ValidationFailed": 400,
+            "ValidationFailedError": 400,
             "ValidationFieldErrors": 400,
             "CombinedValidationErrors": 400,
             "RuleViolationError": 409,
-            "RuleViolated": 409,
+            "RuleViolatedError": 409,
             "CombinedRuleViolationErrors": 409,
             "CombinedErrors": 422,
             "FieldErrors": 422,

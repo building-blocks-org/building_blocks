@@ -9,4 +9,4 @@ from .error import Error
 
 
 class ValidationError(Error[object], ABC):
-    """Base class for validation errors — abstract, use ``ValidationFailed`` to throw."""
+    """Base class for validation errors — abstract, use ``ValidationFailedError`` to throw."""

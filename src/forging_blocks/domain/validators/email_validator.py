@@ -5,7 +5,7 @@ from typing import Any
 
 from forging_blocks.foundation.errors.base.rule_violation_error import RuleViolationError
 from forging_blocks.foundation.errors.core import ErrorMessage, ErrorMetadata
-from forging_blocks.foundation.errors.rule_violated import RuleViolated
+from forging_blocks.foundation.errors.rule_violated_error import RuleViolatedError
 from forging_blocks.foundation.rules import ValidationRule
 
 
@@ -23,7 +23,7 @@ class EmailValidator(ValidationRule):
     def validate(self, value: Any) -> list[RuleViolationError]:
         if value is None or not isinstance(value, str) or not self._EMAIL_PATTERN.match(value):
             return [
-                RuleViolated(
+                RuleViolatedError(
                     ErrorMessage(f"'{self._field}' must be a valid email address."),
                     ErrorMetadata(context={"field": self._field, "code": "invalid_email"}),
                 )

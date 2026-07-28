@@ -6,7 +6,7 @@ from forging_blocks.foundation import (
     ErrorMessage,
     FieldReference,
     ValidationError,
-    ValidationFailed,
+    ValidationFailedError,
     ValidationFieldErrors,
 )
 
@@ -16,7 +16,7 @@ class TestValidationError:
     def test_constructor(self) -> None:
         message = ErrorMessage("Validation failed")
 
-        error = ValidationFailed(message)
+        error = ValidationFailedError(message)
 
         assert isinstance(error, ValidationError)
 
@@ -25,7 +25,7 @@ class TestValidationError:
 class TestValidationFieldErrors:
     def test_constructor(self) -> None:
         message = ErrorMessage("Username validation failed")
-        error = ValidationFailed(message)
+        error = ValidationFailedError(message)
         field = FieldReference("username")
 
         errors = ValidationFieldErrors(field, [error])
@@ -36,7 +36,7 @@ class TestValidationFieldErrors:
 class TesCombinedValidationErrors:
     def test_constructor(self) -> None:
         message = ErrorMessage("Username validation failed")
-        error = ValidationFailed(message)
+        error = ValidationFailedError(message)
         field = FieldReference("username")
         field_errors = ValidationFieldErrors(field, [error])
 

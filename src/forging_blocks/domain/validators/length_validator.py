@@ -4,7 +4,7 @@ from typing import Any
 
 from forging_blocks.foundation.errors.base.rule_violation_error import RuleViolationError
 from forging_blocks.foundation.errors.core import ErrorMessage, ErrorMetadata
-from forging_blocks.foundation.errors.rule_violated import RuleViolated
+from forging_blocks.foundation.errors.rule_violated_error import RuleViolatedError
 from forging_blocks.foundation.rules import ValidationRule
 
 
@@ -24,7 +24,7 @@ class LengthValidator(ValidationRule):
     def validate(self, value: Any) -> list[RuleViolationError]:
         if not isinstance(value, str):
             return [
-                RuleViolated(
+                RuleViolatedError(
                     ErrorMessage(f"'{self._field}' must be a string."),
                     ErrorMetadata(context={"field": self._field, "code": "invalid_type"}),
                 )
@@ -34,7 +34,7 @@ class LengthValidator(ValidationRule):
 
         if len(value) < self._minimum_length:
             errors.append(
-                RuleViolated(
+                RuleViolatedError(
                     ErrorMessage(
                         f"'{self._field}' must be at least {self._minimum_length} characters."
                     ),
@@ -44,7 +44,7 @@ class LengthValidator(ValidationRule):
 
         if self._maximum_length is not None and len(value) > self._maximum_length:
             errors.append(
-                RuleViolated(
+                RuleViolatedError(
                     ErrorMessage(
                         f"'{self._field}' must be at most {self._maximum_length} characters."
                     ),

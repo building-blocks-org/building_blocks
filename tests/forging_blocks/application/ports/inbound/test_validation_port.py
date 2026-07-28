@@ -1,7 +1,7 @@
 import pytest
 
 from forging_blocks.application.ports.inbound.validation_port import ValidationPort
-from forging_blocks.foundation.errors import RuleViolated, RuleViolationError
+from forging_blocks.foundation.errors import RuleViolatedError, RuleViolationError
 from forging_blocks.foundation.errors.core import ErrorMessage
 
 
@@ -10,7 +10,7 @@ class TestValidationPort:
     async def test_when_concrete_implementation_then_returns_command_errors(self) -> None:
         class StrictValidator(ValidationPort):
             async def validate_command(self, command: object) -> list[RuleViolationError]:
-                return [RuleViolated(ErrorMessage("invalid"))]
+                return [RuleViolatedError(ErrorMessage("invalid"))]
 
             async def validate_query(self, query: object) -> list[RuleViolationError]:
                 del query
@@ -20,7 +20,7 @@ class TestValidationPort:
         errors = await service.validate_command("data")
 
         assert len(errors) == 1
-        assert str(errors[0]) == "RuleViolated: invalid"
+        assert str(errors[0]) == "RuleViolatedError: invalid"
 
     async def test_when_valid_query_then_returns_empty(self) -> None:
         class PermissiveValidator(ValidationPort):

@@ -9,6 +9,6 @@ from .error import Error
 
 
 class RuleViolationError(Error[object], ABC):
-    """Base class for rule violation errors — abstract, use ``RuleViolated`` to throw."""
+    """Base class for rule violation errors — abstract, use ``RuleViolatedError`` to throw."""
 
     ...

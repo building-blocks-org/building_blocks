@@ -3,11 +3,11 @@
 from forging_blocks.foundation.errors.base.validation_error import ValidationError
 
 
-class ValidationFailed(ValidationError):
+class ValidationFailedError(ValidationError):
     """A concrete validation failure that can be thrown when input validation fails.
 
     This is the concrete leaf class for validation errors. ``ValidationError``
     is the abstract base; code that constructs and raises a validation error
-    MUST use ``ValidationFailed``.
+    MUST use ``ValidationFailedError``.
 
     """

@@ -8,7 +8,7 @@ from typing import Iterable, Iterator, Sequence
 
 from ..base.error import Error
 from ..core import ErrorMessage, FieldReference
-from ..rule_violated import RuleViolated
+from ..rule_violated_error import RuleViolatedError
 
 
 class FieldErrors[ContainedErrorType: Error[object]](Error[object]):
@@ -28,7 +28,7 @@ class FieldErrors[ContainedErrorType: Error[object]](Error[object]):
         self._errors: Sequence[ContainedErrorType] = tuple(errors)
 
         if not self._errors or not field or not field.value:
-            raise RuleViolated(
+            raise RuleViolatedError(
                 ErrorMessage("FieldErrors must contain at least one error and field defined.")
             )
 
