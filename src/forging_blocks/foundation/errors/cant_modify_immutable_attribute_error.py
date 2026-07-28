@@ -1,14 +1,15 @@
 """Module for CantModifyImmutableAttributeError exception."""
+
 from collections.abc import Mapping
 from typing import cast
-
-
 
 from forging_blocks.foundation.errors.core import ErrorMessage, ErrorMetadata
 from forging_blocks.foundation.errors.error import Error
 
 
-class CantModifyImmutableAttributeError[MetadataType: Mapping[str, object] = dict[str, object]](Error[MetadataType]):
+class CantModifyImmutableAttributeError[MetadataType: Mapping[str, object] = dict[str, object]](
+    Error[MetadataType]
+):
     """Raised when there is an attempt to modify an immutable attribute of an object."""
 
     def __init__(self, class_name: str, attribute_name: str):
@@ -22,10 +23,13 @@ class CantModifyImmutableAttributeError[MetadataType: Mapping[str, object] = dic
         message = ErrorMessage(
             f"Cannot modify immutable attribute '{attribute_name}' of class '{class_name}'."
         )
-        metadata = cast(ErrorMetadata[MetadataType], ErrorMetadata(
-            {
-                "class_name": class_name,
-                "attribute_name": attribute_name,
-            }
-        ))
+        metadata = cast(
+            ErrorMetadata[MetadataType],
+            ErrorMetadata(
+                {
+                    "class_name": class_name,
+                    "attribute_name": attribute_name,
+                }
+            ),
+        )
         super().__init__(message, metadata)
