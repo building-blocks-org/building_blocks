@@ -1,7 +1,7 @@
 """Error raised when a release branch already exists with the same changes."""
 
+from forging_blocks.foundation.errors.base.error import Error
 from forging_blocks.foundation.errors.core import ErrorMessage
-from forging_blocks.foundation.errors.error import Error
 
 
 class ReleaseBranchExistsError(Error[dict[str, object]]):
