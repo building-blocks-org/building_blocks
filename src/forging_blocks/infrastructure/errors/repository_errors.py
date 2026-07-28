@@ -4,11 +4,11 @@ Provides structured error types for repository operations such as
 save failures, deletion of non-existent aggregates, and retrieval errors.
 """
 
+from forging_blocks.foundation.errors.base.error import Error
 from forging_blocks.foundation.errors.core import ErrorMessage
-from forging_blocks.foundation.errors.error import Error
 
 
-class RepositoryError(Error[dict[str, object]]):
+class RepositoryError[MetadataValueType = object](Error[MetadataValueType]):
     """Generic error raised when a repository operation fails.
 
     This is the base error for all repository-level failures. Concrete
@@ -16,7 +16,7 @@ class RepositoryError(Error[dict[str, object]]):
     """
 
 
-class RepositoryNotFoundError(RepositoryError):
+class RepositoryNotFoundError(RepositoryError[object]):
     """Error raised when attempting to delete or retrieve an aggregate that does not exist."""
 
     @classmethod

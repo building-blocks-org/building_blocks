@@ -4,7 +4,6 @@
 values, plain ``Exception`` objects, and unknown types via a fallback.
 """
 
-from collections.abc import Mapping
 from dataclasses import replace
 from typing import TYPE_CHECKING, cast
 
@@ -63,22 +62,18 @@ class ErrorPresenter:
         from forging_blocks.foundation.result import Err
 
         if isinstance(error, CombinedErrors):
-            return self._from_combined_errors(
-                cast("CombinedErrors[Error[dict[str, object]]]", error)
-            )
+            return self._from_combined_errors(cast("CombinedErrors[Error[object]]", error))
         if isinstance(error, FieldErrors):
-            return self._from_field_errors(cast("FieldErrors[Error[dict[str, object]]]", error))
+            return self._from_field_errors(cast("FieldErrors[Error[object]]", error))
         if isinstance(error, Error):
-            return self._from_framework_error(cast("Error[Mapping[str, object]]", error))
+            return self._from_framework_error(cast("Error[object]", error))
         if isinstance(error, Err):
             return self._from_result_err(cast("Err[object, object]", error))
         if isinstance(error, Exception):
             return self._from_exception(error)
         return self._from_unknown(error)
 
-    def _from_framework_error(
-        self, error: "Error[Mapping[str, object]]"
-    ) -> list[ErrorMessageModel]:
+    def _from_framework_error(self, error: "Error[object]") -> list[ErrorMessageModel]:
         """Convert a framework ``Error`` whose ``ErrorMetadata`` may hold
         *detail* and *field* context.
         """
@@ -111,7 +106,7 @@ class ErrorPresenter:
         ]
 
     def _from_combined_errors(
-        self, error: "CombinedErrors[Error[dict[str, object]]]"
+        self, error: "CombinedErrors[Error[object]]"
     ) -> list[ErrorMessageModel]:
         """Decompose ``CombinedErrors`` into its individual child messages.
 
@@ -134,9 +129,7 @@ class ErrorPresenter:
             )
         return messages
 
-    def _from_field_errors(
-        self, error: "FieldErrors[Error[dict[str, object]]]"
-    ) -> list[ErrorMessageModel]:
+    def _from_field_errors(self, error: "FieldErrors[Error[object]]") -> list[ErrorMessageModel]:
         """Decompose ``FieldErrors`` into per-field messages.
 
         The parent field name is applied only when a child does not
@@ -154,15 +147,15 @@ class ErrorPresenter:
         return messages
 
     @staticmethod
-    def _extract_detail(error: "Error[Mapping[str, object]]") -> str | None:
+    def _extract_detail(error: "Error[object]") -> str | None:
         """Pull a human-readable detail string from the error metadata."""
-        ctx: Mapping[str, object] = error.metadata.context
+        ctx: dict[str, object] = error.metadata.context
         detail = ctx.get("detail")
         return detail if isinstance(detail, str) else None
 
     @staticmethod
-    def _extract_field(error: "Error[Mapping[str, object]]") -> str | None:
+    def _extract_field(error: "Error[object]") -> str | None:
         """Pull a field reference from the error metadata."""
-        ctx: Mapping[str, object] = error.metadata.context
+        ctx: dict[str, object] = error.metadata.context
         field = ctx.get("field")
         return field if isinstance(field, str) else None
