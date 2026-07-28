@@ -35,7 +35,7 @@ class URLLibClient(HttpClientPort[str, str]):
 
     Raises:
         OSError: On network or connection failures.
-        HTTPException: On HTTP protocol errors.
+        http.client.HTTPException: On HTTP protocol errors.
         ConfigurationError: On misconfigured URLs (e.g., non-HTTP schemes).
 
     """
@@ -59,7 +59,7 @@ class URLLibClient(HttpClientPort[str, str]):
             The response body decoded as UTF-8 string.
         Raises:
             OSError: On network or connection failures.
-            HTTPException: On HTTP protocol errors.
+            http.client.HTTPException: On HTTP protocol errors.
 
         """
         http_headers: dict[str, str] = headers or {}
