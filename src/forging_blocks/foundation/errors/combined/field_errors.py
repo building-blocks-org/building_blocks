@@ -22,7 +22,7 @@ class FieldErrors[ContainedErrorType: Error[object]](Error[object]):
             errors: The errors associated with *field*. Must be non-empty.
 
         Raises:
-            RuleViolationError: If *errors* is empty or *field* is falsy.
+            RuleViolatedError: If *errors* is empty or *field* is falsy.
         """
         self._field = field
         self._errors: Sequence[ContainedErrorType] = tuple(errors)
