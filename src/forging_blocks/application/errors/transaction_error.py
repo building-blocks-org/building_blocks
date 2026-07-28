@@ -1,6 +1,6 @@
 """Error raised when a transaction operation fails."""
-from collections.abc import Mapping
 
+from collections.abc import Mapping
 
 from forging_blocks.foundation.errors.error import Error
 

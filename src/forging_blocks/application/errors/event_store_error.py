@@ -1,6 +1,6 @@
 """Event store error type for application-level operations."""
-from collections.abc import Mapping
 
+from collections.abc import Mapping
 
 from forging_blocks.foundation.errors.core import ErrorMessage
 from forging_blocks.foundation.errors.error import Error
