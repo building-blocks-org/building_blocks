@@ -20,6 +20,7 @@ repos:
         exclude: "^docs/assets/"
       - id: check-merge-conflict
       - id: debug-statements
+        language_version: "3.14"
       - id: check-toml
 
   - repo: local
