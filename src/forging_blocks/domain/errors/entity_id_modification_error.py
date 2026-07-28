@@ -1,10 +1,10 @@
 """Module defining the EntityIdModificationError exception."""
 
+from forging_blocks.foundation.errors.base.error import Error
 from forging_blocks.foundation.errors.core import ErrorMessage, ErrorMetadata
-from forging_blocks.foundation.errors.error import Error
 
 
-class EntityIdModificationError(Error[dict[str, object]]):
+class EntityIdModificationError(Error[object]):
     """Raised when there is an attempt to modify an entity's identifier after it has been set."""
 
     def __init__(self, class_name: str, attribute_name: str, current_value: object) -> None:
@@ -20,7 +20,7 @@ class EntityIdModificationError(Error[dict[str, object]]):
             f"Cannot modify '{attribute_name}' of {class_name} once set "
             f"(current value={current_value!r})."
         )
-        metadata = ErrorMetadata[dict[str, object]](
+        metadata = ErrorMetadata(
             {
                 "class_name": class_name,
                 "attribute_name": attribute_name,
