@@ -18,9 +18,9 @@ class AggregateRepository[
     TAggregateRoot: AggregateRoot[UUID, Any],
     TId: UUID,
 ](InMemoryRepository[TAggregateRoot, TId]):
-    """RepositoryPort for AggregateRoot persistence with event sourcing.
-    Extends InMemoryRepository with event store integration for
-    event-sourced aggregates.
+    """RepositoryPort for persisting event-sourced aggregates.
+    Coordinates event store writes with in-memory snapshot caching
+    for AggregateRoot subtypes.
 
     Type Parameters:
         EventPayloadType: The event payload type tracked by the event store.

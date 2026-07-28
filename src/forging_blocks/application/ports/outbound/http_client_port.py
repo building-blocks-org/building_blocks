@@ -23,8 +23,6 @@ class HttpClientPort[RequestType, ResponseType](
 ):
     """ABC for making HTTP requests to external services.
 
-    Infrastructure implementations must explicitly inherit this class.
-
     Type Parameters:
         RequestType: The type of the request body.
         ResponseType: The type of the response body.
