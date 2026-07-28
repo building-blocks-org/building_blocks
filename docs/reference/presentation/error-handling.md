@@ -1,5 +1,16 @@
 # Error Handling
 
+The presentation error pipeline converts errors from any source (domain exceptions,
+application failures, infrastructure problems) into a consistent, renderable form.
+Three components compose to form the pipeline:
+
+1. **ErrorPresenter** adapts errors into view models — it understands framework
+   `Error` objects, `Result.Err` values, plain exceptions, and aggregate errors.
+2. **ErrorStatusCodeMapper** assigns HTTP-like status codes so clients can
+   distinguish validation errors (400) from rule violations (409).
+3. **ErrorViewModel** carries the structured output — a list of messages with
+   title, detail, field, code, and status fields.
+
 ## Error Presenter
 
 `ErrorPresenter` converts errors into `ErrorViewModel` instances.

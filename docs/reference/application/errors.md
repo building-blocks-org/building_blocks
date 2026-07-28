@@ -1,6 +1,11 @@
 # Application Errors
 
 Application-level errors represent failures that occur during use case execution.
+They are distinct from domain errors (which describe rule violations in the problem
+space) and foundation errors (which describe general-purpose failures like invalid
+arguments). Application errors signal infrastructure or coordination problems:
+a transaction that won't commit, an event store that can't append, a concurrency
+conflict between competing updates.
 
 - **UnitOfWorkError** — Transaction commit or rollback failure
 - **EventStoreError** — Event append or retrieval failure

@@ -1,5 +1,16 @@
 # Messaging and Events
 
+The messaging layer routes commands, queries, and events between application
+and domain components. Three building blocks compose to form the full pipeline:
+
+- **Message Bus** — dispatches any message to the right handler (commands, queries, events).
+  `CommandSender`, `EventPublisher`, and `QueryFetcher` are thin port-satisfying wrappers
+  around the bus that expose narrower, role-specific interfaces.
+- **Event Store** — an append-only log that records domain events chronologically.
+  Enables rebuilding aggregate state from history (event sourcing).
+- **Event Bus** — publish/subscribe delivery of domain events to registered handlers.
+  Sits behind `EventPublisherPort` so subscribers can be composed and replaced.
+
 ## Message Bus
 
 - **In-Memory Message Bus** — Synchronous dispatcher routing commands, queries, and events to registered handlers
