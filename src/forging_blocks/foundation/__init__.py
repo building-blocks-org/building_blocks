@@ -17,8 +17,10 @@ from .errors import (
     FieldReference,
     NoneNotAllowedError,
     ResultAccessError,
+    RuleViolated,
     RuleViolationError,
     ValidationError,
+    ValidationFailed,
     ValidationFieldErrors,
 )
 from .identified import Identified
@@ -61,9 +63,11 @@ __all__ = [
     "Port",
     "Result",
     "ResultAccessError",
+    "RuleViolated",
     "RuleViolationError",
     "runtime_final",
     "ValidationError",
+    "ValidationFailed",
     "ValidationFieldErrors",
     "ValidationRule",
 ]
