@@ -3,22 +3,28 @@ from typing import cast
 
 import pytest
 
-from forging_blocks.foundation import Error, ErrorMessage, FieldErrors, FieldReference
+from forging_blocks.foundation import (
+    Error,
+    ErrorMessage,
+    FieldErrors,
+    FieldReference,
+    RuleViolationError,
+)
 
 
 @pytest.mark.unit
 class TestFieldErrors:
-    def test__init__when_no_errors_but_field_then_raise_value_error(self) -> None:
+    def test__init__when_no_errors_but_field_then_raise_rule_violation_error(self) -> None:
         field_reference = FieldReference("username")
 
-        with pytest.raises(ValueError):
+        with pytest.raises(RuleViolationError):
             FieldErrors(field=field_reference, errors=[])
 
-    def test__init__when_errors_but_no_field_then_raise_value_error(self) -> None:
-        error_message = ErrorMessage("An error occurred")
+    def test__init__when_errors_but_no_field_then_raise_rule_violation_error(self) -> None:
+        error = Error(ErrorMessage("An error occurred"))
 
-        with pytest.raises(ValueError):
-            FieldErrors(field=cast(FieldReference, None), errors=[error_message])
+        with pytest.raises(RuleViolationError):
+            FieldErrors(field=cast(FieldReference, None), errors=[error])
 
     def test_errors_when_errors_defined_then_returns_errors(self) -> None:
         error_message = ErrorMessage("An error occurred")

@@ -8,6 +8,7 @@ from typing import Iterable, Iterator, Sequence
 
 from forging_blocks.foundation.errors.core import ErrorMessage, FieldReference
 from forging_blocks.foundation.errors.error import Error
+from forging_blocks.foundation.errors.rule_violation_error import RuleViolationError
 
 
 class FieldErrors[ContainedErrorType: Error[dict[str, object]]](Error[dict[str, object]]):
@@ -21,16 +22,17 @@ class FieldErrors[ContainedErrorType: Error[dict[str, object]]](Error[dict[str, 
             errors: The errors associated with *field*. Must be non-empty.
 
         Raises:
-            ValueError: If *errors* is empty or *field* is falsy.
-
+            RuleViolationError: If *errors* is empty or *field* is falsy.
         """
         self._field = field
         self._errors: Sequence[ContainedErrorType] = tuple(errors)
 
-        if not errors or not field:
-            raise ValueError("FieldErrors must contain at least one error and field defined.")
+        if not self._errors or not field or not field.value:
+            raise RuleViolationError(
+                ErrorMessage("FieldErrors must contain at least one error and field defined.")
+            )
 
-        message = ErrorMessage(f"{len(self._errors)} error(s) for field '{field}'.")
+        message = ErrorMessage(f"{len(self._errors)} error(s) for field '{field.value}'.")
 
         super().__init__(message=message)
 
