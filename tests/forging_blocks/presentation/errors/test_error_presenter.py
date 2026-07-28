@@ -171,16 +171,16 @@ class TestErrorPresenter:
         from forging_blocks.foundation import (
             CombinedValidationErrors,
             FieldReference,
-            ValidationError,
+            ValidationFailed,
             ValidationFieldErrors,
         )
 
         presenter = ErrorPresenter()
         inner1 = ValidationFieldErrors(
-            FieldReference("name"), [ValidationError(ErrorMessage("Too short"))]
+            FieldReference("name"), [ValidationFailed(ErrorMessage("Too short"))]
         )
         inner2 = ValidationFieldErrors(
-            FieldReference("email"), [ValidationError(ErrorMessage("Invalid format"))]
+            FieldReference("email"), [ValidationFailed(ErrorMessage("Invalid format"))]
         )
         combined = CombinedValidationErrors([inner1, inner2])
 
@@ -193,18 +193,18 @@ class TestErrorPresenter:
     def test_present_combined_rule_violation_errors_decomposes_correctly(self) -> None:
         from forging_blocks.foundation import (
             CombinedRuleViolationErrors,
-            RuleViolationError,
+            RuleViolated,
         )
 
         presenter = ErrorPresenter()
-        inner = RuleViolationError(ErrorMessage("Rule broken"))
+        inner = RuleViolated(ErrorMessage("Rule broken"))
         combined = CombinedRuleViolationErrors([inner])
 
         result = presenter.to_view_model(combined)
 
         assert len(result.messages) == 1
         assert result.messages[0].title == "Rule broken"
-        assert result.messages[0].code == "RuleViolationError"
+        assert result.messages[0].code == "RuleViolated"
 
     def test_present_combined_errors_inside_err_decomposes_correctly(self) -> None:
         from forging_blocks.foundation import CombinedErrors

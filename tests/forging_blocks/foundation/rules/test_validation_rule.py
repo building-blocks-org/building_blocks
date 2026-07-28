@@ -4,8 +4,9 @@ from typing import Any
 
 import pytest
 
+from forging_blocks.foundation.errors.base.rule_violation_error import RuleViolationError
 from forging_blocks.foundation.errors.core import ErrorMessage
-from forging_blocks.foundation.errors.rule_violation_error import RuleViolationError
+from forging_blocks.foundation.errors.rule_violated import RuleViolated
 from forging_blocks.foundation.rules import ValidationRule
 
 
@@ -15,13 +16,13 @@ class TestValidationRule:
         class AlwaysFailingRule(ValidationRule):
             def validate(self, value: Any) -> list[RuleViolationError]:
                 del value
-                return [RuleViolationError(ErrorMessage("no"))]
+                return [RuleViolated(ErrorMessage("no"))]
 
         rule = AlwaysFailingRule()
         result = rule.validate(None)
 
         assert len(result) == 1
-        assert str(result[0]) == "RuleViolationError: no"
+        assert str(result[0]) == "RuleViolated: no"
 
     def test_when_concrete_implementation_then_can_return_empty(self) -> None:
         class AlwaysPassingRule(ValidationRule):
