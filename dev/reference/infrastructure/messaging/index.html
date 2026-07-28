@@ -7206,6 +7206,29 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architectural-styles/mvc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MVC
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -7464,6 +7487,17 @@
 
 
 <h1 id="messaging-and-events">Messaging and Events<a class="headerlink" href="#messaging-and-events" title="Permanent link">&para;</a></h1>
+<p>The messaging layer routes commands, queries, and events between application<br />
+and domain components. Three building blocks compose to form the full pipeline:</p>
+<ul>
+<li><strong>Message Bus</strong> — dispatches any message to the right handler (commands, queries, events).<br />
+<code>CommandSender</code>, <code>EventPublisher</code>, and <code>QueryFetcher</code> are thin port-satisfying wrappers<br />
+  around the bus that expose narrower, role-specific interfaces.</li>
+<li><strong>Event Store</strong> — an append-only log that records domain events chronologically.<br />
+  Enables rebuilding aggregate state from history (event sourcing).</li>
+<li><strong>Event Bus</strong> — publish/subscribe delivery of domain events to registered handlers.<br />
+  Sits behind <code>EventPublisherPort</code> so subscribers can be composed and replaced.</li>
+</ul>
 <h2 id="message-bus">Message Bus<a class="headerlink" href="#message-bus" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>In-Memory Message Bus</strong> — Synchronous dispatcher routing commands, queries, and events to registered handlers</li>

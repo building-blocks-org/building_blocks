@@ -7197,6 +7197,29 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architectural-styles/mvc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MVC
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -7446,19 +7469,27 @@
 
 
 <h1 id="persistence">Persistence<a class="headerlink" href="#persistence" title="Permanent link">&para;</a></h1>
+<p>Persistence bridges domain aggregates and storage. Forging Blocks ships in-memory<br />
+implementations so applications can run without external databases — useful for tests,<br />
+development, and single-process deployments. The in-memory store uses identity-keyed<br />
+dictionaries; swap in a real database adapter behind the same <code>RepositoryPort</code> for production.</p>
 <h2 id="repositories">Repositories<a class="headerlink" href="#repositories" title="Permanent link">&para;</a></h2>
-<p>Repositories bridge domain aggregates and persistence.</p>
 <ul>
 <li><strong>InMemory Repository</strong> — Shared identity-keyed storage: <code>get_by_id</code>, <code>save</code>, <code>delete_by_id</code></li>
 <li><strong>In-Memory Write Repository</strong> — Dictionary-backed append-only store for testing</li>
 <li><strong>In-Memory Read Repository</strong> — Query-oriented read store for CQRS projections</li>
-<li><strong>Aggregate Repository</strong> — Integrates with <code>UnitOfWorkPort</code> and <code>EventBusPort</code>; tracks new/dirty aggregates</li>
+<li><strong>Aggregate Repository</strong> — Integrates with <code>UnitOfWorkPort</code> and <code>EventBusPort</code>;<br />
+  tracks new and dirty aggregates, publishes collected events on commit</li>
 </ul>
 <h2 id="unit-of-work">Unit of Work<a class="headerlink" href="#unit-of-work" title="Permanent link">&para;</a></h2>
-<p>Manages a transactional boundary around repository operations. Tracks new and dirty aggregates, flushes events on commit, provides <code>commit</code>/<code>rollback</code> semantics.</p>
+<p>Manages a transactional boundary around repository operations. Tracks new and dirty<br />
+aggregates, flushes events on commit, provides <code>commit</code>/<code>rollback</code> semantics.<br />
+Multiple repository operations within a single use case are treated as one atomic unit.</p>
 <h2 id="when-to-use">When to use<a class="headerlink" href="#when-to-use" title="Permanent link">&para;</a></h2>
-<p>Use the in-memory implementations for tests and development — no external dependencies. <code>InMemoryRepository</code> gives you <code>get_by_id</code>/<code>save</code>/<code>delete_by_id</code>; extend it for domain-specific queries. Use <code>AggregateRepository</code> when you need <code>UnitOfWorkPort</code> integration and event publishing.</p>
-<p>Multiple repository operations within a single use case are treated as one atomic unit.</p>
+<p>Use the in-memory implementations for tests and development — no external dependencies.<br />
+<code>InMemoryRepository</code> gives you <code>get_by_id</code>/<code>save</code>/<code>delete_by_id</code>; extend it for domain-specific<br />
+queries. Use <code>AggregateRepository</code> when you need <code>UnitOfWorkPort</code> integration and event<br />
+publishing.</p>
 
 
 

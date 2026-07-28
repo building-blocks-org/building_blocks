@@ -7231,6 +7231,29 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../../../architectural-styles/mvc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MVC
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -7563,9 +7586,9 @@ with event sourcing support.</p>
               Bases: <code><a class="autorefs autorefs-internal" title="InMemoryRepository (forging_blocks.infrastructure.repositories.in_memory_repository.InMemoryRepository)" href="../in_memory_repository/#forging_blocks.infrastructure.repositories.in_memory_repository.InMemoryRepository">InMemoryRepository</a>[<span title="forging_blocks.infrastructure.repositories.aggregate_repository.AggregateRepository[TAggregateRoot]">TAggregateRoot</span>, <span title="forging_blocks.infrastructure.repositories.aggregate_repository.AggregateRepository[TId]">TId</span>]</code></p>
 
 
-        <p>RepositoryPort for AggregateRoot persistence with event sourcing.<br />
-Extends InMemoryRepository with event store integration for<br />
-event-sourced aggregates.</p>
+        <p>RepositoryPort for persisting event-sourced aggregates.<br />
+Coordinates event store writes with in-memory snapshot caching<br />
+for AggregateRoot subtypes.</p>
 
 
 <p>
@@ -7767,9 +7790,9 @@ across this gap. The invariant is enforced by construction.</p>
 </span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18"></a>    <span class="n">TAggregateRoot</span><span class="p">:</span> <span class="n">AggregateRoot</span><span class="p">[</span><span class="n">UUID</span><span class="p">,</span> <span class="n">Any</span><span class="p">],</span>
 </span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19"></a>    <span class="n">TId</span><span class="p">:</span> <span class="n">UUID</span><span class="p">,</span>
 </span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="p">](</span><span class="n">InMemoryRepository</span><span class="p">[</span><span class="n">TAggregateRoot</span><span class="p">,</span> <span class="n">TId</span><span class="p">]):</span>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;RepositoryPort for AggregateRoot persistence with event sourcing.</span>
-</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22"></a><span class="sd">    Extends InMemoryRepository with event store integration for</span>
-</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23"></a><span class="sd">    event-sourced aggregates.</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;RepositoryPort for persisting event-sourced aggregates.</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22"></a><span class="sd">    Coordinates event store writes with in-memory snapshot caching</span>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23"></a><span class="sd">    for AggregateRoot subtypes.</span>
 </span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24"></a>
 </span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25"></a><span class="sd">    Type Parameters:</span>
 </span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26"></a><span class="sd">        EventPayloadType: The event payload type tracked by the event store.</span>

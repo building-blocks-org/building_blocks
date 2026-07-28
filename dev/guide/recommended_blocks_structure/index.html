@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#recommended-blocks-structure" class="md-skip">
+        <a href="#blocks-structure" class="md-skip">
           Skip to content
         </a>
       
@@ -646,9 +646,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#thinking-in-responsibilities-and-boundaries" class="md-nav__link">
+  <a href="#how-forging-blocks-is-organized-internally" class="md-nav__link">
     <span class="md-ellipsis">
-      Thinking in responsibilities and boundaries
+      How forging-blocks is organized internally
     </span>
   </a>
   
@@ -658,6 +658,15 @@
   <a href="#quick-summary" class="md-nav__link">
     <span class="md-ellipsis">
       Quick summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#block-layer-blocks-are-architecture-neutral-named-boundaries-within-the-library-they-can-be-interpreted-as-layers-if-that-mental-model-helps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Block ≠ Layer — Blocks are architecture-neutral named boundaries within the library; they can be interpreted as layers if that mental model helps.
     </span>
   </a>
   
@@ -7222,6 +7231,29 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../architectural-styles/mvc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MVC
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -7420,9 +7452,9 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#thinking-in-responsibilities-and-boundaries" class="md-nav__link">
+  <a href="#how-forging-blocks-is-organized-internally" class="md-nav__link">
     <span class="md-ellipsis">
-      Thinking in responsibilities and boundaries
+      How forging-blocks is organized internally
     </span>
   </a>
   
@@ -7432,6 +7464,15 @@
   <a href="#quick-summary" class="md-nav__link">
     <span class="md-ellipsis">
       Quick summary
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#block-layer-blocks-are-architecture-neutral-named-boundaries-within-the-library-they-can-be-interpreted-as-layers-if-that-mental-model-helps" class="md-nav__link">
+    <span class="md-ellipsis">
+      Block ≠ Layer — Blocks are architecture-neutral named boundaries within the library; they can be interpreted as layers if that mental model helps.
     </span>
   </a>
   
@@ -7515,29 +7556,28 @@
   
 
 
-<h1 id="recommended-blocks-structure">Recommended Blocks Structure<a class="headerlink" href="#recommended-blocks-structure" title="Permanent link">&para;</a></h1>
-<h2 id="thinking-in-responsibilities-and-boundaries">Thinking in responsibilities and boundaries<a class="headerlink" href="#thinking-in-responsibilities-and-boundaries" title="Permanent link">&para;</a></h2>
-<p>This section explains a <strong>practical way</strong> to organize code using blocks.<br />
-It is a recommendation, not a rule: you can use all of these blocks, some of them, or even create your own.</p>
+<h1 id="blocks-structure">Blocks Structure<a class="headerlink" href="#blocks-structure" title="Permanent link">&para;</a></h1>
+<h2 id="how-forging-blocks-is-organized-internally">How forging-blocks is organized internally<a class="headerlink" href="#how-forging-blocks-is-organized-internally" title="Permanent link">&para;</a></h2>
+<p>This section describes how <strong>forging-blocks itself</strong> is structured into blocks — named groups of code sharing a responsibility and boundary. It documents the library's own internal organization, not a prescription for how you should structure your project.</p>
 <hr />
 <h2 id="quick-summary">Quick summary<a class="headerlink" href="#quick-summary" title="Permanent link">&para;</a></h2>
-<p>This section explains a <strong>practical way to organize code using blocks</strong> (groups of code sharing a responsibility and boundary). It's a recommendation, not a rule — use all, some, or create your own.</p>
-<p>Common blocks and their responsibilities:<br />
-- <strong>Foundation</strong> — Reusable low-level abstractions (<code>Result</code>, <code>Port</code>, <code>Mapper</code>, <code>ValueObject</code>, <code>Messages</code>, errors, meta utilities). No dependencies.<br />
-- <strong>Domain</strong> — Problem space concepts (Entities, Value Objects, Aggregates, Domain Errors). Depends only on Foundation.<br />
-- <strong>Application</strong> — Orchestrates workflows (Use Cases, Message Handlers, Inbound/Outbound Ports). Depends on Domain + Foundation.<br />
-- <strong>Infrastructure</strong> — External tech integrations (repositories, message brokers, API clients). Implements Application's outbound ports.<br />
-- <strong>Presentation</strong> — Entry points (HTTP, CLI, message listeners). Calls Application; stays thin.</p>
-<p>Dependency rules (inward-pointing): Foundation → Domain → Application; Infrastructure/Presentation depend on Application; all depend on Foundation.</p>
-<p><strong>Block ≠ Layer</strong> — Blocks are architecture-neutral named boundaries; interpret as layers if helpful.</p>
-<hr />
-<p>The common blocks are:</p>
+<p>The forging-blocks library is organized into five blocks, each with a distinct responsibility:</p>
+<ul>
+<li><strong>Foundation</strong> — Reusable low-level abstractions (<code>Result</code>, <code>Port</code>, <code>Mapper</code>, errors, meta utilities). No dependencies.</li>
+<li><strong>Domain</strong> — Problem space concepts (Entities, Value Objects, Aggregates, Domain Errors). Depends only on Foundation.</li>
+<li><strong>Application</strong> — Orchestration contracts (Use Cases, Message Handlers, Inbound/Outbound Ports). Depends on Domain + Foundation.</li>
+<li><strong>Infrastructure</strong> — Technology-agnostic implementations (in-memory repos, OS filesystem, stdlib logging). Implements Application's outbound ports.</li>
+<li><strong>Presentation</strong> — Entry-point abstractions (adapters, middleware, error handling). Calls Application; stays thin.</li>
+</ul>
+<p>Dependency rules (inward-pointing): Foundation has no deps → Domain depends on Foundation → Application depends on Domain + Foundation; Infrastructure and Presentation depend on Application + Foundation.</p>
+<h2 id="block-layer-blocks-are-architecture-neutral-named-boundaries-within-the-library-they-can-be-interpreted-as-layers-if-that-mental-model-helps"><strong>Block ≠ Layer</strong> — Blocks are architecture-neutral named boundaries within the library; they can be interpreted as layers if that mental model helps.<a class="headerlink" href="#block-layer-blocks-are-architecture-neutral-named-boundaries-within-the-library-they-can-be-interpreted-as-layers-if-that-mental-model-helps" title="Permanent link">&para;</a></h2>
+<p>The library's five blocks and their dependency relationships:</p>
 <ul>
 <li><strong>Foundation</strong> – reusable, low-level abstractions.</li>
 <li><strong>Domain</strong> – problem-space concepts and rules.</li>
-<li><strong>Application</strong> – business workflows and coordination logic.</li>
-<li><strong>Infrastructure</strong> – technical adapters to external systems.</li>
-<li><strong>Presentation</strong> – entry points and interaction boundaries.</li>
+<li><strong>Application</strong> – workflow contracts and coordination abstractions.</li>
+<li><strong>Infrastructure</strong> – technology-agnostic adapter implementations.</li>
+<li><strong>Presentation</strong> – entry-point and interaction abstractions.</li>
 </ul>
 <pre class="mermaid"><code>flowchart TD
     P[Presentation]
@@ -7559,112 +7599,107 @@ It is a recommendation, not a rule: you can use all of these blocks, some of the
     style D fill:#665c54,stroke:#fe8019,color:#ebdbb2  %% Domain: Muted Brown, Orange Outline
     style I fill:#454157,stroke:#b8bb26,color:#ebdbb2  %% Infrastructure: Dark Violet, Olive Green Outline
     style F fill:#665c54,stroke:#fb4934,color:#ebdbb2  %% Foundation: Muted Brown, Vibrant Red Outline</code></pre>
-<p>This diagram is <strong>illustrative</strong>, not prescriptive.<br />
-It helps visualize how responsibilities can be separated.</p>
+<p>This diagram illustrates how the library's blocks relate to each other.</p>
 <hr />
 <h2 id="block-vs-layer">Block vs Layer<a class="headerlink" href="#block-vs-layer" title="Permanent link">&para;</a></h2>
-<p>In ForgingBlocks, a <strong>block</strong> is an architecture-neutral concept.</p>
-<p>You may interpret a block as a “layer” if that mental model helps, especially when you compare to literature on layered architectures or clean architecture.</p>
-<p>However, the toolkit does <strong>not</strong> require or enforce any specific layering scheme.</p>
-<p>Think of blocks as <strong>named boundaries</strong> that you are free to use or ignore depending on the needs of your project.</p>
+<p>In forging-blocks, a <strong>block</strong> is an architecture-neutral concept — a named group of code sharing a responsibility and boundary.</p>
+<p>Blocks can be mentally mapped to layers if that model is familiar: Foundation maps to a shared kernel, Domain and Application map to a core (business logic), and Infrastructure and Presentation map to outer rings. But the library does not enforce any layering scheme.</p>
+<p>Blocks are <strong>named boundaries</strong>. Code lives in exactly one block, imports respect the dependency direction, and each block's public API is explicit about what it offers and what it needs (ports).</p>
 <div class="admonition note">
-<p class="admonition-title">Dependency Rules</p>
-<p>The recommended dependency rules are:</p>
+<p class="admonition-title">Internal Dependency Rules</p>
+<p>The library follows these rules internally:</p>
 <ul>
-<li>Foundation has no dependencies.</li>
+<li>Foundation depends on nothing.</li>
 <li>Domain depends only on Foundation.</li>
 <li>Application depends on Domain and Foundation.</li>
-<li>Infrastructure depends on Application (for OutboundPorts) and Foundation.</li>
+<li>Infrastructure depends on Application (for outbound port contracts) and Foundation.</li>
 <li>Presentation depends on Application and Foundation.</li>
 </ul>
-<p>These rules help maintain clear boundaries and promote decoupling between blocks.</p>
+<p>These rules maintain clear boundaries within the library itself.</p>
 </div>
 <hr />
 <h2 id="foundation">Foundation<a class="headerlink" href="#foundation" title="Permanent link">&para;</a></h2>
-<p><strong>Responsibility:</strong> provide small, reusable building blocks.</p>
-<p>Examples:</p>
+<p><strong>Responsibility:</strong> small, reusable abstractions used throughout the library.</p>
+<p>Provides:</p>
 <ul>
 <li><code>Result</code>, <code>Ok</code>, <code>Err</code></li>
 <li><code>Port</code> and port-related protocols (<code>InboundPort</code>, <code>OutboundPort</code>)</li>
 <li><code>Identified</code> protocol for objects carrying an identity</li>
 <li><code>Mapper</code> protocol for structured transformation</li>
 <li><code>Debuggable</code> protocol for consistent debug representations</li>
-<li><code>ValueObject</code> base class for immutable concepts defined by their values</li>
 <li><code>Error</code> and its structured descendants (validation, rule violation, field, combined) for predictable error handling</li>
-<li><code>Message</code>, <code>Command</code>, <code>Event</code>, <code>Query</code> for expressing intent, facts, and queries</li>
 <li><code>FinalMeta</code>, <code>FinalABCMeta</code>, and <code>runtime_final</code> for runtime enforcement of method finality</li>
 </ul>
 <p>The Foundation block contains abstractions that support the other blocks.</p>
 <div class="admonition note">
 <p class="admonition-title">Purpose of Foundation block</p>
-<p>That Foundation block exists to provide shared abstractions.<br />
-That block defines the core building blocks that other blocks can rely on.</p>
+<p>The Foundation block provides shared abstractions.<br />
+It defines the core building blocks that other blocks depend on.</p>
 </div>
-<p>It can be reused across many blocks.</p>
+<p>Foundation abstractions are used by Domain, Application, Infrastructure, and Presentation.</p>
 <hr />
 <h2 id="domain">Domain<a class="headerlink" href="#domain" title="Permanent link">&para;</a></h2>
-<p><strong>Responsibility:</strong> describe what the system is about.</p>
-<p>Examples:</p>
+<p><strong>Responsibility:</strong> model the problem space — concepts, rules, and invariants.</p>
+<p>The Domain block provides:</p>
 <ul>
-<li><strong>Types</strong> that represent meaningful concepts (orders, tasks, users…)</li>
-<li><strong>Rules</strong> and invariants that keep those concepts valid</li>
-<li><strong>Optional</strong> domain events for significant occurrences</li>
+<li><strong>Types</strong> for meaningful concepts: <code>Entity</code>, <code>AggregateRoot</code>, <code>ValueObject</code></li>
+<li><strong>Rules and invariants</strong> enforced through types and methods</li>
+<li><strong>Domain events</strong> for significant occurrences (<code>Event</code> base class)</li>
 </ul>
-<p>This block knows nothing about HTTP, SQL, queues, filesystems or any technical details.</p>
+<p>This block depends only on Foundation and knows nothing about HTTP, SQL, queues, filesystems, or any technical details.</p>
 <div class="admonition note">
 <p class="admonition-title">Meaning of Domain</p>
 <p>In <strong>Psychology</strong>, a <em>domain</em> is simply an area of knowledge or activity.</p>
-<p>In ForgingBlocks, the <strong>Domain</strong> represents the <strong>problem space</strong> your system is concerned with — the concepts and rules that describe <em>what</em> the system is about, not <em>how</em> it is implemented.</p>
+<p>In forging-blocks, the <strong>Domain</strong> block holds the abstractions for modeling the problem space — concepts and rules that describe <em>what</em> a system is about, not <em>how</em> it is implemented.</p>
 </div>
 <div class="admonition note">
 <p class="admonition-title">Dependency rule</p>
 <p>The Domain depends only on <strong>Foundation</strong>.</p>
-<p>It must not depend on Application, Infrastructure, or Presentation, so that the core logic remains independent of technical concerns.</p>
+<p>It does not depend on Application, Infrastructure, or Presentation, so that domain abstractions remain independent of technical concerns.</p>
 </div>
 <hr />
 <h2 id="application">Application<a class="headerlink" href="#application" title="Permanent link">&para;</a></h2>
-<p><strong>Responsibility:</strong> orchestrate business workflows by coordinating Domain logic and Infrastructure through ports.</p>
-<p>Examples:</p>
+<p><strong>Responsibility:</strong> define workflow contracts and coordination abstractions.</p>
+<p>The Application block provides:</p>
 <ul>
-<li>InboundPorts representing business operations that the system offers</li>
-<li>OutboundPorts representing external dependencies needed by the system</li>
-<li>Workflow implementations (e.g. <code>RegisterUser</code>, <code>CreateTask</code>)</li>
-<li>Application services that implement coordination logic, calling domain methods and OutboundPorts</li>
+<li><strong>InboundPort abstractions</strong> (<code>UseCase</code>, <code>ApplicationServicePort</code>, <code>MessageHandlerPort</code>) — contracts for operations the system offers</li>
+<li><strong>OutboundPort abstractions</strong> (<code>RepositoryPort</code>, <code>MessageBusPort</code>, <code>NotifierPort</code>, <code>UnitOfWorkPort</code>) — contracts for dependencies the system needs</li>
+<li><strong>Workflow base classes</strong> that define the shape of business operations</li>
 </ul>
-<p>The Application block uses Domain models and calls Infrastructure through <strong>OutboundPorts</strong>, but does not contain technical implementation details.</p>
+<p>The Application block depends on Domain types and defines abstract ports that Infrastructure implements. It contains no technical implementation details.</p>
 <div class="admonition note">
 <p class="admonition-title">Dependency rule</p>
 <p>Application depends on Domain and Foundation.<br />
-It defines both InboundPort and OutboundPort interfaces.<br />
-Infrastructure implements the OutboundPort interfaces (Dependency Inversion Principle).</p>
+It defines both InboundPort and OutboundPort contracts.<br />
+Infrastructure implements the OutboundPort contracts (Dependency Inversion Principle).</p>
 </div>
 <hr />
 <h2 id="infrastructure">Infrastructure<a class="headerlink" href="#infrastructure" title="Permanent link">&para;</a></h2>
-<p><strong>Responsibility:</strong> connect the system to external technologies.</p>
-<p>Examples:</p>
+<p><strong>Responsibility:</strong> provide technology-agnostic implementations of outbound port contracts.</p>
+<p>The Infrastructure block ships with:</p>
 <ul>
-<li>Concrete repositories (SQL, NoSQL, in-memory)</li>
-<li>Messaging and event bus integrations</li>
-<li>HTTP clients for external APIs</li>
+<li><strong>In-memory repositories</strong> (<code>InMemoryReadRepository</code>, <code>InMemoryWriteRepository</code>) and <strong>event stores</strong> (<code>InMemoryEventStore</code>)</li>
+<li><strong>In-memory messaging</strong> (<code>InMemoryMessageBus</code>, <code>InMemoryEventBus</code>)</li>
+<li><strong>Stdlib-based implementations</strong> (<code>OSFileSystem</code>, <code>StdlibLogger</code>)</li>
+<li><strong>Unit of Work</strong> (<code>InMemoryUnitOfWork</code>)</li>
 </ul>
-<p>Infrastructure implements OutboundPort interfaces defined by Application or Domain.</p>
+<p>These are first-class implementations, not test doubles — they use only the Python standard library and carry no third-party dependencies.</p>
 <div class="admonition note">
 <p class="admonition-title">Dependency Rule</p>
-<p>Infrastructure depends on OutboundPorts and Foundation block.<br />
-External dependencies are allowed here.<br />
-This is where databases, network calls, and any other external concerns lives.</p>
+<p>Infrastructure depends on Application (for outbound port contracts) and Foundation.<br />
+No third-party dependencies are allowed in this library.<br />
+Application-specific adapters (SQL databases, message brokers, HTTP clients) belong in consuming projects.</p>
 </div>
 <hr />
 <h2 id="presentation">Presentation<a class="headerlink" href="#presentation" title="Permanent link">&para;</a></h2>
-<p><strong>Responsibility:</strong> expose the system to the outside world.</p>
-<p>Examples:</p>
+<p><strong>Responsibility:</strong> provide entry-point and interaction abstractions.</p>
+<p>The Presentation block provides:</p>
 <ul>
-<li>HTTP controllers or routers</li>
-<li>CLI commands</li>
-<li>message consumers or event handlers</li>
+<li><strong>Adapter patterns</strong> for connecting external inputs to Application ports</li>
+<li><strong>Middleware abstractions</strong> for cross-cutting concerns</li>
+<li><strong>Error handling</strong> utilities for boundary translation</li>
 </ul>
-<p>Presentation reads external input, prepares it, and calls the Application block.<br />
-It stays as thin as possible so that the behavior remains testable and reusable.</p>
+<p>The Presentation block calls the Application block through inbound ports. It stays thin so that behavior remains testable and reusable.</p>
 
 
 

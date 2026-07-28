@@ -1594,15 +1594,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#when-to-use" class="md-nav__link">
-    <span class="md-ellipsis">
-      When to use
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -7224,6 +7215,29 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architectural-styles/mvc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MVC
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -7466,15 +7480,6 @@
   
 </li>
       
-        <li class="md-nav__item">
-  <a href="#when-to-use" class="md-nav__link">
-    <span class="md-ellipsis">
-      When to use
-    </span>
-  </a>
-  
-</li>
-      
     </ul>
   
 </nav>
@@ -7500,6 +7505,13 @@
 
 
 <h1 id="technical-adapters">Technical Adapters<a class="headerlink" href="#technical-adapters" title="Permanent link">&para;</a></h1>
+<p>Technical adapters implement the outbound ports defined by the Application layer — they<br />
+are the "other side" of the port/adapter boundary. Forging Blocks ships technology-agnostic<br />
+implementations that depend only on the Python standard library, so applications can use<br />
+them at runtime without pulling in third-party dependencies.</p>
+<p>The adapters below all satisfy their corresponding port contracts. In tests, use them<br />
+directly; in production, swap in real implementations (database, HTTP client, filesystem)<br />
+behind the same port interface.</p>
 <h2 id="logging">Logging<a class="headerlink" href="#logging" title="Permanent link">&para;</a></h2>
 <p>A standard-library logging adapter implementing <code>LoggerPort</code>. Provides <code>debug</code>, <code>info</code>, <code>warning</code>, and <code>error</code> methods — all accept <code>*args: str</code> for <code>%</code>-style formatting (delegates to <code>logging.Logger</code>).</p>
 <h2 id="http-client">HTTP Client<a class="headerlink" href="#http-client" title="Permanent link">&para;</a></h2>
@@ -7510,7 +7522,6 @@
 <p>A dictionary-backed key-value cache implementing <code>CachePort</code>. Supports <code>get</code>, <code>set</code>, <code>delete</code>, and <code>clear</code>.</p>
 <h2 id="serialization">Serialization<a class="headerlink" href="#serialization" title="Permanent link">&para;</a></h2>
 <p><code>MessageCodec</code> is an abstract codec base that defines <code>encode</code> / <code>decode</code> for bidirectional message serialization. <code>DictMessageCodec</code> is the concrete <code>dict[str, object]</code> implementation that ships with Forging Blocks.</p>
-<h2 id="when-to-use">When to use<a class="headerlink" href="#when-to-use" title="Permanent link">&para;</a></h2>
 <p>These adapters implement the corresponding outbound ports from Application. Use the in-memory versions for tests; swap to real implementations (database, HTTP, filesystem) in production.</p>
 
 

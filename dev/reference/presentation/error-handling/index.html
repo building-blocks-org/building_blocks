@@ -7215,6 +7215,29 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architectural-styles/mvc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MVC
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -7482,6 +7505,17 @@
 
 
 <h1 id="error-handling">Error Handling<a class="headerlink" href="#error-handling" title="Permanent link">&para;</a></h1>
+<p>The presentation error pipeline converts errors from any source (domain exceptions,<br />
+application failures, infrastructure problems) into a consistent, renderable form.<br />
+Three components compose to form the pipeline:</p>
+<ol>
+<li><strong>ErrorPresenter</strong> adapts errors into view models — it understands framework<br />
+<code>Error</code> objects, <code>Result.Err</code> values, plain exceptions, and aggregate errors.</li>
+<li><strong>ErrorStatusCodeMapper</strong> assigns HTTP-like status codes so clients can<br />
+   distinguish validation errors (400) from rule violations (409).</li>
+<li><strong>ErrorViewModel</strong> carries the structured output — a list of messages with<br />
+   title, detail, field, code, and status fields.</li>
+</ol>
 <h2 id="error-presenter">Error Presenter<a class="headerlink" href="#error-presenter" title="Permanent link">&para;</a></h2>
 <p><code>ErrorPresenter</code> converts errors into <code>ErrorViewModel</code> instances.</p>
 <p>It handles framework <code>Error</code> objects, <code>Result.Err</code> values, plain exceptions, and unknown types. Aggregate errors like <code>CombinedErrors</code> and <code>FieldErrors</code> are recursively decomposed into individual messages.</p>

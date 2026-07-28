@@ -7091,6 +7091,48 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#forgingblocks-in-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      ForgingBlocks in practice
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ForgingBlocks in practice">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-inbound-port-defining-how-the-core-is-triggered" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Inbound Port — defining how the core is triggered
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-outbound-port-defining-what-the-core-needs" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Outbound Port — defining what the core needs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-infrastructure-adapter-implementing-the-outboundport" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Infrastructure adapter implementing the OutboundPort
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#when-this-style-fits" class="md-nav__link">
     <span class="md-ellipsis">
       When this style fits
@@ -7167,6 +7209,29 @@
   
   <span class="md-ellipsis">
     Event-Driven
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../mvc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MVC
     
   </span>
   
@@ -7393,6 +7458,48 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#forgingblocks-in-practice" class="md-nav__link">
+    <span class="md-ellipsis">
+      ForgingBlocks in practice
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="ForgingBlocks in practice">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#1-inbound-port-defining-how-the-core-is-triggered" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Inbound Port — defining how the core is triggered
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#2-outbound-port-defining-what-the-core-needs" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Outbound Port — defining what the core needs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#3-infrastructure-adapter-implementing-the-outboundport" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Infrastructure adapter implementing the OutboundPort
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#when-this-style-fits" class="md-nav__link">
     <span class="md-ellipsis">
       When this style fits
@@ -7459,6 +7566,81 @@ title: Hexagonal Architecture
 graph LR
     InboundAdapters[Inbound Adapters&lt;br/&gt;HTTP, CLI, Events] --&gt;|execute/handle| ApplicationCore[Application Core&lt;br/&gt;Use Cases &amp; Handlers]
     ApplicationCore --&gt;|dispatch/persist/notify| OutboundAdapters[Outbound Adapters&lt;br/&gt;Repositories, Message Bus]</code></pre>
+<h2 id="forgingblocks-in-practice">ForgingBlocks in practice<a class="headerlink" href="#forgingblocks-in-practice" title="Permanent link">&para;</a></h2>
+<h3 id="1-inbound-port-defining-how-the-core-is-triggered">1. Inbound Port — defining how the core is triggered<a class="headerlink" href="#1-inbound-port-defining-how-the-core-is-triggered" title="Permanent link">&para;</a></h3>
+<p>An inbound port defines a contract for driving the application. Adapters<br />
+(HTTP, CLI, tests) call this contract without the core knowing about them.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">abstractmethod</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span>
+</span><span id="__span-0-3"><a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
+</span><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="kn">from</span><span class="w"> </span><span class="nn">forging_blocks.application.ports.inbound</span><span class="w"> </span><span class="kn">import</span> <span class="n">ApplicationServicePort</span>
+</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
+</span><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">class</span><span class="w"> </span><span class="nc">RegisterCustomerRequest</span><span class="p">:</span>
+</span><span id="__span-0-9"><a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">name</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-0-10"><a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="n">email</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="k">class</span><span class="w"> </span><span class="nc">RegisterCustomerResponse</span><span class="p">:</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a>    <span class="n">customer_id</span><span class="p">:</span> <span class="nb">str</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="k">class</span><span class="w"> </span><span class="nc">RegisterCustomerUseCase</span><span class="p">(</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a>    <span class="n">ApplicationServicePort</span><span class="p">[</span><span class="n">RegisterCustomerRequest</span><span class="p">,</span> <span class="n">RegisterCustomerResponse</span><span class="p">],</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="p">):</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Inbound port — any adapter can trigger registration through this contract.&quot;&quot;&quot;</span>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a>
+</span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23" href="#__codelineno-0-23"></a>    <span class="nd">@abstractmethod</span>
+</span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24" href="#__codelineno-0-24"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">execute</span><span class="p">(</span>
+</span><span id="__span-0-25"><a id="__codelineno-0-25" name="__codelineno-0-25" href="#__codelineno-0-25"></a>        <span class="bp">self</span><span class="p">,</span> <span class="n">request</span><span class="p">:</span> <span class="n">RegisterCustomerRequest</span><span class="p">,</span>
+</span><span id="__span-0-26"><a id="__codelineno-0-26" name="__codelineno-0-26" href="#__codelineno-0-26"></a>    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">RegisterCustomerResponse</span><span class="p">:</span>
+</span><span id="__span-0-27"><a id="__codelineno-0-27" name="__codelineno-0-27" href="#__codelineno-0-27"></a>        <span class="o">...</span>
+</span></code></pre></div>
+<h3 id="2-outbound-port-defining-what-the-core-needs">2. Outbound Port — defining what the core needs<a class="headerlink" href="#2-outbound-port-defining-what-the-core-needs" title="Permanent link">&para;</a></h3>
+<p>An outbound port declares a capability the core requires, without specifying<br />
+how it is fulfilled. The core depends on this abstraction, never on the<br />
+concrete implementation.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">abc</span><span class="w"> </span><span class="kn">import</span> <span class="n">abstractmethod</span>
+</span><span id="__span-1-2"><a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">uuid</span><span class="w"> </span><span class="kn">import</span> <span class="n">UUID</span>
+</span><span id="__span-1-3"><a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
+</span><span id="__span-1-4"><a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="kn">from</span><span class="w"> </span><span class="nn">forging_blocks.application.ports.outbound</span><span class="w"> </span><span class="kn">import</span> <span class="n">RepositoryPort</span>
+</span><span id="__span-1-5"><a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>
+</span><span id="__span-1-6"><a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>
+</span><span id="__span-1-7"><a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a><span class="k">class</span><span class="w"> </span><span class="nc">CustomerRepositoryPort</span><span class="p">(</span><span class="n">RepositoryPort</span><span class="p">[</span><span class="s2">&quot;Customer&quot;</span><span class="p">,</span> <span class="n">UUID</span><span class="p">]):</span>
+</span><span id="__span-1-8"><a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Outbound port — the core needs customer persistence, full stop.&quot;&quot;&quot;</span>
+</span><span id="__span-1-9"><a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>
+</span><span id="__span-1-10"><a id="__codelineno-1-10" name="__codelineno-1-10" href="#__codelineno-1-10"></a>    <span class="nd">@abstractmethod</span>
+</span><span id="__span-1-11"><a id="__codelineno-1-11" name="__codelineno-1-11" href="#__codelineno-1-11"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">find_by_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">email</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Customer | None&quot;</span><span class="p">:</span>
+</span><span id="__span-1-12"><a id="__codelineno-1-12" name="__codelineno-1-12" href="#__codelineno-1-12"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieve a customer by email address.&quot;&quot;&quot;</span>
+</span><span id="__span-1-13"><a id="__codelineno-1-13" name="__codelineno-1-13" href="#__codelineno-1-13"></a>        <span class="o">...</span>
+</span></code></pre></div>
+<h3 id="3-infrastructure-adapter-implementing-the-outboundport">3. Infrastructure adapter implementing the OutboundPort<a class="headerlink" href="#3-infrastructure-adapter-implementing-the-outboundport" title="Permanent link">&para;</a></h3>
+<p>The adapter fulfills the outbound port contract with a concrete technology.<br />
+Swap adapters without touching the core.</p>
+<div class="language-python highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">InMemoryCustomerRepository</span><span class="p">(</span><span class="n">CustomerRepositoryPort</span><span class="p">):</span>
+</span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-2-3"><a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="n">UUID</span><span class="p">,</span> <span class="s2">&quot;Customer&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">{}</span>
+</span><span id="__span-2-4"><a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a>
+</span><span id="__span-2-5"><a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="n">UUID</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Customer | None&quot;</span><span class="p">:</span>
+</span><span id="__span-2-6"><a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a>        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+</span><span id="__span-2-7"><a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a>
+</span><span id="__span-2-8"><a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">list_all</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sequence</span><span class="p">[</span><span class="s2">&quot;Customer&quot;</span><span class="p">]:</span>
+</span><span id="__span-2-9"><a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a>        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+</span><span id="__span-2-10"><a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a>
+</span><span id="__span-2-11"><a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">aggregate</span><span class="p">:</span> <span class="s2">&quot;Customer&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-2-12"><a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="p">[</span><span class="n">aggregate</span><span class="o">.</span><span class="n">id</span><span class="p">]</span> <span class="o">=</span> <span class="n">aggregate</span>  <span class="c1"># type: ignore[assignment]</span>
+</span><span id="__span-2-13"><a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a>
+</span><span id="__span-2-14"><a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">delete_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="n">UUID</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-2-15"><a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="nb">id</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</span><span id="__span-2-16"><a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a>
+</span><span id="__span-2-17"><a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">find_by_email</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">email</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;Customer | None&quot;</span><span class="p">:</span>
+</span><span id="__span-2-18"><a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a>        <span class="k">for</span> <span class="n">customer</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+</span><span id="__span-2-19"><a id="__codelineno-2-19" name="__codelineno-2-19" href="#__codelineno-2-19"></a>            <span class="k">if</span> <span class="n">customer</span><span class="o">.</span><span class="n">email</span> <span class="o">==</span> <span class="n">email</span><span class="p">:</span>
+</span><span id="__span-2-20"><a id="__codelineno-2-20" name="__codelineno-2-20" href="#__codelineno-2-20"></a>                <span class="k">return</span> <span class="n">customer</span>
+</span><span id="__span-2-21"><a id="__codelineno-2-21" name="__codelineno-2-21" href="#__codelineno-2-21"></a>        <span class="k">return</span> <span class="kc">None</span>
+</span></code></pre></div>
 <hr />
 <h2 id="when-this-style-fits">When this style fits<a class="headerlink" href="#when-this-style-fits" title="Permanent link">&para;</a></h2>
 <ul>

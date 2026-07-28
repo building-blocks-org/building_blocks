@@ -7179,6 +7179,29 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../../architectural-styles/mvc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    MVC
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -7410,7 +7433,12 @@
 
 
 <h1 id="application-errors">Application Errors<a class="headerlink" href="#application-errors" title="Permanent link">&para;</a></h1>
-<p>Application-level errors represent failures that occur during use case execution.</p>
+<p>Application-level errors represent failures that occur during use case execution.<br />
+They are distinct from domain errors (which describe rule violations in the problem<br />
+space) and foundation errors (which describe general-purpose failures like invalid<br />
+arguments). Application errors signal infrastructure or coordination problems:<br />
+a transaction that won't commit, an event store that can't append, a concurrency<br />
+conflict between competing updates.</p>
 <ul>
 <li><strong>UnitOfWorkError</strong> — Transaction commit or rollback failure</li>
 <li><strong>EventStoreError</strong> — Event append or retrieval failure</li>
