@@ -24,8 +24,6 @@ class CachePort[KeyType, ValueType](
 ):
     """Abstract base class for caching operations.
 
-    Infrastructure implementations must explicitly inherit this class.
-
     Type Parameters:
         KeyType: The type of cache keys (typically str).
         ValueType: The type of cached values.

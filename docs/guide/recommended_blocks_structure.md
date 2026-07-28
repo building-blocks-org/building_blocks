@@ -1,34 +1,31 @@
-# Recommended Blocks Structure
-## Thinking in responsibilities and boundaries
+# Blocks Structure
+## How forging-blocks is organized internally
 
-This section explains a **practical way** to organize code using blocks.
-It is a recommendation, not a rule: you can use all of these blocks, some of them, or even create your own.
+This section describes how **forging-blocks itself** is structured into blocks — named groups of code sharing a responsibility and boundary. It documents the library's own internal organization, not a prescription for how you should structure your project.
 
 ---
 ## Quick summary
 
-This section explains a **practical way to organize code using blocks** (groups of code sharing a responsibility and boundary). It's a recommendation, not a rule — use all, some, or create your own.
+The forging-blocks library is organized into five blocks, each with a distinct responsibility:
 
-Common blocks and their responsibilities:
-- **Foundation** — Reusable low-level abstractions (`Result`, `Port`, `Mapper`, `ValueObject`, `Messages`, errors, meta utilities). No dependencies.
+- **Foundation** — Reusable low-level abstractions (`Result`, `Port`, `Mapper`, errors, meta utilities). No dependencies.
 - **Domain** — Problem space concepts (Entities, Value Objects, Aggregates, Domain Errors). Depends only on Foundation.
-- **Application** — Orchestrates workflows (Use Cases, Message Handlers, Inbound/Outbound Ports). Depends on Domain + Foundation.
-- **Infrastructure** — External tech integrations (repositories, message brokers, API clients). Implements Application's outbound ports.
-- **Presentation** — Entry points (HTTP, CLI, message listeners). Calls Application; stays thin.
+- **Application** — Orchestration contracts (Use Cases, Message Handlers, Inbound/Outbound Ports). Depends on Domain + Foundation.
+- **Infrastructure** — Technology-agnostic implementations (in-memory repos, OS filesystem, stdlib logging). Implements Application's outbound ports.
+- **Presentation** — Entry-point abstractions (adapters, middleware, error handling). Calls Application; stays thin.
 
-Dependency rules (inward-pointing): Foundation → Domain → Application; Infrastructure/Presentation depend on Application; all depend on Foundation.
+Dependency rules (inward-pointing): Foundation has no deps → Domain depends on Foundation → Application depends on Domain + Foundation; Infrastructure and Presentation depend on Application + Foundation.
 
-**Block ≠ Layer** — Blocks are architecture-neutral named boundaries; interpret as layers if helpful.
-
+**Block ≠ Layer** — Blocks are architecture-neutral named boundaries within the library; they can be interpreted as layers if that mental model helps.
 ---
 
-The common blocks are:
+The library's five blocks and their dependency relationships:
 
 - **Foundation** – reusable, low-level abstractions.
 - **Domain** – problem-space concepts and rules.
-- **Application** – business workflows and coordination logic.
-- **Infrastructure** – technical adapters to external systems.
-- **Presentation** – entry points and interaction boundaries.
+- **Application** – workflow contracts and coordination abstractions.
+- **Infrastructure** – technology-agnostic adapter implementations.
+- **Presentation** – entry-point and interaction abstractions.
 
 ```mermaid
 flowchart TD
@@ -53,132 +50,122 @@ flowchart TD
     style F fill:#665c54,stroke:#fb4934,color:#ebdbb2  %% Foundation: Muted Brown, Vibrant Red Outline
 ```
 
-This diagram is **illustrative**, not prescriptive.
-It helps visualize how responsibilities can be separated.
+This diagram illustrates how the library's blocks relate to each other.
 
 ---
-
 ## Block vs Layer
 
-In ForgingBlocks, a **block** is an architecture-neutral concept.
+In forging-blocks, a **block** is an architecture-neutral concept — a named group of code sharing a responsibility and boundary.
 
-You may interpret a block as a “layer” if that mental model helps, especially when you compare to literature on layered architectures or clean architecture.
+Blocks can be mentally mapped to layers if that model is familiar: Foundation maps to a shared kernel, Domain and Application map to a core (business logic), and Infrastructure and Presentation map to outer rings. But the library does not enforce any layering scheme.
 
-However, the toolkit does **not** require or enforce any specific layering scheme.
+Blocks are **named boundaries**. Code lives in exactly one block, imports respect the dependency direction, and each block's public API is explicit about what it offers and what it needs (ports).
 
-Think of blocks as **named boundaries** that you are free to use or ignore depending on the needs of your project.
+!!! note "Internal Dependency Rules"
+    The library follows these rules internally:
 
-!!! note "Dependency Rules"
-    The recommended dependency rules are:
-
-    - Foundation has no dependencies.
+    - Foundation depends on nothing.
     - Domain depends only on Foundation.
     - Application depends on Domain and Foundation.
-    - Infrastructure depends on Application (for OutboundPorts) and Foundation.
+    - Infrastructure depends on Application (for outbound port contracts) and Foundation.
     - Presentation depends on Application and Foundation.
 
-    These rules help maintain clear boundaries and promote decoupling between blocks.
-
+    These rules maintain clear boundaries within the library itself.
 ---
 
 ## Foundation
 
-**Responsibility:** provide small, reusable building blocks.
+**Responsibility:** small, reusable abstractions used throughout the library.
 
-Examples:
+Provides:
 
 - `Result`, `Ok`, `Err`
 - `Port` and port-related protocols (`InboundPort`, `OutboundPort`)
 - `Identified` protocol for objects carrying an identity
 - `Mapper` protocol for structured transformation
 - `Debuggable` protocol for consistent debug representations
-- `ValueObject` base class for immutable concepts defined by their values
 - `Error` and its structured descendants (validation, rule violation, field, combined) for predictable error handling
-- `Message`, `Command`, `Event`, `Query` for expressing intent, facts, and queries
 - `FinalMeta`, `FinalABCMeta`, and `runtime_final` for runtime enforcement of method finality
 
 The Foundation block contains abstractions that support the other blocks.
 
 !!! note "Purpose of Foundation block"
-    That Foundation block exists to provide shared abstractions.
-    That block defines the core building blocks that other blocks can rely on.
+    The Foundation block provides shared abstractions.
+    It defines the core building blocks that other blocks depend on.
 
-It can be reused across many blocks.
+Foundation abstractions are used by Domain, Application, Infrastructure, and Presentation.
 
 ---
 
 ## Domain
 
-**Responsibility:** describe what the system is about.
+**Responsibility:** model the problem space — concepts, rules, and invariants.
 
-Examples:
+The Domain block provides:
 
-- **Types** that represent meaningful concepts (orders, tasks, users…)
-- **Rules** and invariants that keep those concepts valid
-- **Optional** domain events for significant occurrences
+- **Types** for meaningful concepts: `Entity`, `AggregateRoot`, `ValueObject`
+- **Rules and invariants** enforced through types and methods
+- **Domain events** for significant occurrences (`Event` base class)
 
-This block knows nothing about HTTP, SQL, queues, filesystems or any technical details.
+This block depends only on Foundation and knows nothing about HTTP, SQL, queues, filesystems, or any technical details.
 
 !!! note "Meaning of Domain"
     In **Psychology**, a *domain* is simply an area of knowledge or activity.
 
-    In ForgingBlocks, the **Domain** represents the **problem space** your system is concerned with — the concepts and rules that describe *what* the system is about, not *how* it is implemented.
+    In forging-blocks, the **Domain** block holds the abstractions for modeling the problem space — concepts and rules that describe *what* a system is about, not *how* it is implemented.
 
 !!! note "Dependency rule"
     The Domain depends only on **Foundation**.
 
-    It must not depend on Application, Infrastructure, or Presentation, so that the core logic remains independent of technical concerns.
-
+    It does not depend on Application, Infrastructure, or Presentation, so that domain abstractions remain independent of technical concerns.
 ---
 
 ## Application
 
-**Responsibility:** orchestrate business workflows by coordinating Domain logic and Infrastructure through ports.
+**Responsibility:** define workflow contracts and coordination abstractions.
 
-Examples:
+The Application block provides:
 
-- InboundPorts representing business operations that the system offers
-- OutboundPorts representing external dependencies needed by the system
-- Workflow implementations (e.g. `RegisterUser`, `CreateTask`)
-- Application services that implement coordination logic, calling domain methods and OutboundPorts
+- **InboundPort abstractions** (`UseCase`, `ApplicationServicePort`, `MessageHandlerPort`) — contracts for operations the system offers
+- **OutboundPort abstractions** (`RepositoryPort`, `MessageBusPort`, `NotifierPort`, `UnitOfWorkPort`) — contracts for dependencies the system needs
+- **Workflow base classes** that define the shape of business operations
 
-The Application block uses Domain models and calls Infrastructure through **OutboundPorts**, but does not contain technical implementation details.
+The Application block depends on Domain types and defines abstract ports that Infrastructure implements. It contains no technical implementation details.
 
 !!! note "Dependency rule"
     Application depends on Domain and Foundation.
-    It defines both InboundPort and OutboundPort interfaces.
-    Infrastructure implements the OutboundPort interfaces (Dependency Inversion Principle).
+    It defines both InboundPort and OutboundPort contracts.
+    Infrastructure implements the OutboundPort contracts (Dependency Inversion Principle).
 
 ---
 
 ## Infrastructure
+**Responsibility:** provide technology-agnostic implementations of outbound port contracts.
 
-**Responsibility:** connect the system to external technologies.
+The Infrastructure block ships with:
 
-Examples:
+- **In-memory repositories** (`InMemoryReadRepository`, `InMemoryWriteRepository`) and **event stores** (`InMemoryEventStore`)
+- **In-memory messaging** (`InMemoryMessageBus`, `InMemoryEventBus`)
+- **Stdlib-based implementations** (`OSFileSystem`, `StdlibLogger`)
+- **Unit of Work** (`InMemoryUnitOfWork`)
 
-- Concrete repositories (SQL, NoSQL, in-memory)
-- Messaging and event bus integrations
-- HTTP clients for external APIs
-
-Infrastructure implements OutboundPort interfaces defined by Application or Domain.
+These are first-class implementations, not test doubles — they use only the Python standard library and carry no third-party dependencies.
 
 !!! note "Dependency Rule"
-    Infrastructure depends on OutboundPorts and Foundation block.
-    External dependencies are allowed here.
-    This is where databases, network calls, and any other external concerns lives.
+    Infrastructure depends on Application (for outbound port contracts) and Foundation.
+    No third-party dependencies are allowed in this library.
+    Application-specific adapters (SQL databases, message brokers, HTTP clients) belong in consuming projects.
 
 ---
 
 ## Presentation
 
-**Responsibility:** expose the system to the outside world.
+**Responsibility:** provide entry-point and interaction abstractions.
 
-Examples:
+The Presentation block provides:
 
-- HTTP controllers or routers
-- CLI commands
-- message consumers or event handlers
+- **Adapter patterns** for connecting external inputs to Application ports
+- **Middleware abstractions** for cross-cutting concerns
+- **Error handling** utilities for boundary translation
 
-Presentation reads external input, prepares it, and calls the Application block.
-It stays as thin as possible so that the behavior remains testable and reusable.
+The Presentation block calls the Application block through inbound ports. It stays thin so that behavior remains testable and reusable.

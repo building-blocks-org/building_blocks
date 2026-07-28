@@ -44,6 +44,94 @@ graph LR
     ApplicationCore -->|dispatch/persist/notify| OutboundAdapters[Outbound Adapters<br/>Repositories, Message Bus]
 ```
 
+## ForgingBlocks in practice
+
+### 1. Inbound Port — defining how the core is triggered
+
+An inbound port defines a contract for driving the application. Adapters
+(HTTP, CLI, tests) call this contract without the core knowing about them.
+
+```python
+from abc import abstractmethod
+from dataclasses import dataclass
+
+from forging_blocks.application.ports.inbound import ApplicationServicePort
+
+
+@dataclass(frozen=True)
+class RegisterCustomerRequest:
+    name: str
+    email: str
+
+
+@dataclass(frozen=True)
+class RegisterCustomerResponse:
+    customer_id: str
+
+
+class RegisterCustomerUseCase(
+    ApplicationServicePort[RegisterCustomerRequest, RegisterCustomerResponse],
+):
+    """Inbound port — any adapter can trigger registration through this contract."""
+
+    @abstractmethod
+    async def execute(
+        self, request: RegisterCustomerRequest,
+    ) -> RegisterCustomerResponse:
+        ...
+```
+
+### 2. Outbound Port — defining what the core needs
+
+An outbound port declares a capability the core requires, without specifying
+how it is fulfilled. The core depends on this abstraction, never on the
+concrete implementation.
+
+```python
+from abc import abstractmethod
+from uuid import UUID
+
+from forging_blocks.application.ports.outbound import RepositoryPort
+
+
+class CustomerRepositoryPort(RepositoryPort["Customer", UUID]):
+    """Outbound port — the core needs customer persistence, full stop."""
+
+    @abstractmethod
+    async def find_by_email(self, email: str) -> "Customer | None":
+        """Retrieve a customer by email address."""
+        ...
+```
+
+### 3. Infrastructure adapter implementing the OutboundPort
+
+The adapter fulfills the outbound port contract with a concrete technology.
+Swap adapters without touching the core.
+
+```python
+class InMemoryCustomerRepository(CustomerRepositoryPort):
+    def __init__(self) -> None:
+        self._store: dict[UUID, "Customer"] = {}
+
+    async def get_by_id(self, id: UUID) -> "Customer | None":
+        return self._store.get(id)
+
+    async def list_all(self) -> Sequence["Customer"]:
+        return list(self._store.values())
+
+    async def save(self, aggregate: "Customer") -> None:
+        self._store[aggregate.id] = aggregate  # type: ignore[assignment]
+
+    async def delete_by_id(self, id: UUID) -> None:
+        self._store.pop(id, None)
+
+    async def find_by_email(self, email: str) -> "Customer | None":
+        for customer in self._store.values():
+            if customer.email == email:
+                return customer
+        return None
+```
+
 ---
 
 ## When this style fits

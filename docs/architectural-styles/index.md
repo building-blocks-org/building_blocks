@@ -11,7 +11,14 @@ They are intended to help you **relate ForgingBlocks concepts** to architectural
 
 ## Quick summary
 
-This section explores **well-known architectural styles** (Clean Architecture, Hexagonal, Layered, CQRS, Event-Driven) as they appear in software architecture literature. It helps you **relate ForgingBlocks concepts** to styles you may already know.
+This section explores **well-known architectural styles** (Clean Architecture, Hexagonal, Layered, CQRS, Event-Driven, MVC) as they appear in software architecture literature. It helps you **relate ForgingBlocks concepts** to styles you may already know.
+
+- **Clean Architecture** — Dependency inversion with entities at the center; ForgingBlocks types define the core
+- **Hexagonal Architecture** — Ports and adapters isolating domain logic; ForgingBlocks ports define the boundaries
+- **Layered Architecture** — Hierarchical separation of concerns; ForgingBlocks types populate each layer
+- **CQRS** — Separate read and write models; ForgingBlocks types define commands, queries, and projections
+- **Event-Driven** — Loose coupling through events; ForgingBlocks types define messages and handlers
+- **MVC** — Separates presentation into Model, View, and Controller; ForgingBlocks types define the Model
 
 Key points:
 - Pages are **explanatory, not prescriptive** — no definitions, no imposed architecture, no recommendations

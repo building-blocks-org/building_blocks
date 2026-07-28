@@ -20,8 +20,7 @@ from forging_blocks.infrastructure.errors.repository_errors import (
 class InMemoryWriteRepository[TEntity: Identified[Any], TId](WriteOnlyRepositoryPort[TEntity, TId]):
     """In-memory write-only repository backed by a dictionary.
 
-    Stores entities in a dictionary keyed by their identifier. Designed
-    for command-side usage in CQRS architectures or single-process contexts.
+    Stores entities in a dictionary keyed by their identifier.
 
     The storage mapping is injected via the constructor and copied on init
     to ensure independence from external mutation.
