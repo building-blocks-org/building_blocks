@@ -4,7 +4,7 @@ from typing import Any
 
 from forging_blocks.foundation.errors.base.rule_violation_error import RuleViolationError
 from forging_blocks.foundation.errors.core import ErrorMessage, ErrorMetadata
-from forging_blocks.foundation.errors.rule_violated_error import RuleViolatedError
+from forging_blocks.foundation.errors.rule_violations.rule_violated_error import RuleViolatedError
 from forging_blocks.foundation.rules import ValidationRule
 
 

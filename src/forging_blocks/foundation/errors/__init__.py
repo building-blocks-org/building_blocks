@@ -15,8 +15,8 @@ from .core import ErrorMessage, ErrorMetadata, FieldReference
 from .non_hashable_value_error import NonHashableValueError
 from .none_not_allowed_error import NoneNotAllowedError
 from .result_access_error import ResultAccessError
-from .rule_violated_error import RuleViolatedError
-from .validation_failed_error import ValidationFailedError
+from .rule_violations.rule_violated_error import RuleViolatedError
+from .validation.validation_failed_error import ValidationFailedError
 
 __all__ = [
     "ConfigurationError",

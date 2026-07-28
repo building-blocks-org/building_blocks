@@ -8,7 +8,7 @@ from typing import Iterable, Iterator, Sequence
 
 from ..base.error import Error
 from ..core import ErrorMessage, FieldReference
-from ..rule_violated_error import RuleViolatedError
+from ..rule_violations.rule_violated_error import RuleViolatedError
 
 
 class FieldErrors[ContainedErrorType: Error[object]](Error[object]):
