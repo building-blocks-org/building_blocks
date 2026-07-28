@@ -21,10 +21,10 @@ class TestFieldErrors:
             FieldErrors(field=field_reference, errors=[])
 
     def test__init__when_errors_but_no_field_then_raise_rule_violation_error(self) -> None:
-        error_message = ErrorMessage("An error occurred")
+        error = Error(ErrorMessage("An error occurred"))
 
         with pytest.raises(RuleViolationError):
-            FieldErrors(field=cast(FieldReference, None), errors=[error_message])
+            FieldErrors(field=cast(FieldReference, None), errors=[error])
 
     def test_errors_when_errors_defined_then_returns_errors(self) -> None:
         error_message = ErrorMessage("An error occurred")
