@@ -1,11 +1,9 @@
 """Error raised when a transaction operation fails."""
 
-from collections.abc import Mapping
-
-from forging_blocks.foundation.errors.error import Error
+from forging_blocks.foundation.errors.base.error import Error
 
 
-class TransactionError[MetadataType: Mapping[str, object] = dict[str, object]](Error[MetadataType]):
+class TransactionError[MetadataValueType = object](Error[MetadataValueType]):
     """Error raised when a transaction operation fails."""
 
     pass

@@ -5,7 +5,7 @@ from uuid import UUID
 from forging_blocks.application.errors.event_store_error import EventStoreError
 
 
-class ConcurrencyError(EventStoreError):
+class ConcurrencyError(EventStoreError[object]):
     """Raised when an optimistic concurrency check fails.
 
     Attributes:
