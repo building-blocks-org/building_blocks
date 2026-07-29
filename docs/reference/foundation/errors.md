@@ -24,7 +24,32 @@ Foundation provides a **structured error model** — every failure carries a mes
 - **NotCallablePredicateError** — Raised when a specification predicate is not callable.
 - **ResultAccessError** — Raised when accessing `value` on `Err` or `error` on `Ok`.
 
-All errors extend the `Error` base class and carry structured messages.
+
+## Built-in taxonomy
+
+Concrete errors include mixins that make them catchable as Python built-in types:
+
+- **`ValueError`** — Input and precondition errors inherit `ValueErrorMixin`:
+    `ValidationError`, `ConfigurationError`, `NoneNotAllowedError`,
+    `NonHashableValueError`, `NotCallablePredicateError`,
+    `ValidationFieldErrors`, `CombinedValidationErrors`
+
+    ```python
+    except ValueError:  # catches all of the above
+    ```
+
+- **`RuntimeError`** — State and invariant errors inherit `RuntimeErrorMixin`:
+    `RuleViolationError`, `ArchitectureError`,
+    `CantModifyImmutableAttributeError`, `ResultAccessError`,
+    `CombinedRuleViolationErrors`
+
+    ```python
+    except RuntimeError:  # catches all of the above
+    ```
+
+The root `Error` class does **not** include either mixin. Domain and application
+errors inherit the mixin from the appropriate base class — see their reference
+pages for details.
 
 ## When to use
 

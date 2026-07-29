@@ -6,10 +6,11 @@ when an invalid predicate is provided during initialization.
 """
 
 from forging_blocks.foundation.errors.base.error import Error
+from forging_blocks.foundation.errors.builtin.value_error_mixin import ValueErrorMixin
 from forging_blocks.foundation.errors.core import ErrorMessage
 
 
-class NotCallablePredicateError(Error[object]):
+class NotCallablePredicateError(ValueErrorMixin, Error[object]):
     """Exception raised when a specification predicate is not callable.
 
     This error is raised by ExpressionSpecification when the provided predicate

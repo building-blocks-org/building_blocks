@@ -12,6 +12,8 @@ conflict between competing updates.
 - **ConcurrencyError** — Optimistic concurrency conflict
 - **EventBusError** — Event publishing failure
 
+All application errors use `RuntimeErrorMixin`, making them catchable as `RuntimeError`.
+
 ## When to use
 
 Raise these errors from application code when a use case fails due to infrastructure or coordination issues. They extend the [Foundation](../foundation.md) `Error` base class, so they carry structured messages and work with the presentation error pipeline.

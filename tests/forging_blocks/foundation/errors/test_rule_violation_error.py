@@ -1,8 +1,6 @@
-# pyright: reportPrivateUsage=false, reportMissingTypeArgument=false, reportUnknownParameterType=false, reportUnknownMemberType=false, reportUnknownVariableType=false, reportUnknownArgumentType=false, reportMissingParameterType=false, reportIncompatibleMethodOverride=false, reportUnusedClass=false, reportFunctionMemberAccess=false
 import pytest
 
 from forging_blocks.foundation import (
-    CombinedRuleViolationErrors,
     ErrorMessage,
     RuleViolatedError,
     RuleViolationError,
@@ -11,20 +9,14 @@ from forging_blocks.foundation import (
 
 @pytest.mark.unit
 class TestRuleViolationError:
-    def test_constructor(self) -> None:
-        error_message = ErrorMessage("Test rule violation error")
+    def test_concrete_subclass_is_catchable_as_runtime_error(self) -> None:
+        """RuleViolatedError is a RuntimeError via the mixin."""
+        error = RuleViolatedError(ErrorMessage("Test rule violation"))
 
-        error = RuleViolatedError(error_message)
-
+        assert isinstance(error, RuntimeError)
         assert isinstance(error, RuleViolationError)
 
-
-@pytest.mark.unit
-class TestCombinedRuleViolationErrors:
-    def test_constructor(self) -> None:
-        error_message = ErrorMessage("Test rule violation error")
-        error = RuleViolatedError(error_message)
-
-        combined_errors = CombinedRuleViolationErrors([error])
-
-        assert isinstance(combined_errors, CombinedRuleViolationErrors)
+    def test_direct_instantiation_raises_typeerror(self) -> None:
+        """RuleViolationError is abstract — direct instantiation must raise TypeError."""
+        with pytest.raises(TypeError, match="RuleViolationError is abstract"):
+            RuleViolationError(ErrorMessage("not allowed"))

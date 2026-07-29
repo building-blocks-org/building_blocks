@@ -1,10 +1,18 @@
-"""Module defining the EntityIdDeletionError exception."""
+"""Error raised when code attempts to delete an entity's identity attribute.
+
+Defines ``EntityIdDeletionError``, raised when an entity's ``id`` field is
+targeted for deletion. An entity's ``id`` defines its identity and must
+never be deleted after being set.
+
+Extends ``RuntimeErrorMixin`` and ``Error[str]``.
+"""
 
 from forging_blocks.foundation.errors.base.error import Error
+from forging_blocks.foundation.errors.builtin.runtime_error_mixin import RuntimeErrorMixin
 from forging_blocks.foundation.errors.core import ErrorMessage, ErrorMetadata
 
 
-class EntityIdDeletionError(Error[str]):
+class EntityIdDeletionError(RuntimeErrorMixin, Error[str]):
     """Raised when there is an attempt to delete an entity's identifier."""
 
     def __init__(self, class_name: str) -> None:

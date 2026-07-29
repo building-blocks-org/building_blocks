@@ -1,10 +1,17 @@
-"""Module for CantModifyImmutableAttributeError exception."""
+"""Error raised when code attempts to mutate a frozen or immutable attribute.
+
+Defines ``CantModifyImmutableAttributeError``, raised when an attempt is made
+to set or delete an attribute on a value object or entity that has been frozen
+by ``@auto_freeze``. Extends ``RuntimeErrorMixin`` and ``Error[str]``,
+making it catchable as both ``RuntimeError`` and ``Exception``.
+"""
 
 from forging_blocks.foundation.errors.base.error import Error
+from forging_blocks.foundation.errors.builtin.runtime_error_mixin import RuntimeErrorMixin
 from forging_blocks.foundation.errors.core import ErrorMessage, ErrorMetadata
 
 
-class CantModifyImmutableAttributeError(Error[str]):
+class CantModifyImmutableAttributeError(RuntimeErrorMixin, Error[str]):
     """Raised when there is an attempt to modify an immutable attribute of an object."""
 
     def __init__(self, class_name: str, attribute_name: str):
