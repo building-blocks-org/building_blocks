@@ -1,10 +1,11 @@
 """Module defining the EntityIdDeletionError exception."""
 
 from forging_blocks.foundation.errors.base.error import Error
+from forging_blocks.foundation.errors.builtin.runtime_error_mixin import RuntimeErrorMixin
 from forging_blocks.foundation.errors.core import ErrorMessage, ErrorMetadata
 
 
-class EntityIdDeletionError(Error[str]):
+class EntityIdDeletionError(RuntimeErrorMixin, Error[str]):
     """Raised when there is an attempt to delete an entity's identifier."""
 
     def __init__(self, class_name: str) -> None:
