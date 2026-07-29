@@ -7601,7 +7601,12 @@
 
     <div class="doc doc-contents first">
 
-        <p>Mixin that makes forging-blocks errors catchable as built-in ValueError.</p>
+        <p>Make forging-blocks errors catchable as Python built-in <code>ValueError</code>.</p>
+<p>Defines <code>ValueErrorMixin</code>, a mixin class extending Python's built-in<br />
+<code>ValueError</code>. When listed before <code>Error[...]</code> in a class's bases, it<br />
+adjusts the MRO so that <code>isinstance(error, ValueError)</code> returns <code>True</code>.</p>
+<p>Attach <code>ValueErrorMixin</code> to errors representing invalid input, bad<br />
+arguments, and precondition failures.</p>
 
 
 
@@ -7649,9 +7654,9 @@
 
               <details class="quote">
                 <summary>Source code in <code>src/forging_blocks/foundation/errors/builtin/value_error_mixin.py</code></summary>
-                <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-4">4</a></span>
-<span class="normal"><a href="#__codelineno-0-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">ValueErrorMixin</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Mixin — attach before ``Error[...]`` in MRO to make errors ``isinstance(ValueError)``.&quot;&quot;&quot;</span>
+                <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-12">12</a></span>
+<span class="normal"><a href="#__codelineno-0-13">13</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="k">class</span><span class="w"> </span><span class="nc">ValueErrorMixin</span><span class="p">(</span><span class="ne">ValueError</span><span class="p">):</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Mixin — attach before ``Error[...]`` in MRO to make errors ``isinstance(ValueError)``.&quot;&quot;&quot;</span>
 </span></code></pre></div></td></tr></table></div>
               </details>
 

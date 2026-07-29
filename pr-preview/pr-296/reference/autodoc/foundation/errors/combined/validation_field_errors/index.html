@@ -7601,9 +7601,11 @@
 
     <div class="doc doc-contents first">
 
-        <p>Module defining validation errors associated with a specific field.</p>
-<p>Defines ValidationFieldErrors which represents validation errors<br />
-associated with a single field.</p>
+        <p>Collection of validation errors scoped to a single field.</p>
+<p>Defines <code>ValidationFieldErrors</code>, which aggregates multiple <code>Error[object]</code><br />
+instances for one field, enabling per-field error reporting in validation<br />
+workflows. Extends <code>ValueErrorMixin</code> (catchable as <code>ValueError</code>) and<br />
+<code>FieldErrors[Error[object]]</code>.</p>
 
 
 
@@ -7651,9 +7653,9 @@ associated with a single field.</p>
 
               <details class="quote">
                 <summary>Source code in <code>src/forging_blocks/foundation/errors/combined/validation_field_errors.py</code></summary>
-                <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-12">12</a></span>
-<span class="normal"><a href="#__codelineno-0-13">13</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="k">class</span><span class="w"> </span><span class="nc">ValidationFieldErrors</span><span class="p">(</span><span class="n">ValueErrorMixin</span><span class="p">,</span> <span class="n">FieldErrors</span><span class="p">[</span><span class="n">Error</span><span class="p">[</span><span class="nb">object</span><span class="p">]]):</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Validation errors associated with a specific field.&quot;&quot;&quot;</span>
+                <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-14">14</a></span>
+<span class="normal"><a href="#__codelineno-0-15">15</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="k">class</span><span class="w"> </span><span class="nc">ValidationFieldErrors</span><span class="p">(</span><span class="n">ValueErrorMixin</span><span class="p">,</span> <span class="n">FieldErrors</span><span class="p">[</span><span class="n">Error</span><span class="p">[</span><span class="nb">object</span><span class="p">]]):</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Validation errors associated with a specific field.&quot;&quot;&quot;</span>
 </span></code></pre></div></td></tr></table></div>
               </details>
 

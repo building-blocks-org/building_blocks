@@ -7601,7 +7601,12 @@
 
     <div class="doc doc-contents first">
 
-        <p>Mixin that makes forging-blocks errors catchable as built-in RuntimeError.</p>
+        <p>Mix-in for making forging-blocks errors catchable as built-in <code>RuntimeError</code>.</p>
+<p>Defines <code>RuntimeErrorMixin</code>, which extends Python's built-in <code>RuntimeError</code>.<br />
+When listed before <code>Error[...]</code> in a class's bases, the mix-in ensures<br />
+<code>isinstance(error, RuntimeError)</code> returns <code>True</code> for that error and its<br />
+subclasses.  Attach it to errors representing state violations, broken<br />
+invariants, and operational failures where <code>except RuntimeError</code> should apply.</p>
 
 
 
@@ -7649,9 +7654,9 @@
 
               <details class="quote">
                 <summary>Source code in <code>src/forging_blocks/foundation/errors/builtin/runtime_error_mixin.py</code></summary>
-                <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-4">4</a></span>
-<span class="normal"><a href="#__codelineno-0-5">5</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-4"><a id="__codelineno-0-4" name="__codelineno-0-4"></a><span class="k">class</span><span class="w"> </span><span class="nc">RuntimeErrorMixin</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
-</span><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Mixin — attach before ``Error[...]`` in MRO to make errors ``isinstance(RuntimeError)``.&quot;&quot;&quot;</span>
+                <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-11">11</a></span>
+<span class="normal"><a href="#__codelineno-0-12">12</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-11"><a id="__codelineno-0-11" name="__codelineno-0-11"></a><span class="k">class</span><span class="w"> </span><span class="nc">RuntimeErrorMixin</span><span class="p">(</span><span class="ne">RuntimeError</span><span class="p">):</span>
+</span><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Mixin — attach before ``Error[...]`` in MRO to make errors ``isinstance(RuntimeError)``.&quot;&quot;&quot;</span>
 </span></code></pre></div></td></tr></table></div>
               </details>
 

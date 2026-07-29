@@ -7601,9 +7601,14 @@
 
     <div class="doc doc-contents first">
 
-        <p>Module defining combined rule violation errors.</p>
-<p>Defines CombinedRuleViolationErrors which aggregates multiple<br />
-RuleViolationError instances into a single error.</p>
+        <p>Aggregate error for multiple simultaneous rule violations.</p>
+<p>Defines <code>CombinedRuleViolationErrors</code>, raised when two or more<br />
+<code>RuleViolationError</code> instances must be reported together — for example,<br />
+when a single operation violates several business rules at once.</p>
+<p>Extends <code>RuntimeErrorMixin</code> (catchable as <code>RuntimeError</code>) and<br />
+<code>CombinedErrors[RuleViolationError]</code>, so it behaves like a standard<br />
+collection of rule violations while remaining compatible with generic<br />
+<code>RuntimeError</code> exception handlers.</p>
 
 
 
@@ -7651,9 +7656,9 @@ RuleViolationError instances into a single error.</p>
 
               <details class="quote">
                 <summary>Source code in <code>src/forging_blocks/foundation/errors/combined/combined_rule_violation_errors.py</code></summary>
-                <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-12">12</a></span>
-<span class="normal"><a href="#__codelineno-0-13">13</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="k">class</span><span class="w"> </span><span class="nc">CombinedRuleViolationErrors</span><span class="p">(</span><span class="n">RuntimeErrorMixin</span><span class="p">,</span> <span class="n">CombinedErrors</span><span class="p">[</span><span class="n">RuleViolationError</span><span class="p">]):</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Aggregates multiple rule violation errors for easier handling and reporting.&quot;&quot;&quot;</span>
+                <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-18">18</a></span>
+<span class="normal"><a href="#__codelineno-0-19">19</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="k">class</span><span class="w"> </span><span class="nc">CombinedRuleViolationErrors</span><span class="p">(</span><span class="n">RuntimeErrorMixin</span><span class="p">,</span> <span class="n">CombinedErrors</span><span class="p">[</span><span class="n">RuleViolationError</span><span class="p">]):</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Aggregates multiple rule violation errors for easier handling and reporting.&quot;&quot;&quot;</span>
 </span></code></pre></div></td></tr></table></div>
               </details>
 

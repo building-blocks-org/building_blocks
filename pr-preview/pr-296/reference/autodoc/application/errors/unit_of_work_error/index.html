@@ -7601,6 +7601,11 @@
 
     <div class="doc doc-contents first">
 
+        <p>Base error for Unit of Work transaction failures.</p>
+<p>Defines <code>UnitOfWorkError</code>, raised when a commit or rollback operation<br />
+fails in the application layer's transactional boundary. Extends<br />
+<code>RuntimeErrorMixin</code> so it is catchable as <code>RuntimeError</code>.</p>
+
 
 
 
@@ -7647,9 +7652,9 @@
 
               <details class="quote">
                 <summary>Source code in <code>src/forging_blocks/application/errors/unit_of_work_error.py</code></summary>
-                <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-5">5</a></span>
-<span class="normal"><a href="#__codelineno-0-6">6</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-5"><a id="__codelineno-0-5" name="__codelineno-0-5"></a><span class="k">class</span><span class="w"> </span><span class="nc">UnitOfWorkError</span><span class="p">[</span><span class="n">MetadataValueType</span> <span class="o">=</span> <span class="nb">object</span><span class="p">](</span><span class="n">RuntimeErrorMixin</span><span class="p">,</span> <span class="n">Error</span><span class="p">[</span><span class="n">MetadataValueType</span><span class="p">]):</span>
-</span><span id="__span-0-6"><a id="__codelineno-0-6" name="__codelineno-0-6"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Error raised when a Unit of Work operation fails.&quot;&quot;&quot;</span>
+                <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-12">12</a></span>
+<span class="normal"><a href="#__codelineno-0-13">13</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="k">class</span><span class="w"> </span><span class="nc">UnitOfWorkError</span><span class="p">[</span><span class="n">MetadataValueType</span> <span class="o">=</span> <span class="nb">object</span><span class="p">](</span><span class="n">RuntimeErrorMixin</span><span class="p">,</span> <span class="n">Error</span><span class="p">[</span><span class="n">MetadataValueType</span><span class="p">]):</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Error raised when a Unit of Work operation fails.&quot;&quot;&quot;</span>
 </span></code></pre></div></td></tr></table></div>
               </details>
 

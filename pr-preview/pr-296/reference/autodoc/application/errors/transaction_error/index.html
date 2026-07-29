@@ -7601,7 +7601,11 @@
 
     <div class="doc doc-contents first">
 
-        <p>Error raised when a transaction operation fails.</p>
+        <p>Application-layer transaction boundary error.</p>
+<p>Defines <code>TransactionError</code>, raised when a transaction boundary operation<br />
+in the application layer fails — covering failures during transaction<br />
+begin, commit, or rollback.</p>
+<p>Extends <code>RuntimeErrorMixin</code> so it is catchable as <code>RuntimeError</code>.</p>
 
 
 
@@ -7649,9 +7653,9 @@
 
               <details class="quote">
                 <summary>Source code in <code>src/forging_blocks/application/errors/transaction_error.py</code></summary>
-                <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-7">7</a></span>
-<span class="normal"><a href="#__codelineno-0-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="k">class</span><span class="w"> </span><span class="nc">TransactionError</span><span class="p">[</span><span class="n">MetadataValueType</span> <span class="o">=</span> <span class="nb">object</span><span class="p">](</span><span class="n">RuntimeErrorMixin</span><span class="p">,</span> <span class="n">Error</span><span class="p">[</span><span class="n">MetadataValueType</span><span class="p">]):</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Error raised when a transaction operation fails.&quot;&quot;&quot;</span>
+                <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-14">14</a></span>
+<span class="normal"><a href="#__codelineno-0-15">15</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="k">class</span><span class="w"> </span><span class="nc">TransactionError</span><span class="p">[</span><span class="n">MetadataValueType</span> <span class="o">=</span> <span class="nb">object</span><span class="p">](</span><span class="n">RuntimeErrorMixin</span><span class="p">,</span> <span class="n">Error</span><span class="p">[</span><span class="n">MetadataValueType</span><span class="p">]):</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Error raised when a transaction operation fails.&quot;&quot;&quot;</span>
 </span></code></pre></div></td></tr></table></div>
               </details>
 

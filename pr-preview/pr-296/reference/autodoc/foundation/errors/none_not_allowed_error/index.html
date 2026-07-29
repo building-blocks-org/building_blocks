@@ -7601,7 +7601,11 @@
 
     <div class="doc doc-contents first">
 
-        <p>Error indicating that a None value was provided where it is not allowed.</p>
+        <p>Error raised when <code>None</code> is passed where a non-null value is required.</p>
+<p>Defines <code>NoneNotAllowedError</code>, used by validation guards and the<br />
+<code>NoneNotAllowed</code> predicate to enforce non-null constraints on method<br />
+parameters and field values.  Extends <code>ValueErrorMixin</code> (catchable as<br />
+<code>ValueError</code>) and <code>Error[str]</code>.</p>
 
 
 
@@ -7649,9 +7653,9 @@
 
               <details class="quote">
                 <summary>Source code in <code>src/forging_blocks/foundation/errors/none_not_allowed_error.py</code></summary>
-                <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-7">7</a></span>
-<span class="normal"><a href="#__codelineno-0-8">8</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-7"><a id="__codelineno-0-7" name="__codelineno-0-7"></a><span class="k">class</span><span class="w"> </span><span class="nc">NoneNotAllowedError</span><span class="p">(</span><span class="n">ValueErrorMixin</span><span class="p">,</span> <span class="n">Error</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
-</span><span id="__span-0-8"><a id="__codelineno-0-8" name="__codelineno-0-8"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Error indicating that a None value was provided where it is not allowed.&quot;&quot;&quot;</span>
+                <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-13">13</a></span>
+<span class="normal"><a href="#__codelineno-0-14">14</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="k">class</span><span class="w"> </span><span class="nc">NoneNotAllowedError</span><span class="p">(</span><span class="n">ValueErrorMixin</span><span class="p">,</span> <span class="n">Error</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Error indicating that a None value was provided where it is not allowed.&quot;&quot;&quot;</span>
 </span></code></pre></div></td></tr></table></div>
               </details>
 

@@ -7601,9 +7601,12 @@
 
     <div class="doc doc-contents first">
 
-        <p>Module defining combined validation errors.</p>
-<p>Defines CombinedValidationErrors which aggregates multiple<br />
-ValidationFieldErrors instances into a single error.</p>
+        <p>Aggregate error that collects multiple <code>ValidationFieldErrors</code> instances.</p>
+<p>Defines <code>CombinedValidationErrors</code>, used when input validation produces<br />
+errors across multiple fields and all failures should be reported together<br />
+in a single error response.</p>
+<p>Extends <code>ValueErrorMixin</code> (catchable as <code>ValueError</code>) and<br />
+<code>CombinedErrors[ValidationFieldErrors]</code>.</p>
 
 
 
@@ -7651,9 +7654,9 @@ ValidationFieldErrors instances into a single error.</p>
 
               <details class="quote">
                 <summary>Source code in <code>src/forging_blocks/foundation/errors/combined/combined_validation_errors.py</code></summary>
-                <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-12">12</a></span>
-<span class="normal"><a href="#__codelineno-0-13">13</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="k">class</span><span class="w"> </span><span class="nc">CombinedValidationErrors</span><span class="p">(</span><span class="n">ValueErrorMixin</span><span class="p">,</span> <span class="n">CombinedErrors</span><span class="p">[</span><span class="n">ValidationFieldErrors</span><span class="p">]):</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Aggregates multiple validation errors for easier handling and reporting.&quot;&quot;&quot;</span>
+                <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-16">16</a></span>
+<span class="normal"><a href="#__codelineno-0-17">17</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="k">class</span><span class="w"> </span><span class="nc">CombinedValidationErrors</span><span class="p">(</span><span class="n">ValueErrorMixin</span><span class="p">,</span> <span class="n">CombinedErrors</span><span class="p">[</span><span class="n">ValidationFieldErrors</span><span class="p">]):</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Aggregates multiple validation errors for easier handling and reporting.&quot;&quot;&quot;</span>
 </span></code></pre></div></td></tr></table></div>
               </details>
 
