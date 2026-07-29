@@ -83,21 +83,16 @@ If a change affects public behavior, documentation updates are expected.
 1. **Fork the repository**
 2. **Clone your fork**: `git clone https://github.com/<username>/forging-blocks.git`
 3. **Install dependencies**: `poetry install`
-4. **Set up pre-commit hooks**: `pre-commit install`
+4. **Set up git hooks**: `poetry run pre-commit install`
 
+That single install enables both **pre-commit** and **pre-push** hooks (`default_install_hook_types` in `.pre-commit-config.yaml`).
 
 ### Automation Hooks
 
 The project uses `pre-commit` to automate quality checks.
 
-- **Pre-commit (Linting):** Runs on every commit. It checks for code style, trailing whitespace, and common errors. It is designed to be fast.
-- **Pre-push (Pipeline):** Runs on every push. It executes the full pipeline (`poetry run poe ci:simulate`), including type checking, all tests, and security scanning, to ensure the remote branch remains stable.
-
-To install both:
-```bash
-pre-commit install
-pre-commit install --hook-type pre-push
-```
+- **Pre-commit (Linting):** Runs on every commit. Fast checks: Ruff lint/format, trailing whitespace, YAML/TOML, and blocks committing a *generated* autodoc section in `mkdocs.yml` (paths under `reference/autodoc`). Hand-edited `mkdocs.yml` nav is allowed.
+- **Pre-push (Pipeline):** Runs on every push. Full pipeline (`poetry run poe ci:simulate`): type checking, tests, security scan, package check, and docs sync — keeps the remote branch stable.
 
 ### Making Changes
 
