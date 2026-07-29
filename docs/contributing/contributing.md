@@ -14,7 +14,7 @@ This guide is meant to help you orient yourself.
 
 - This file explains **how to contribute**.
 - Other documents explain **how things should be written or structured**.
-- The [Architecture Overview](guide/architecture-overview.md) explains the layered design used in the project.
+- The [Architecture Overview](../guide/architecture-overview.md) explains the layered design used in the project.
 
 Contributions are welcome as long as they respect the project's emphasis on clarity, boundaries, and intentional design.
 
