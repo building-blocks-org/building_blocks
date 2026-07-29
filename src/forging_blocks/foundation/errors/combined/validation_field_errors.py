@@ -5,8 +5,9 @@ associated with a single field.
 """
 
 from forging_blocks.foundation.errors.base.error import Error
+from forging_blocks.foundation.errors.builtin.value_error_mixin import ValueErrorMixin
 from forging_blocks.foundation.errors.combined.field_errors import FieldErrors
 
 
-class ValidationFieldErrors(FieldErrors[Error[object]]):
+class ValidationFieldErrors(ValueErrorMixin, FieldErrors[Error[object]]):
     """Validation errors associated with a specific field."""
