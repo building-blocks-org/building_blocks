@@ -10,5 +10,3 @@ from forging_blocks.foundation.errors.combined.combined_errors import CombinedEr
 
 class CombinedRuleViolationErrors(CombinedErrors[RuleViolationError]):
     """Aggregates multiple rule violation errors for easier handling and reporting."""
-
-    ...
