@@ -15,6 +15,10 @@ They extend the [Foundation](../foundation.md) `Error` base class.
 - **EntityIdDeletionError** — Raised when attempting to delete an entity's identifier
 - **DraftEntityIsNotHashableError** — Raised because draft (unsaved) entities are not hashable
 
+All domain errors use `RuntimeErrorMixin`, making them catchable as `RuntimeError`.
+`EntityIdNoneError` inherits from `NoneNotAllowedError` and therefore also carries
+`ValueErrorMixin`.
+
 ## When to use
 
 Raise these errors from domain code when an entity's identity contract is violated. They extend the [Foundation](../foundation.md) `Error` base class, so they carry structured messages and metadata consistent with the rest of the system.

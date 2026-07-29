@@ -1,4 +1,11 @@
-"""Module defining a concrete validation failure error for throwing at validation sites."""
+"""Concrete validation failure error for throwing at input validation sites.
+
+Defines ``ValidationFailedError``, the concrete throwable leaf class
+for validation failures. ``ValidationError`` is the abstract base;
+code that constructs and raises a validation error MUST use
+``ValidationFailedError``. It extends ``ValidationError`` (which extends
+``ValueErrorMixin`` and ``Error[object]``).
+"""
 
 from forging_blocks.foundation.errors.base.validation_error import ValidationError
 

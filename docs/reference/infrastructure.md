@@ -34,6 +34,7 @@ Wire them together at startup — a composition root — and pass the resulting 
 - **[Persistence](infrastructure/persistence.md)** — Repositories, Unit of Work
 - **[Messaging & Events](infrastructure/messaging.md)** — Message Buses, Event Stores, Event Buses
 - **[Technical Adapters](infrastructure/adapters.md)** — Logging, HTTP, File System, Caching, Serialization
+- **[Errors](infrastructure/errors.md)** — Repository error types
 
 ---
 ## What it does not do

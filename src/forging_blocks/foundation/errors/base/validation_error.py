@@ -1,15 +1,20 @@
-"""Modules defining validation error classes.
+"""Abstract base class for validation errors.
 
-Defines error classes related to validation failures within the system.
+Defines ``ValidationError``, the abstract base class for all input validation
+errors. It cannot be instantiated directly — use ``ValidationFailedError``
+instead. Extends ``ValueErrorMixin`` (catchable as ``ValueError``) and
+``Error[object]``.
 """
 
 from abc import ABC
+
+from forging_blocks.foundation.errors.builtin.value_error_mixin import ValueErrorMixin
 
 from ..core import ErrorMessage, ErrorMetadata
 from .error import Error
 
 
-class ValidationError(Error[object], ABC):
+class ValidationError(ValueErrorMixin, Error[object], ABC):
     """Base class for validation errors — abstract, use ``ValidationFailedError`` to throw."""
 
     def __init__(

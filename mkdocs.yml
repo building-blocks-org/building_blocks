@@ -103,6 +103,7 @@ nav:
           - Persistence: reference/infrastructure/persistence.md
           - Messaging: reference/infrastructure/messaging.md
           - Adapters: reference/infrastructure/adapters.md
+          - Errors: reference/infrastructure/errors.md
       - Presentation:
           - Overview: reference/presentation.md
           - Adapters: reference/presentation/adapters.md

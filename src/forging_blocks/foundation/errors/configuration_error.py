@@ -6,10 +6,11 @@ paths, or misconfigured parameters).
 """
 
 from forging_blocks.foundation.errors.base.error import Error
+from forging_blocks.foundation.errors.builtin.value_error_mixin import ValueErrorMixin
 from forging_blocks.foundation.errors.core import ErrorMessage
 
 
-class ConfigurationError(Error[object]):
+class ConfigurationError(ValueErrorMixin, Error[object]):
     """Raised when an infrastructure adapter receives invalid configuration.
 
     This error signals operational misconfiguration at runtime — for example,

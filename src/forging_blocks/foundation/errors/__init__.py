@@ -4,6 +4,7 @@ from .architecture_error import ArchitectureError
 from .base.error import Error
 from .base.rule_violation_error import RuleViolationError
 from .base.validation_error import ValidationError
+from .builtin import RuntimeErrorMixin, ValueErrorMixin
 from .cant_modify_immutable_attribute_error import CantModifyImmutableAttributeError
 from .combined.combined_errors import CombinedErrors
 from .combined.combined_rule_violation_errors import CombinedRuleViolationErrors
@@ -19,23 +20,25 @@ from .rule_violations.rule_violated_error import RuleViolatedError
 from .validation.validation_failed_error import ValidationFailedError
 
 __all__ = [
-    "ConfigurationError",
     "ArchitectureError",
+    "CantModifyImmutableAttributeError",
     "CombinedErrors",
     "CombinedRuleViolationErrors",
+    "CombinedValidationErrors",
+    "ConfigurationError",
     "Error",
-    "NonHashableValueError",
-    "FieldErrors",
-    "NoneNotAllowedError",
-    "CantModifyImmutableAttributeError",
     "ErrorMessage",
     "ErrorMetadata",
+    "FieldErrors",
     "FieldReference",
+    "NoneNotAllowedError",
+    "NonHashableValueError",
     "ResultAccessError",
     "RuleViolatedError",
     "RuleViolationError",
+    "RuntimeErrorMixin",
     "ValidationError",
     "ValidationFailedError",
     "ValidationFieldErrors",
-    "CombinedValidationErrors",
+    "ValueErrorMixin",
 ]

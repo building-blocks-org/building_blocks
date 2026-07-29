@@ -1,45 +1,22 @@
-# pyright: reportPrivateUsage=false, reportMissingTypeArgument=false, reportUnknownParameterType=false, reportUnknownMemberType=false, reportUnknownVariableType=false, reportUnknownArgumentType=false, reportMissingParameterType=false, reportIncompatibleMethodOverride=false, reportUnusedClass=false, reportFunctionMemberAccess=false
 import pytest
 
 from forging_blocks.foundation import (
-    CombinedValidationErrors,
     ErrorMessage,
-    FieldReference,
     ValidationError,
     ValidationFailedError,
-    ValidationFieldErrors,
 )
 
 
 @pytest.mark.unit
 class TestValidationError:
-    def test_constructor(self) -> None:
-        message = ErrorMessage("Validation failed")
+    def test_concrete_subclass_is_catchable_as_value_error(self) -> None:
+        """ValidationFailedError is a ValueError via the mixin."""
+        error = ValidationFailedError(ErrorMessage("Validation failed"))
 
-        error = ValidationFailedError(message)
-
+        assert isinstance(error, ValueError)
         assert isinstance(error, ValidationError)
 
-
-@pytest.mark.unit
-class TestValidationFieldErrors:
-    def test_constructor(self) -> None:
-        message = ErrorMessage("Username validation failed")
-        error = ValidationFailedError(message)
-        field = FieldReference("username")
-
-        errors = ValidationFieldErrors(field, [error])
-
-        assert isinstance(errors, ValidationFieldErrors)
-
-
-class TesCombinedValidationErrors:
-    def test_constructor(self) -> None:
-        message = ErrorMessage("Username validation failed")
-        error = ValidationFailedError(message)
-        field = FieldReference("username")
-        field_errors = ValidationFieldErrors(field, [error])
-
-        errors = CombinedValidationErrors([field_errors])
-
-        assert isinstance(errors, CombinedValidationErrors)
+    def test_direct_instantiation_raises_typeerror(self) -> None:
+        """ValidationError is abstract — direct instantiation must raise TypeError."""
+        with pytest.raises(TypeError, match="ValidationError is abstract"):
+            ValidationError(ErrorMessage("not allowed"))

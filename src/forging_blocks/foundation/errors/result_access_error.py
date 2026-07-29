@@ -1,10 +1,20 @@
-"""Errors raised when accessing Result.value or Result.error on the wrong variant"""
+"""Error raised when accessing the wrong variant of a ``Result`` type.
+
+Defines ``ResultAccessError``, raised when code accesses ``.value`` on an
+``Err`` result or ``.error`` on an ``Ok`` result.  Enforces correct ``Result``
+variant destructuring — callers must check ``.is_ok()`` or ``.is_err()``
+before accessing the payload.
+
+Extends ``RuntimeErrorMixin`` (catchable as ``RuntimeError``) and
+``Error[object]``.
+"""
 
 from forging_blocks.foundation.errors.base.error import Error
+from forging_blocks.foundation.errors.builtin.runtime_error_mixin import RuntimeErrorMixin
 from forging_blocks.foundation.errors.core import ErrorMessage
 
 
-class ResultAccessError(Error[object]):
+class ResultAccessError(RuntimeErrorMixin, Error[object]):
     """Exception raised when trying to access value or err from an inappropriate Result variant."""
 
     def __init__(self, message: ErrorMessage | None = None) -> None:
