@@ -1,10 +1,11 @@
 """Module for CantModifyImmutableAttributeError exception."""
 
 from forging_blocks.foundation.errors.base.error import Error
+from forging_blocks.foundation.errors.builtin.runtime_error_mixin import RuntimeErrorMixin
 from forging_blocks.foundation.errors.core import ErrorMessage, ErrorMetadata
 
 
-class CantModifyImmutableAttributeError(Error[str]):
+class CantModifyImmutableAttributeError(RuntimeErrorMixin, Error[str]):
     """Raised when there is an attempt to modify an immutable attribute of an object."""
 
     def __init__(self, class_name: str, attribute_name: str):
