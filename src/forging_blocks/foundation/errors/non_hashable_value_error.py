@@ -5,10 +5,11 @@ nor one of the supported convertible types (``list``, ``dict``).
 """
 
 from forging_blocks.foundation.errors.base.error import Error
+from forging_blocks.foundation.errors.builtin.value_error_mixin import ValueErrorMixin
 from forging_blocks.foundation.errors.core import ErrorMessage, ErrorMetadata
 
 
-class NonHashableValueError(Error[str]):
+class NonHashableValueError(ValueErrorMixin, Error[str]):
     """Raised when a value cannot be made hashable during ``__hash__`` computation.
 
     ``@auto_hash`` converts ``list`` → ``tuple`` and ``dict`` →
