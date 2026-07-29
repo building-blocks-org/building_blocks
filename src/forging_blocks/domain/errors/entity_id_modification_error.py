@@ -1,4 +1,12 @@
-"""Module defining the EntityIdModificationError exception."""
+"""Error raised when code attempts to modify an entity's identity attribute.
+
+Defines ``EntityIdModificationError``, raised when an attempt is made to
+change an entity's identity attribute (typically ``id``) after it has already
+been assigned. Once set, an entity's identity is immutable — modification
+would break identity-based equality and hashing in aggregate repositories.
+
+Extends ``RuntimeErrorMixin`` and ``Error[object]``.
+"""
 
 from forging_blocks.foundation.errors.base.error import Error
 from forging_blocks.foundation.errors.builtin.runtime_error_mixin import RuntimeErrorMixin
