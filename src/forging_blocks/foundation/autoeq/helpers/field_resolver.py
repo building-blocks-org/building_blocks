@@ -44,15 +44,15 @@ class FieldResolver:
                     all_slots.add(slot)
         return all_slots
 
-    @staticmethod
-    def _collect_annotations(class_: type[object]) -> set[str]:
+    @classmethod
+    def _collect_annotations(cls, class_: type[object]) -> set[str]:
         """Collect all ``__annotations__`` keys from *class_* and its MRO.
 
         Excludes dunder names (``__module__``, ``__qualname__``, etc.).
         """
         all_annotations: set[str] = set()
-        for cls in class_.__mro__:
-            ann: dict[str, object] | None = getattr(cls, "__annotations__", None)
+        for c in class_.__mro__:
+            ann: dict[str, object] | None = getattr(c, "__annotations__", None)
             if ann is not None:
                 for key in ann:
                     if not key.startswith("__"):
