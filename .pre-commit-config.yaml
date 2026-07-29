@@ -4,7 +4,7 @@ repos:
   - repo: git@github.com:astral-sh/ruff-pre-commit.git
     rev: v0.14.3
     hooks:
-      - id: ruff
+      - id: ruff-check
         args: ["--config=pyproject.toml"]
       - id: ruff-format
         args: ["--config=pyproject.toml"]
