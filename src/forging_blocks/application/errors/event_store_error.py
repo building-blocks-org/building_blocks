@@ -1,4 +1,9 @@
-"""Event store error type for application-level operations."""
+"""Base error for event persistence operations.
+
+Defines ``EventStoreError``, raised when append, read, or snapshot
+operations on the event store fail. Extends ``RuntimeErrorMixin``,
+making it catchable as ``RuntimeError``.
+"""
 
 from forging_blocks.foundation.errors.base.error import Error
 from forging_blocks.foundation.errors.builtin.runtime_error_mixin import RuntimeErrorMixin
