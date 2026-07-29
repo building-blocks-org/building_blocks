@@ -413,6 +413,14 @@
          <lastmod>2026-07-29</lastmod>
     </url>
     <url>
+         <loc>https://forging-blocks-org.github.io/dev/reference/autodoc/foundation/errors/builtin/runtime_error_mixin/</loc>
+         <lastmod>2026-07-29</lastmod>
+    </url>
+    <url>
+         <loc>https://forging-blocks-org.github.io/dev/reference/autodoc/foundation/errors/builtin/value_error_mixin/</loc>
+         <lastmod>2026-07-29</lastmod>
+    </url>
+    <url>
          <loc>https://forging-blocks-org.github.io/dev/reference/autodoc/foundation/errors/combined/combined_errors/</loc>
          <lastmod>2026-07-29</lastmod>
     </url>
@@ -706,6 +714,10 @@
     </url>
     <url>
          <loc>https://forging-blocks-org.github.io/dev/reference/infrastructure/adapters/</loc>
+         <lastmod>2026-07-29</lastmod>
+    </url>
+    <url>
+         <loc>https://forging-blocks-org.github.io/dev/reference/infrastructure/errors/</loc>
          <lastmod>2026-07-29</lastmod>
     </url>
     <url>
