@@ -10,5 +10,3 @@ from forging_blocks.foundation.errors.combined.field_errors import FieldErrors
 
 class ValidationFieldErrors(FieldErrors[Error[object]]):
     """Validation errors associated with a specific field."""
-
-    ...
