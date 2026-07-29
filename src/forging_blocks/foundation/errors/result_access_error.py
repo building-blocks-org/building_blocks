@@ -1,10 +1,11 @@
 """Errors raised when accessing Result.value or Result.error on the wrong variant"""
 
 from forging_blocks.foundation.errors.base.error import Error
+from forging_blocks.foundation.errors.builtin.runtime_error_mixin import RuntimeErrorMixin
 from forging_blocks.foundation.errors.core import ErrorMessage
 
 
-class ResultAccessError(Error[object]):
+class ResultAccessError(RuntimeErrorMixin, Error[object]):
     """Exception raised when trying to access value or err from an inappropriate Result variant."""
 
     def __init__(self, message: ErrorMessage | None = None) -> None:
