@@ -10,5 +10,3 @@ from forging_blocks.foundation.errors.combined.validation_field_errors import Va
 
 class CombinedValidationErrors(CombinedErrors[ValidationFieldErrors]):
     """Aggregates multiple validation errors for easier handling and reporting."""
-
-    ...
