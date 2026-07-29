@@ -1,6 +1,9 @@
-"""Modules defining validation error classes.
+"""Abstract base class for validation errors.
 
-Defines error classes related to validation failures within the system.
+Defines ``ValidationError``, the abstract base class for all input validation
+errors. It cannot be instantiated directly — use ``ValidationFailedError``
+instead. Extends ``ValueErrorMixin`` (catchable as ``ValueError``) and
+``Error[object]``.
 """
 
 from abc import ABC
