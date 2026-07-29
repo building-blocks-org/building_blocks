@@ -22,9 +22,9 @@ class FieldResolver:
         if slots:
             return sorted(slots)
 
-        annotations: dict[str, object] | None = getattr(class_, "__annotations__", None)
+        annotations = FieldResolver._collect_annotations(class_)
         if annotations:
-            return [k for k in annotations if not k.startswith("__")]
+            return sorted(annotations)
 
         msg = (
             f"Cannot determine eq fields for non-dataclass {class_.__name__}. "
@@ -43,3 +43,18 @@ class FieldResolver:
                 if not slot.startswith("__"):
                     all_slots.add(slot)
         return all_slots
+
+    @staticmethod
+    def _collect_annotations(class_: type[object]) -> set[str]:
+        """Collect all ``__annotations__`` keys from *class_* and its MRO.
+
+        Excludes dunder names (``__module__``, ``__qualname__``, etc.).
+        """
+        all_annotations: set[str] = set()
+        for cls in class_.__mro__:
+            ann: dict[str, object] | None = getattr(cls, "__annotations__", None)
+            if ann is not None:
+                for key in ann:
+                    if not key.startswith("__"):
+                        all_annotations.add(key)
+        return all_annotations
