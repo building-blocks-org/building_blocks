@@ -13,5 +13,3 @@ class RepositoryPort[TAggregateRoot, TId](
     Combines read and write capabilities into a single repository interface.
     Suitable for non-CQRS applications or simplified contexts.
     """
-
-    ...
