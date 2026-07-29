@@ -1,10 +1,11 @@
 """Module defining the EntityIdModificationError exception."""
 
 from forging_blocks.foundation.errors.base.error import Error
+from forging_blocks.foundation.errors.builtin.runtime_error_mixin import RuntimeErrorMixin
 from forging_blocks.foundation.errors.core import ErrorMessage, ErrorMetadata
 
 
-class EntityIdModificationError(Error[object]):
+class EntityIdModificationError(RuntimeErrorMixin, Error[object]):
     """Raised when there is an attempt to modify an entity's identifier after it has been set."""
 
     def __init__(self, class_name: str, attribute_name: str, current_value: object) -> None:
