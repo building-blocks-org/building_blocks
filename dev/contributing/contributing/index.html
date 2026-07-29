@@ -7753,7 +7753,7 @@ This guide is meant to help you orient yourself.</p>
 <ul>
 <li>This file explains <strong>how to contribute</strong>.</li>
 <li>Other documents explain <strong>how things should be written or structured</strong>.</li>
-<li>When in doubt, ask questions early.</li>
+<li>The <a href="../../guide/architecture-overview/">Architecture Overview</a> explains the layered design used in the project.</li>
 </ul>
 <p>Contributions are welcome as long as they respect the project's emphasis on clarity, boundaries, and intentional design.</p>
 <hr />
@@ -7772,9 +7772,7 @@ This guide is meant to help you orient yourself.</p>
 <p>The documentation mirrors this structure:</p>
 <ul>
 <li>The <strong>Guide</strong> explains how to read and use the toolkit.</li>
-<li>The <strong>Reference</strong> defines responsibilities and terminology.</li>
-<li><strong>Architectural Styles</strong> show optional interpretations.</li>
-<li><strong>Examples</strong> demonstrate usage without prescribing structure.</li>
+<li>The <strong>Reference</strong> provides technical details for each module and abstraction.</li>
 </ul>
 <p>Understanding this separation will make contributing easier.</p>
 <hr />
@@ -7783,8 +7781,7 @@ This guide is meant to help you orient yourself.</p>
 <p>You have to write expressive docstrings because docstrings generates autodocs.</p>
 <p>If you plan to modify or add documentation, please read:</p>
 <ul>
-<li><strong>Docs Conventions</strong><br />
-<code>docs/contributing/docs_conventions.md</code></li>
+<li><strong>Docs Conventions</strong></li>
 </ul>
 <p>That document defines the rules and expectations for documentation changes.</p>
 <hr />
@@ -7792,9 +7789,9 @@ This guide is meant to help you orient yourself.</p>
 <p>When contributing code:</p>
 <ul>
 <li>Prefer clarity over cleverness.</li>
-<li>Keep responsibilities explicit.</li>
-<li>Avoid introducing architectural enforcement.</li>
-<li>Add tests where behavior is non-trivial.</li>
+<li>Follow existing patterns and style guides.</li>
+<li>All public APIs have to include type annotations and docstrings.</li>
+<li>Keep breaking changes restrained and well-documented.</li>
 </ul>
 <p>If a change affects public behavior, documentation updates are expected.</p>
 <hr />
@@ -7804,24 +7801,24 @@ This guide is meant to help you orient yourself.</p>
 <li><strong>Fork the repository</strong></li>
 <li><strong>Clone your fork</strong>: <code>git clone https://github.com/&lt;username&gt;/forging-blocks.git</code></li>
 <li><strong>Install dependencies</strong>: <code>poetry install</code></li>
-<li><strong>Set up git hooks</strong>: <code>poetry run pre-commit install</code></li>
+<li><strong>Set up pre-commit hooks</strong>: <code>pre-commit install</code></li>
 </ol>
-<p>That single install enables both <strong>pre-commit</strong> and <strong>pre-push</strong> hooks (<code>default_install_hook_types</code> in <code>.pre-commit-config.yaml</code>).</p>
 <h3 id="automation-hooks">Automation Hooks<a class="headerlink" href="#automation-hooks" title="Permanent link">&para;</a></h3>
 <p>The project uses <code>pre-commit</code> to automate quality checks.</p>
 <ul>
-<li><strong>Pre-commit (Linting):</strong> Runs on every commit. Fast checks: Ruff lint/format, trailing whitespace, YAML/TOML, and blocks committing a <em>generated</em> autodoc section in <code>mkdocs.yml</code> (paths under <code>reference/autodoc</code>). Hand-edited <code>mkdocs.yml</code> nav is allowed.</li>
-<li><strong>Pre-push (Pipeline):</strong> Runs on every push. Full pipeline (<code>poetry run poe ci:simulate</code>): type checking, tests, security scan, package check, and docs sync — keeps the remote branch stable.</li>
+<li><strong>Pre-commit (Linting):</strong> Runs on every commit. It checks for code style, trailing whitespace, and common errors. It is designed to be fast.</li>
+<li><strong>Pre-push (Pipeline):</strong> Runs on every push. It executes the full pipeline (<code>poetry run poe ci:simulate</code>), including type checking, all tests, and security scanning, to ensure the remote branch remains stable.</li>
 </ul>
+<p>To install both:<br />
+<div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>pre-commit<span class="w"> </span>install
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>pre-commit<span class="w"> </span>install<span class="w"> </span>--hook-type<span class="w"> </span>pre-push
+</span></code></pre></div></p>
 <h3 id="making-changes">Making Changes<a class="headerlink" href="#making-changes" title="Permanent link">&para;</a></h3>
 <ol>
 <li><strong>Create a feature branch</strong>: <code>git checkout -b feat/your-feature</code></li>
-<li><strong>Make your changes</strong></li>
-<li><strong>Add tests</strong> for new functionality (see <a href="#testing-guidelines">Testing Guidelines</a>)</li>
-<li><strong>Run the full test suite</strong>:<br />
-   <div class="language-bash highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>poetry<span class="w"> </span>run<span class="w"> </span>poe<span class="w"> </span>ci:check
-</span></code></pre></div></li>
-<li><strong>Submit a pull request</strong> with a clear, concise description</li>
+<li><strong>Make your changes</strong> with clear commit messages</li>
+<li><strong>Run tests</strong>: <code>poetry run poe test</code></li>
+<li><strong>Open a pull request</strong> against <code>main</code></li>
 </ol>
 <p>Small, focused pull requests are easier to review.</p>
 <h3 id="testing-guidelines">Testing Guidelines<a class="headerlink" href="#testing-guidelines" title="Permanent link">&para;</a></h3>
@@ -7843,7 +7840,7 @@ This guide is meant to help you orient yourself.</p>
 - Add integration tests for external system interactions<br />
 - Use fakes at architectural boundaries; don't mock what you don't own<br />
 - Follow the naming pattern: <code>test_when_condition_then_outcome</code></p>
-<p>See the <a href="https://forging-blocks-org.github.io/forging-blocks/guide/testing/">Testing Guide</a> for detailed examples.</p>
+<p>See the <a href="https://forging-blocks-org.github.io/forging-blocks/dev/guide/testing/">Testing Guide</a> for detailed examples.</p>
 <h3 id="available-development-commands">Available Development Commands<a class="headerlink" href="#available-development-commands" title="Permanent link">&para;</a></h3>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-2-1"><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="c1"># Testing - Primary Commands</span>
 </span><span id="__span-2-2"><a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>poetry<span class="w"> </span>run<span class="w"> </span>poe<span class="w"> </span><span class="nb">test</span><span class="w">              </span><span class="c1"># Run ALL tests (stable + conditional)</span>
@@ -7873,7 +7870,7 @@ This guide is meant to help you orient yourself.</p>
 </span><span id="__span-2-26"><a id="__codelineno-2-26" name="__codelineno-2-26" href="#__codelineno-2-26"></a>poetry<span class="w"> </span>run<span class="w"> </span>poe<span class="w"> </span>docs:list-versions<span class="w">   </span><span class="c1"># List deployed versions</span>
 </span></code></pre></div>
 <h3 id="release-process-maintainers-only">Release Process (Maintainers Only)<a class="headerlink" href="#release-process-maintainers-only" title="Permanent link">&para;</a></h3>
-<p>For maintainers preparing releases, see detailed instructions in <a href="../release-guide/">Release Guide</a>:</p>
+<p>For maintainers preparing releases, see detailed instructions in <a href="https://forging-blocks-org.github.io/forging-blocks/dev/contributing/release-guide/">Release Guide</a>:</p>
 <div class="language-bash highlight"><pre><span></span><code><span id="__span-3-1"><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1"># Prepare release (simulation)</span>
 </span><span id="__span-3-2"><a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a>poetry<span class="w"> </span>run<span class="w"> </span>poe<span class="w"> </span>release<span class="w"> </span>patch
 </span><span id="__span-3-3"><a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a>
