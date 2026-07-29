@@ -3,10 +3,11 @@
 from typing import Self
 
 from forging_blocks.foundation.errors.base.error import Error
+from forging_blocks.foundation.errors.builtin.runtime_error_mixin import RuntimeErrorMixin
 from forging_blocks.foundation.errors.core import ErrorMessage
 
 
-class DraftEntityIsNotHashableError(Error[object]):
+class DraftEntityIsNotHashableError(RuntimeErrorMixin, Error[str]):
     """Raised because draft entities are not hashable."""
 
     @classmethod
