@@ -5,10 +5,11 @@ save failures, deletion of non-existent aggregates, and retrieval errors.
 """
 
 from forging_blocks.foundation.errors.base.error import Error
+from forging_blocks.foundation.errors.builtin.runtime_error_mixin import RuntimeErrorMixin
 from forging_blocks.foundation.errors.core import ErrorMessage
 
 
-class RepositoryError[MetadataValueType = object](Error[MetadataValueType]):
+class RepositoryError[MetadataValueType = object](RuntimeErrorMixin, Error[MetadataValueType]):
     """Generic error raised when a repository operation fails.
 
     This is the base error for all repository-level failures. Concrete
