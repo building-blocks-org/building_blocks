@@ -1,6 +1,12 @@
-"""Module defining errors related to rule violations within the system.
+"""Abstract base class for business rule violation errors.
 
-Defines error classes for handling rule violation scenarios.
+Defines ``RuleViolationError``, an abstract base for errors raised when
+business rules or invariants are violated. It extends ``RuntimeErrorMixin``
+(making it catchable as ``RuntimeError``) and ``Error[object]`` for
+mixed-context metadata.
+
+Cannot be instantiated directly — use the concrete ``RuleViolatedError``
+to raise rule violation errors.
 """
 
 from abc import ABC
