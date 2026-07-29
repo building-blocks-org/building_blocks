@@ -5,11 +5,12 @@ Defines error classes for handling rule violation scenarios.
 
 from abc import ABC
 
+from ..builtin.runtime_error_mixin import RuntimeErrorMixin
 from ..core import ErrorMessage, ErrorMetadata
 from .error import Error
 
 
-class RuleViolationError(Error[object], ABC):
+class RuleViolationError(RuntimeErrorMixin, Error[object], ABC):
     """Base class for rule violation errors — abstract, use ``RuleViolatedError`` to throw."""
 
     def __init__(
