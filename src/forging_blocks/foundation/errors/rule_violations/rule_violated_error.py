@@ -1,4 +1,12 @@
-"""Module defining a concrete rule violation error for throwing at violation sites."""
+"""Concrete throwable error for business rule violations.
+
+Defines ``RuleViolatedError``, the leaf class that code MUST use when
+constructing and raising a rule violation. ``RuleViolationError`` is the
+abstract base class — it cannot be directly instantiated.
+
+Extends ``RuleViolationError`` (which extends ``RuntimeErrorMixin`` and
+``Error[object]``).
+"""
 
 from forging_blocks.foundation.errors.base.rule_violation_error import RuleViolationError
 
