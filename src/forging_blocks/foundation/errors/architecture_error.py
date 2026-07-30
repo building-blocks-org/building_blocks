@@ -1,7 +1,7 @@
 """Architecture error for dependency direction violations.
 
-Defines ``ArchitectureError``, raised at class-definition time when a port
-subclass violates Clean Architecture dependency rules.
+Defines ``ArchitectureError``, raised at class-definition time when a subclass
+violates Clean Architecture dependency rules.
 """
 
 from forging_blocks.foundation.errors.base.error import Error
@@ -10,12 +10,12 @@ from forging_blocks.foundation.errors.core import ErrorMessage, MetadataValueTyp
 
 
 class ArchitectureError(RuntimeErrorMixin, Error[MetadataValueType]):
-    """Raised when a port subclass violates dependency direction rules.
+    """Raised when a subclass violates dependency direction rules.
 
-    Inbound ports may only depend on OutboundPort instances; Outbound ports
-    may only depend on other OutboundPort instances. This error fires at
-    class creation time via ``__init_subclass__`` on ``InboundPort`` and
-    ``OutboundPort``.
+    Clean Architecture requires that dependencies flow inward: outer
+    layers may depend on inner layers, but never the reverse. This error
+    fires at class creation time via ``__init_subclass__`` whenever a
+    subclass declares a dependency that points in the wrong direction.
     """
 
     def __init__(self, message: str) -> None:
