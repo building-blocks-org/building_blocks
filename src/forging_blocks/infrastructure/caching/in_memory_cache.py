@@ -1,4 +1,4 @@
-"""In-memory cache implementation of the CachePort."""
+"""Cache backed by an in-memory dictionary with optional TTL eviction."""
 
 import time
 
@@ -64,8 +64,8 @@ class InMemoryCache[KeyType, ValueType](CachePort[KeyType, ValueType]):
         """Remove all entries from the cache."""
         self._store.clear()
 
-    @staticmethod
-    def _is_expired(expire_at: float | None) -> bool:
+    @classmethod
+    def _is_expired(cls, expire_at: float | None) -> bool:
         """Check whether an entry with the given expiration time has expired."""
         if expire_at is None:
             return False

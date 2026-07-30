@@ -1,8 +1,7 @@
-"""In-memory write-only repository backed by a dictionary.
+"""Write-only repository backed by an in-memory dictionary.
 
-Provides a concrete implementation of WriteOnlyRepositoryPort for
-command-side operations in CQRS architectures. Storage is a plain
-dictionary keyed by entity identifier.
+Stores entities keyed by identifier, supporting insert, update, and
+delete operations with optimistic concurrency via etag versioning.
 """
 
 from collections.abc import Mapping
@@ -72,8 +71,8 @@ class InMemoryWriteRepository[TEntity: Identified[Any], TId](WriteOnlyRepository
         self._validate_id(entity_id)
         self._storage[entity_id] = aggregate
 
-    @staticmethod
-    def _validate_id(identifier: object) -> None:
+    @classmethod
+    def _validate_id(cls, identifier: object) -> None:
         """Validate that an entity identifier is not None, empty, or False.
 
         Mirrors the validation performed by

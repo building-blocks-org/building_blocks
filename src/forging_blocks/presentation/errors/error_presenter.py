@@ -146,16 +146,14 @@ class ErrorPresenter:
                 messages.append(msg)
         return messages
 
-    @staticmethod
-    def _extract_detail(error: "Error[object]") -> str | None:
+    @classmethod
+    def _extract_detail(cls, error: "Error[object]") -> str | None:
         """Pull a human-readable detail string from the error metadata."""
-        ctx: dict[str, object] = error.metadata.context
-        detail = ctx.get("detail")
+        detail = error.metadata.context.get("detail")
         return detail if isinstance(detail, str) else None
 
-    @staticmethod
-    def _extract_field(error: "Error[object]") -> str | None:
+    @classmethod
+    def _extract_field(cls, error: "Error[object]") -> str | None:
         """Pull a field reference from the error metadata."""
-        ctx: dict[str, object] = error.metadata.context
-        field = ctx.get("field")
+        field = error.metadata.context.get("field")
         return field if isinstance(field, str) else None

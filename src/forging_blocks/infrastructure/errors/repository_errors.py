@@ -17,11 +17,11 @@ class RepositoryError[MetadataValueType = object](RuntimeErrorMixin, Error[Metad
     """
 
 
-class RepositoryNotFoundError(RepositoryError[object]):
+class RepositoryNotFoundError[MetadataValueType = object](RepositoryError[MetadataValueType]):
     """Error raised when attempting to delete or retrieve an aggregate that does not exist."""
 
     @classmethod
-    def for_id(cls, entity_id: object) -> RepositoryNotFoundError:
+    def for_id(cls, entity_id: object) -> "RepositoryNotFoundError[MetadataValueType]":
         """Create an error for a specific missing aggregate ID.
 
         Args:

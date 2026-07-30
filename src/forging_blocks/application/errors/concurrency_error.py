@@ -1,11 +1,11 @@
-"""Concurrency error for optimistic concurrency failures in event stores."""
+"""Raised when an optimistic concurrency check detects a version conflict on an aggregate."""
 
 from uuid import UUID
 
 from forging_blocks.application.errors.event_store_error import EventStoreError
 
 
-class ConcurrencyError(EventStoreError[object]):
+class ConcurrencyError[MetadataValueType = object](EventStoreError[MetadataValueType]):
     """Raised when an optimistic concurrency check fails.
 
     Attributes:
