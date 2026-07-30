@@ -1,8 +1,10 @@
+default_install_hook_types: [pre-commit, pre-push]
+
 repos:
   - repo: git@github.com:astral-sh/ruff-pre-commit.git
     rev: v0.14.3
     hooks:
-      - id: ruff
+      - id: ruff-check
         args: ["--config=pyproject.toml"]
       - id: ruff-format
         args: ["--config=pyproject.toml"]
@@ -33,9 +35,9 @@ repos:
         always_run: true
         stages: [pre-push]
 
-      - id: prevent-mkdocs-yml-change
-        name: Prevent committing modified mkdocs.yml
-        entry: bash -c 'git diff --cached --name-only | grep -q "^mkdocs.yml$" && { echo "[ERROR] mkdocs.yml changes are not allowed to be committed!"; exit 1; } || exit 0'
+      - id: prevent-generated-mkdocs-nav
+        name: Block generated autodoc nav in mkdocs.yml
+        entry: "bash -c 'git show :mkdocs.yml 2>/dev/null | grep -q reference/autodoc && { echo \"[ERROR] mkdocs.yml contains generated autodoc nav (reference/autodoc). Restore via git show HEAD:mkdocs.yml > mkdocs.yml\"; exit 1; } || exit 0'"
         language: system
-        types: [file]
+        pass_filenames: false
         files: ^mkdocs\.yml$
