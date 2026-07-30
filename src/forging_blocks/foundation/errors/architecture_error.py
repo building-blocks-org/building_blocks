@@ -6,10 +6,10 @@ subclass violates Clean Architecture dependency rules.
 
 from forging_blocks.foundation.errors.base.error import Error
 from forging_blocks.foundation.errors.builtin.runtime_error_mixin import RuntimeErrorMixin
-from forging_blocks.foundation.errors.core import ErrorMessage
+from forging_blocks.foundation.errors.core import ErrorMessage, MetadataValueType
 
 
-class ArchitectureError(RuntimeErrorMixin, Error[object]):
+class ArchitectureError(RuntimeErrorMixin, Error[MetadataValueType]):
     """Raised when a port subclass violates dependency direction rules.
 
     Inbound ports may only depend on OutboundPort instances; Outbound ports

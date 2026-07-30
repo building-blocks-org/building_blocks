@@ -6,15 +6,15 @@ variant destructuring — callers must check ``.is_ok()`` or ``.is_err()``
 before accessing the payload.
 
 Extends ``RuntimeErrorMixin`` (catchable as ``RuntimeError``) and
-``Error[object]``.
+``Error[MetadataValueType]``.
 """
 
 from forging_blocks.foundation.errors.base.error import Error
 from forging_blocks.foundation.errors.builtin.runtime_error_mixin import RuntimeErrorMixin
-from forging_blocks.foundation.errors.core import ErrorMessage
+from forging_blocks.foundation.errors.core import ErrorMessage, MetadataValueType
 
 
-class ResultAccessError(RuntimeErrorMixin, Error[object]):
+class ResultAccessError(RuntimeErrorMixin, Error[MetadataValueType]):
     """Exception raised when trying to access value or err from an inappropriate Result variant."""
 
     def __init__(self, message: ErrorMessage | None = None) -> None:
