@@ -95,7 +95,11 @@ class _AutoHashDecorator:
 
         def _hash_impl(self: Any) -> int:
             values = tuple(getattr(self, f) for f in _field_names)
-            return hash(tuple(HashableConverter.convert(v) for v in values))
+            converted = (
+                HashableConverter.convert(v, field_name=f)
+                for f, v in zip(_field_names, values, strict=True)
+            )
+            return hash(tuple(converted))
 
         _hash_impl.__name__ = "__hash__"
         _hash_impl.__qualname__ = f"{class_.__name__}.__hash__"
@@ -143,16 +147,16 @@ class _AutoHashDecorator:
         )
         raise TypeError(msg)
 
-    @staticmethod
-    def _collect_slots(class_: type[object]) -> set[str]:
+    @classmethod
+    def _collect_slots(cls, class_: type[object]) -> set[str]:
         """Collect all ``__slots__`` from *class_* and its MRO.
 
         Handles the rare case where ``__slots__`` is defined as a single
         string (``__slots__ = "x"``) rather than an iterable of strings.
         """
         all_slots: set[str] = set()
-        for cls in class_.__mro__:
-            slots = getattr(cls, "__slots__", ())
+        for c in class_.__mro__:
+            slots = getattr(c, "__slots__", ())
             if isinstance(slots, str):
                 slots = (slots,)
             for slot in slots:
