@@ -14,7 +14,14 @@ from forging_blocks.foundation.errors.core import ErrorMessage, ErrorMetadata, M
 
 
 class EntityIdModificationError(RuntimeErrorMixin, Error[MetadataValueType]):
-    """Raised when there is an attempt to modify an entity's identifier after it has been set."""
+    """Raised when there is an attempt to modify an entity's identifier after it has been set.
+
+    Once assigned, an entity's identifier is immutable. Changing the
+    ``id`` would break the stability guarantee required for hash-based
+    collections, identity comparisons, and reliable persistence. This
+    error fires at the ``__setattr__`` interception point whenever a
+    re-assignment of the identity field is detected.
+    """
 
     def __init__(self, class_name: str, attribute_name: str, current_value: object) -> None:
         """Initialise the error with the class, attribute, and current value.
