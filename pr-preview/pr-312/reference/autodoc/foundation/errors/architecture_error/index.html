@@ -7655,8 +7655,8 @@
     <div class="doc doc-contents first">
 
         <p>Architecture error for dependency direction violations.</p>
-<p>Defines <code>ArchitectureError</code>, raised at class-definition time when a port<br />
-subclass violates Clean Architecture dependency rules.</p>
+<p>Defines <code>ArchitectureError</code>, raised at class-definition time when a subclass<br />
+violates Clean Architecture dependency rules.</p>
 
 
 
@@ -7693,11 +7693,11 @@ subclass violates Clean Architecture dependency rules.</p>
               Bases: <code><a class="autorefs autorefs-internal" title="RuntimeErrorMixin (forging_blocks.foundation.errors.builtin.runtime_error_mixin.RuntimeErrorMixin)" href="../builtin/runtime_error_mixin/#forging_blocks.foundation.errors.builtin.runtime_error_mixin.RuntimeErrorMixin">RuntimeErrorMixin</a></code>, <code><a class="autorefs autorefs-internal" title="Error (forging_blocks.foundation.errors.base.error.Error)" href="../base/error/#forging_blocks.foundation.errors.base.error.Error">Error</a>[<span title="forging_blocks.foundation.errors.core.MetadataValueType">MetadataValueType</span>]</code></p>
 
 
-        <p>Raised when a port subclass violates dependency direction rules.</p>
-<p>Inbound ports may only depend on OutboundPort instances; Outbound ports<br />
-may only depend on other OutboundPort instances. This error fires at<br />
-class creation time via <code>__init_subclass__</code> on <code>InboundPort</code> and<br />
-<code>OutboundPort</code>.</p>
+        <p>Raised when a subclass violates dependency direction rules.</p>
+<p>Clean Architecture requires that dependencies flow inward: outer<br />
+layers may depend on inner layers, but never the reverse. This error<br />
+fires at class creation time via <code>__init_subclass__</code> whenever a<br />
+subclass declares a dependency that points in the wrong direction.</p>
 
 
 
@@ -7727,12 +7727,12 @@ class creation time via <code>__init_subclass__</code> on <code>InboundPort</cod
 <span class="normal"><a href="#__codelineno-0-28">28</a></span>
 <span class="normal"><a href="#__codelineno-0-29">29</a></span>
 <span class="normal"><a href="#__codelineno-0-30">30</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-12"><a id="__codelineno-0-12" name="__codelineno-0-12"></a><span class="k">class</span><span class="w"> </span><span class="nc">ArchitectureError</span><span class="p">(</span><span class="n">RuntimeErrorMixin</span><span class="p">,</span> <span class="n">Error</span><span class="p">[</span><span class="n">MetadataValueType</span><span class="p">]):</span>
-</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when a port subclass violates dependency direction rules.</span>
+</span><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Raised when a subclass violates dependency direction rules.</span>
 </span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a>
-</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="sd">    Inbound ports may only depend on OutboundPort instances; Outbound ports</span>
-</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="sd">    may only depend on other OutboundPort instances. This error fires at</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="sd">    class creation time via ``__init_subclass__`` on ``InboundPort`` and</span>
-</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="sd">    ``OutboundPort``.</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a><span class="sd">    Clean Architecture requires that dependencies flow inward: outer</span>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="sd">    layers may depend on inner layers, but never the reverse. This error</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="sd">    fires at class creation time via ``__init_subclass__`` whenever a</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="sd">    subclass declares a dependency that points in the wrong direction.</span>
 </span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20"></a>
 </span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
