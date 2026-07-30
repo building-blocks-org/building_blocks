@@ -13,7 +13,13 @@ from forging_blocks.foundation.errors.core import ErrorMessage, ErrorMetadata, M
 
 
 class EntityIdDeletionError(RuntimeErrorMixin, Error[MetadataValueType]):
-    """Raised when there is an attempt to delete an entity's identifier."""
+    """Raised when there is an attempt to delete an entity's identifier.
+
+    An entity's identity must remain stable for its lifetime. Deleting
+    the ``id`` field would break identity-based equality, hash lookups,
+    and aggregate consistency. This error fires at the point where
+    ``__delattr__`` on the identifier is intercepted.
+    """
 
     def __init__(self, class_name: str) -> None:
         """Initialise the error with the class name.
