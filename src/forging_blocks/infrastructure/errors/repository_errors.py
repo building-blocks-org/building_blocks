@@ -1,7 +1,7 @@
-"""RepositoryPort error classes for the infrastructure layer.
+"""Error classes for repository-level storage operations.
 
-Provides structured error types for repository operations such as
-save failures, deletion of non-existent aggregates, and retrieval errors.
+Provides structured error types for save failures, deletion of
+non-existent aggregates, and retrieval errors.
 """
 
 from forging_blocks.foundation.errors.base.error import Error
