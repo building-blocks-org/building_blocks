@@ -4,15 +4,15 @@ Defines ``EntityIdDeletionError``, raised when an entity's ``id`` field is
 targeted for deletion. An entity's ``id`` defines its identity and must
 never be deleted after being set.
 
-Extends ``RuntimeErrorMixin`` and ``Error[str]``.
+Extends ``RuntimeErrorMixin`` and ``Error[MetadataValueType]``.
 """
 
 from forging_blocks.foundation.errors.base.error import Error
 from forging_blocks.foundation.errors.builtin.runtime_error_mixin import RuntimeErrorMixin
-from forging_blocks.foundation.errors.core import ErrorMessage, ErrorMetadata
+from forging_blocks.foundation.errors.core import ErrorMessage, ErrorMetadata, MetadataValueType
 
 
-class EntityIdDeletionError(RuntimeErrorMixin, Error[str]):
+class EntityIdDeletionError(RuntimeErrorMixin, Error[MetadataValueType]):
     """Raised when there is an attempt to delete an entity's identifier."""
 
     def __init__(self, class_name: str) -> None:
@@ -25,7 +25,7 @@ class EntityIdDeletionError(RuntimeErrorMixin, Error[str]):
         message = ErrorMessage(
             f"Cannot delete 'id' of {class_name} as it defines the entity's identity."
         )
-        metadata = ErrorMetadata(
+        metadata: ErrorMetadata[MetadataValueType] = ErrorMetadata(
             {
                 "class_name": class_name,
                 "attribute_name": "id",
