@@ -3,22 +3,22 @@
 Defines ``ValidationError``, the abstract base class for all input validation
 errors. It cannot be instantiated directly — use ``ValidationFailedError``
 instead. Extends ``ValueErrorMixin`` (catchable as ``ValueError``) and
-``Error[object]``.
+``Error[MetadataValueType]``.
 """
 
 from abc import ABC
 
 from forging_blocks.foundation.errors.builtin.value_error_mixin import ValueErrorMixin
 
-from ..core import ErrorMessage, ErrorMetadata
+from ..core import ErrorMessage, ErrorMetadata, MetadataValueType
 from .error import Error
 
 
-class ValidationError(ValueErrorMixin, Error[object], ABC):
+class ValidationError(ValueErrorMixin, Error[MetadataValueType], ABC):
     """Base class for validation errors — abstract, use ``ValidationFailedError`` to throw."""
 
     def __init__(
-        self, message: ErrorMessage, metadata: ErrorMetadata[object] | None = None
+        self, message: ErrorMessage, metadata: ErrorMetadata[MetadataValueType] | None = None
     ) -> None:
         if type(self) is ValidationError:
             raise TypeError("ValidationError is abstract; use ValidationFailedError instead")
