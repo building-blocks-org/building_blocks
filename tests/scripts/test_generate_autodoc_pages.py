@@ -6,9 +6,9 @@ from scripts.generate_autodoc_pages import (
     OUT_DIR,
     SRC_DIR,
     build_autodoc_section,
-    ensure_autodoc_index,
     ensure_dir,
     find_source_files,
+    generate_autodoc_index,
     generate_markdown,
     import_path,
     main,
@@ -160,14 +160,16 @@ class TestBuildAutodocSection:
         assert "Foundation:" in section
         assert "Result:" in section
 
-    def test_when_nested_file_then_creates_sublayer(self) -> None:
+    def test_when_nested_file_then_creates_nested_sections(self) -> None:
         files = [OUT_DIR / "application" / "ports" / "inbound" / "use_case.md"]
 
         section = build_autodoc_section(files)
 
         assert "Application:" in section
-        assert "Ports / Inbound:" in section
+        assert "Ports:" in section
+        assert "Inbound:" in section
         assert "Use Case:" in section
+        assert "Ports / Inbound:" not in section
 
     def test_when_multiple_files_then_groups_by_layer(self) -> None:
         files = [
@@ -186,7 +188,7 @@ class TestBuildAutodocSection:
     def test_when_empty_list_then_returns_minimal(self) -> None:
         section = build_autodoc_section([])
 
-        assert section == "      - API Reference:"
+        assert section == "  - API Reference:\n    - Overview: reference/autodoc/index.md"
 
     def test_when_file_relative_to_has_no_parts_then_skips(
         self, monkeypatch: pytest.MonkeyPatch
@@ -203,7 +205,7 @@ class TestBuildAutodocSection:
 
         section = build_autodoc_section([file])
 
-        assert section == "      - API Reference:"
+        assert section == "  - API Reference:\n    - Overview: reference/autodoc/index.md"
 
 
 @pytest.mark.unit
@@ -233,7 +235,8 @@ class TestUpdateNav:
 
         result = update_nav(mkdocs, section)
 
-        assert result.index("API Reference") > result.index("Reference:")
+        assert result.index("API Reference") > result.index("  - Reference:")
+        assert "  - Reference:" in result.splitlines()
 
     def test_when_neither_section_then_appends_at_end(self) -> None:
         mkdocs = """\
@@ -246,21 +249,21 @@ class TestUpdateNav:
 
 
 @pytest.mark.unit
-class TestEnsureAutodocIndex:
-    def test_when_index_does_not_exist_then_creates_it(self, tmp_path: Path) -> None:
-        ensure_autodoc_index(tmp_path)
+class TestGenerateAutodocIndex:
+    def test_when_empty_files_then_creates_minimal_index(self, tmp_path: Path) -> None:
+        generate_autodoc_index([], tmp_path)
 
         index_file = tmp_path / "index.md"
         assert index_file.exists()
         assert "# API Reference" in index_file.read_text()
 
-    def test_when_index_exists_then_does_not_modify(self, tmp_path: Path) -> None:
+    def test_when_index_exists_then_overwrites_it(self, tmp_path: Path) -> None:
         index_file = tmp_path / "index.md"
         index_file.write_text("existing content")
 
-        ensure_autodoc_index(tmp_path)
+        generate_autodoc_index([], tmp_path)
 
-        assert index_file.read_text() == "existing content"
+        assert index_file.read_text().startswith("# API Reference")
 
 
 class TestMain:

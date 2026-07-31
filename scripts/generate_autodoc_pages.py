@@ -68,70 +68,97 @@ def generate_markdown(src: Path) -> Path:
     return out
 
 
-def build_autodoc_section(files: list[Path], indent: str = "      ") -> str:
-    """Build the MkDocs navigation section for autodoc pages."""
-    grouped: dict[str, dict[str | None, list[tuple[str, str]]]] = {}
+def _group_autodoc_files(
+    files: list[Path], out_dir: Path
+) -> dict[str, tuple[list[tuple[str, str]], dict[str, object]]]:
+    """Group autodoc markdown files into a recursive tree by layer.
+
+    Returns ``{layer_name: (page_entries, subdirectories)}`` where each node is a
+    tuple of *(title, relative_path) pages* at that level and a dict of
+    *subdirectory-name → nested_node*.
+    """
+    tree: dict[str, tuple[list[tuple[str, str]], dict[str, object]]] = {}
 
     for file in files:
-        parts = file.relative_to(OUT_DIR).parts
-        if len(parts) < 1:
+        parts = list(file.relative_to(out_dir).parts)
+        if not parts:
             continue
 
-        # Top-level layer (e.g., "application", "domain", "foundation")
-        layer = parts[0].capitalize()
+        layer = parts[0].replace("_", " ").title()
+        title = parts[-1].removesuffix(".md").replace("_", " ").title()
+        path = "/".join(parts)
 
-        # Determine sublayer and title
-        if len(parts) == 2:
-            # Direct file under layer: foundation/result.md
-            sublayer = None
-            title = parts[1].removesuffix(".md").replace("_", " ").title()
-        else:
-            # Nested file: application/ports/inbound/use_case.md
-            # Sublayer: "Ports" (parts[1])
-            sublayer_parts = parts[1:-1]
-            sublayer = " / ".join(p.replace("_", " ").title() for p in sublayer_parts)
-            title = parts[-1].removesuffix(".md").replace("_", " ").title()
+        if layer not in tree:
+            tree[layer] = ([], {})
 
-        path = f"reference/autodoc/{'/'.join(parts)}"
-        grouped.setdefault(layer, {}).setdefault(sublayer, []).append((title, path))
+        current: tuple[list[tuple[str, str]], dict[str, object]] = tree[layer]
+        for part in parts[1:-1]:
+            name = part.replace("_", " ").title()
+            if name not in current[1]:
+                current[1][name] = ([], {})
+            current = current[1][name]  # type: ignore[assignment]
 
-    # Generate navigation
-    lines = [f"{indent}- API Reference:"]
-    for layer, subgroups in sorted(grouped.items()):
+        current[0].append((title, path))
+
+    return tree
+
+
+def _render_nav_tree(
+    node: tuple[list[tuple[str, str]], dict[str, object]],
+    indent: str,
+    level: int,
+) -> list[str]:
+    """Render a tree node recursively as MkDocs nav YAML lines.
+
+    Section headers (directories with no page path) become
+    expandable/collapsible containers in MkDocs.
+    """
+    pages, subdirs = node
+    lines: list[str] = []
+    for name, link in sorted(pages):
+        lines.append(f"{indent * level}- {name}: reference/autodoc/{link}")
+    for dirname in sorted(subdirs):
+        lines.append(f"{indent * level}- {dirname}:")
+        sub_node = subdirs[dirname]
+        lines.extend(
+            _render_nav_tree(
+                sub_node,  # type: ignore[arg-type]
+                indent,
+                level + 1,
+            )
+        )
+    return lines
+
+
+def build_autodoc_section(files: list[Path], indent: str = "  ") -> str:
+    """Build the MkDocs navigation section for autodoc pages.
+
+    The first entry is always a link to the autodoc index page,
+    followed by pages grouped by architectural layer with
+    recursive nesting for subdirectories.
+    """
+    grouped = _group_autodoc_files(files, OUT_DIR)
+
+    lines = [f"{indent}- API Reference:", f"{indent}  - Overview: reference/autodoc/index.md"]
+    for layer in sorted(grouped):
         lines.append(f"{indent}  - {layer}:")
-
-        # Sort: None (direct) first, then alphabetically
-        for sublayer, entries in sorted(
-            subgroups.items(), key=lambda x: "" if x[0] is None else x[0]
-        ):
-            if sublayer is None:
-                # Direct entries
-                for name, link in sorted(entries):
-                    lines.append(f"{indent}    - {name}: {link}")
-            else:
-                # Nested sublayers
-                lines.append(f"{indent}    - {sublayer}:")
-                for name, link in sorted(entries):
-                    lines.append(f"{indent}      - {name}: {link}")
+        lines.extend(_render_nav_tree(grouped[layer], indent, 3))
 
     return "\n".join(lines)
 
 
 def update_nav(mkdocs: str, section: str) -> str:
     """Update the MkDocs navigation section with the autodoc section."""
-    # Try to find and replace existing API Reference section
-    pattern = r"(?ms)^      - API Reference:.*?(?=^      - [A-Z]|^  - [A-Z]|^[a-z_]+:|\Z)"
-    if re.search(pattern, mkdocs):
-        return re.sub(pattern, section + "\n", mkdocs)
+    api_ref_pattern = r"(?ms)^  - API Reference:.*?(?=^  - [A-Z]|^[a-z_]+:|\Z)"
+    if re.search(api_ref_pattern, mkdocs):
+        return re.sub(api_ref_pattern, section + "\n", mkdocs)
 
-    # Insert after Reference section
-    ref_pattern = r"(^  - Reference:\n(?:^      - .*\n|^          - .*\n)*)"
-    match = re.search(ref_pattern, mkdocs, re.MULTILINE)
+    ref_pattern = r"(?ms)^  - Reference:.*?(?=^  - [A-Z]|^[a-z_]+:|\Z)"
+    match = re.search(ref_pattern, mkdocs)
     if match:
         insert_pos = match.end()
         return mkdocs[:insert_pos] + section + "\n" + mkdocs[insert_pos:]
 
-    # Fallback: add at the end
     return mkdocs.rstrip() + "\n" + section + "\n"
 
 
@@ -206,24 +233,72 @@ def validate_docstring_imports(src_path: Path) -> list[str]:
     return warnings
 
 
-def ensure_autodoc_index(out_dir: Path) -> None:
+def _render_index_tree(
+    node: tuple[list[tuple[str, str]], dict[str, object]],
+    level: int = 0,
+) -> list[str]:
+    """Render a tree node recursively as markdown index links.
+
+    Subdirectories become nested headings (``###``, ``####``, …),
+    preserving the directory hierarchy in the generated index.
+    """
+    pages, subdirs = node
+    lines: list[str] = []
+    for name, link in sorted(pages):
+        lines.append(f"- [{name}]({link})")
+    if pages and subdirs:
+        lines.append("")
+    for dirname in sorted(subdirs):
+        heading = "#" * (level + 3)
+        lines.append(f"{heading} {dirname}")
+        lines.append("")
+        sub_node = subdirs[dirname]
+        lines.extend(
+            _render_index_tree(
+                sub_node,  # type: ignore[arg-type]
+                level + 1,
+            )
+        )
+        lines.append("")
+    return lines
+
+
+def generate_autodoc_index(files: list[Path], out_dir: Path) -> Path:
+    """Generate a teachable index page linking to every autodoc page.
+
+    Groups pages by architectural layer and writes a markdown file
+    with an introductory paragraph followed by per-layer link lists
+    that mirror the directory hierarchy.
+    Always regenerates so the index stays in sync with the source tree.
+    """
     index_file = out_dir / "index.md"
+    grouped = _group_autodoc_files(files, out_dir)
 
-    if index_file.exists():
-        return
+    lines: list[str] = [
+        "# API Reference",
+        "",
+        "Welcome to the ForgingBlocks API reference! This section is",
+        "generated automatically from the library docstrings and gives you",
+        "the full public API surface — every class, function, and module",
+        "that makes up the toolkit.",
+        "",
+        "Use it as a companion to the hand-written **Guide** (which walks",
+        "you through concepts and workflows) and **Reference** (which covers",
+        "architectural intent and design rationale). Think of this page as",
+        "your map: pick a layer below, dive into the module you need, and",
+        "explore the signatures, docstrings, and source code directly.",
+        "",
+    ]
 
-    index_file.write_text(
-        """# API Reference
+    for layer, node in sorted(grouped.items()):
+        lines.append(f"## {layer}")
+        lines.append("")
+        lines.extend(_render_index_tree(node))
+        lines.append("")
 
-!!! note "About this section"
-    This section is generated automatically from code docstrings.
-    It documents the public API surface of ForgingBlocks.
-
-    For architectural intent, design rationale, and usage guidance,
-    refer to the hand-written **Guide** and **Reference** sections.
-""",
-        encoding="utf-8",
-    )
+    index_file.write_text("\n".join(lines) + "\n", encoding="utf-8")
+    print(f"[OK] Generated: {index_file}")
+    return index_file
 
 
 def main() -> None:
@@ -249,7 +324,7 @@ def main() -> None:
     shutil.rmtree(OUT_DIR, ignore_errors=True)
 
     files = [generate_markdown(p) for p in source_files]
-    ensure_autodoc_index(OUT_DIR)
+    generate_autodoc_index(files, OUT_DIR)
 
     mkdocs_text = MKDOCS_YML.read_text(encoding="utf-8")
     section = build_autodoc_section(files)
