@@ -4839,6 +4839,29 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../core/metadata_value_type/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Metadata Value Type
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -7673,7 +7696,7 @@
 variant destructuring — callers must check <code>.is_ok()</code> or <code>.is_err()</code><br />
 before accessing the payload.</p>
 <p>Extends <code>RuntimeErrorMixin</code> (catchable as <code>RuntimeError</code>) and<br />
-<code>Error[object]</code>.</p>
+<code>Error[MetadataValueType]</code>.</p>
 
 
 
@@ -7707,7 +7730,7 @@ before accessing the payload.</p>
 
     <div class="doc doc-contents ">
             <p class="doc doc-class-bases">
-              Bases: <code><a class="autorefs autorefs-internal" title="RuntimeErrorMixin (forging_blocks.foundation.errors.builtin.runtime_error_mixin.RuntimeErrorMixin)" href="../builtin/runtime_error_mixin/#forging_blocks.foundation.errors.builtin.runtime_error_mixin.RuntimeErrorMixin">RuntimeErrorMixin</a></code>, <code><a class="autorefs autorefs-internal" title="Error (forging_blocks.foundation.errors.base.error.Error)" href="../base/error/#forging_blocks.foundation.errors.base.error.Error">Error</a>[<span title="object">object</span>]</code></p>
+              Bases: <code><a class="autorefs autorefs-internal" title="RuntimeErrorMixin (forging_blocks.foundation.errors.builtin.runtime_error_mixin.RuntimeErrorMixin)" href="../builtin/runtime_error_mixin/#forging_blocks.foundation.errors.builtin.runtime_error_mixin.RuntimeErrorMixin">RuntimeErrorMixin</a></code>, <code><a class="autorefs autorefs-internal" title="Error (forging_blocks.foundation.errors.base.error.Error)" href="../base/error/#forging_blocks.foundation.errors.base.error.Error">Error</a>[<span title="forging_blocks.foundation.errors.core.MetadataValueType">MetadataValueType</span>]</code></p>
 
 
         <p>Exception raised when trying to access value or err from an inappropriate Result variant.</p>
@@ -7743,7 +7766,7 @@ before accessing the payload.</p>
 <span class="normal"><a href="#__codelineno-0-36">36</a></span>
 <span class="normal"><a href="#__codelineno-0-37">37</a></span>
 <span class="normal"><a href="#__codelineno-0-38">38</a></span>
-<span class="normal"><a href="#__codelineno-0-39">39</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="k">class</span><span class="w"> </span><span class="nc">ResultAccessError</span><span class="p">(</span><span class="n">RuntimeErrorMixin</span><span class="p">,</span> <span class="n">Error</span><span class="p">[</span><span class="nb">object</span><span class="p">]):</span>
+<span class="normal"><a href="#__codelineno-0-39">39</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="k">class</span><span class="w"> </span><span class="nc">ResultAccessError</span><span class="p">(</span><span class="n">RuntimeErrorMixin</span><span class="p">,</span> <span class="n">Error</span><span class="p">[</span><span class="n">MetadataValueType</span><span class="p">]):</span>
 </span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Exception raised when trying to access value or err from an inappropriate Result variant.&quot;&quot;&quot;</span>
 </span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19"></a>
 </span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20"></a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">:</span> <span class="n">ErrorMessage</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>

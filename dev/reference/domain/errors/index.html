@@ -4796,6 +4796,29 @@
 
               
             
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../autodoc/foundation/errors/core/metadata_value_type/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Metadata Value Type
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
           </ul>
         </nav>
       
@@ -7585,8 +7608,8 @@ They extend the <a href="../../foundation/">Foundation</a> <code>Error</code> ba
 <li><strong>DraftEntityIsNotHashableError</strong> — Raised because draft (unsaved) entities are not hashable</li>
 </ul>
 <p>All domain errors use <code>RuntimeErrorMixin</code>, making them catchable as <code>RuntimeError</code>.<br />
-<code>EntityIdNoneError</code> inherits from <code>NoneNotAllowedError</code> and therefore also carries<br />
-<code>ValueErrorMixin</code>.</p>
+<code>EntityIdNoneError</code> extends <code>ValueErrorMixin</code> and <code>Error[MetadataValueType]</code><br />
+directly, making it catchable as <code>ValueError</code>.</p>
 <h2 id="when-to-use">When to use<a class="headerlink" href="#when-to-use" title="Permanent link">&para;</a></h2>
 <p>Raise these errors from domain code when an entity's identity contract is violated. They extend the <a href="../../foundation/">Foundation</a> <code>Error</code> base class, so they carry structured messages and metadata consistent with the rest of the system.</p>
 <div class="admonition note">
