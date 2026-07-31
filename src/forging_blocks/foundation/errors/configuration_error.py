@@ -1,21 +1,22 @@
-"""Configuration error for misconfigured adapters.
+"""Configuration error for invalid runtime settings.
 
-Defines ``ConfigurationError``, raised when an infrastructure adapter is
-used with invalid configuration (e.g., disallowed URL schemes, invalid
-paths, or misconfigured parameters).
+Defines ``ConfigurationError``, raised when a component is configured
+with settings that fall outside the allowed range or format (e.g.,
+disallowed URL schemes, invalid filesystem paths, or out-of-range
+parameters).
 """
 
 from forging_blocks.foundation.errors.base.error import Error
 from forging_blocks.foundation.errors.builtin.value_error_mixin import ValueErrorMixin
-from forging_blocks.foundation.errors.core import ErrorMessage
+from forging_blocks.foundation.errors.core import ErrorMessage, MetadataValueType
 
 
-class ConfigurationError(ValueErrorMixin, Error[object]):
-    """Raised when an infrastructure adapter receives invalid configuration.
+class ConfigurationError(ValueErrorMixin, Error[MetadataValueType]):
+    """Raised when a component receives invalid configuration.
 
-    This error signals operational misconfiguration at runtime — for example,
-    a URL with a disallowed scheme being passed to an HTTP client, or an
-    invalid filesystem path being used by a file adapter.
+    This error signals operational misconfiguration at runtime —
+    for example, a URL with a disallowed scheme, an invalid
+    filesystem path, or an out-of-range parameter value.
     """
 
     def __init__(self, message: str) -> None:

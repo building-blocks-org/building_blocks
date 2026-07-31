@@ -3,18 +3,25 @@
 Defines ``EntityIdModificationError``, raised when an attempt is made to
 change an entity's identity attribute (typically ``id``) after it has already
 been assigned. Once set, an entity's identity is immutable — modification
-would break identity-based equality and hashing in aggregate repositories.
+would break identity-based equality and hashing for aggregates.
 
-Extends ``RuntimeErrorMixin`` and ``Error[object]``.
+Extends ``RuntimeErrorMixin`` and ``Error[MetadataValueType]``.
 """
 
 from forging_blocks.foundation.errors.base.error import Error
 from forging_blocks.foundation.errors.builtin.runtime_error_mixin import RuntimeErrorMixin
-from forging_blocks.foundation.errors.core import ErrorMessage, ErrorMetadata
+from forging_blocks.foundation.errors.core import ErrorMessage, ErrorMetadata, MetadataValueType
 
 
-class EntityIdModificationError(RuntimeErrorMixin, Error[object]):
-    """Raised when there is an attempt to modify an entity's identifier after it has been set."""
+class EntityIdModificationError(RuntimeErrorMixin, Error[MetadataValueType]):
+    """Raised when there is an attempt to modify an entity's identifier after it has been set.
+
+    Once assigned, an entity's identifier is immutable. Changing the
+    ``id`` would break the stability guarantee required for hash-based
+    collections, identity comparisons, and reliable persistence. This
+    error fires at the ``__setattr__`` interception point whenever a
+    re-assignment of the identity field is detected.
+    """
 
     def __init__(self, class_name: str, attribute_name: str, current_value: object) -> None:
         """Initialise the error with the class, attribute, and current value.
@@ -29,7 +36,7 @@ class EntityIdModificationError(RuntimeErrorMixin, Error[object]):
             f"Cannot modify '{attribute_name}' of {class_name} once set "
             f"(current value={current_value!r})."
         )
-        metadata = ErrorMetadata(
+        metadata: ErrorMetadata[MetadataValueType] = ErrorMetadata(
             {
                 "class_name": class_name,
                 "attribute_name": attribute_name,

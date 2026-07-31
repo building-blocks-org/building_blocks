@@ -10,6 +10,9 @@ import pytest
 from forging_blocks.foundation.autoeq.auto_eq import auto_eq
 from forging_blocks.foundation.autofreeze.auto_freeze import auto_freeze
 from forging_blocks.foundation.autohash.auto_hash import auto_hash
+from forging_blocks.foundation.autohash.helpers.hashable_converter import (
+    HashableConverter,
+)
 from forging_blocks.foundation.errors import CantModifyImmutableAttributeError
 from forging_blocks.foundation.errors.non_hashable_value_error import (
     NonHashableValueError,
@@ -405,26 +408,129 @@ class TestAutoHashDecorator:
     def test_when_unhashable_unsupported_type_then_type_error(self) -> None:
         @auto_hash
         @dataclass
-        class WithSet:
+        class WithUnsupported:
             id: str
-            values: set[int]
+            values: bytearray
 
-        instance = WithSet("x", {1, 2})
+        instance = WithUnsupported("x", bytearray(b"data"))
         with pytest.raises(NonHashableValueError, match="Cannot convert"):
             hash(instance)
 
 
 @pytest.mark.unit
 class TestHashableConverterDeeplyHashable:
-    """Tests for HashableConverter._ensure_deeply_hashable internals."""
+    """Tests for deeply-hashable conversion internals of HashableConverter."""
 
-    def test_ensure_deeply_hashable_when_frozenset_then_recursively_converts_elements(
+    def test_convert_when_frozenset_then_returns_unchanged(
         self,
     ) -> None:
-        from forging_blocks.foundation.autohash.helpers.hashable_converter import (
-            HashableConverter,
-        )
-
-        result = HashableConverter._ensure_deeply_hashable(frozenset([1, 2, 3]))
+        result = HashableConverter.convert(frozenset([1, 2, 3]))
         assert isinstance(result, frozenset)
         assert result == frozenset([1, 2, 3])
+
+    def test_convert_when_tuple_with_nested_list_then_converts_contents(
+        self,
+    ) -> None:
+        """A tuple containing an unhashable nested element is recursively converted."""
+        result = HashableConverter.convert(([1, 2], 3))
+        assert isinstance(result, tuple)
+        assert result == ((1, 2), 3)
+
+    def test_convert_when_set_then_converts_to_frozenset(
+        self,
+    ) -> None:
+        result = HashableConverter.convert({1, 2, 3})
+        assert isinstance(result, frozenset)
+        assert result == frozenset([1, 2, 3])
+
+    def test_when_child_inherits_parent_annotations_then_auto_hash_picks_them_up(
+        self,
+    ) -> None:
+        """Verify that _collect_annotations inherits from parent classes in MRO.
+
+        A child class inheriting from a parent with __annotations__ only
+        should have its hash fields include the parent's annotations.
+        """
+
+        class Parent:
+            name: str
+
+        @auto_hash
+        class Child(Parent):
+            id: int
+
+        c1 = Child()
+        c1.id = 1
+        c1.name = "Alice"
+
+        c2 = Child()
+        c2.id = 1
+        c2.name = "Alice"
+        assert hash(c1) == hash(c2)
+
+        c3 = Child()
+        c3.id = 2
+        c3.name = "Bob"
+        assert hash(c1) != hash(c3)
+
+    def test_when_annotations_only_in_mro_then_auto_hash_picks_them_up(self) -> None:
+        """Verify that _collect_annotations inherits from any ancestor with __annotations__.
+
+        Even if the immediate parent has no annotations, an ancestor with __annotations__
+        should contribute to the hash fields.
+        """
+
+        class GrandParent:
+            title: str
+
+        class Parent(GrandParent):
+            pass
+
+        @auto_hash
+        class Child(Parent):
+            id: int
+
+        c1 = Child()
+        c1.id = 1
+        c1.title = "Dr."
+
+        c2 = Child()
+        c2.id = 1
+        c2.title = "Dr."
+        assert hash(c1) == hash(c2)
+
+        c3 = Child()
+        c3.id = 2
+        c3.title = "Mr."
+        assert hash(c1) != hash(c3)
+
+    def test_when_slots_in_three_level_mro_then_all_collected(self) -> None:
+        """Verify that _collect_slots gathers __slots__ from a 3-level MRO."""
+
+        @auto_hash
+        class GrandParent:
+            __slots__ = ("a",)
+
+        class Parent(GrandParent):
+            __slots__ = ("b",)
+
+        @auto_hash
+        class Child(Parent):
+            __slots__ = ("c",)
+
+        c1 = Child()
+        c1.a = 1
+        c1.b = 2
+        c1.c = 3
+
+        c2 = Child()
+        c2.a = 1
+        c2.b = 2
+        c2.c = 3
+        assert hash(c1) == hash(c2)
+
+        c3 = Child()
+        c3.a = 9
+        c3.b = 2
+        c3.c = 3
+        assert hash(c1) != hash(c3)

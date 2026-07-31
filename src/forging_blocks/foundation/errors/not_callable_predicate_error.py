@@ -1,34 +1,24 @@
-"""NotCallablePredicateError module.
+"""Error raised when a specification predicate is not a callable object.
 
-Defines the NotCallablePredicateError exception that is raised when a specification
-predicate is not callable. This error is typically raised by ExpressionSpecification
-when an invalid predicate is provided during initialization.
+Defines ``NotCallablePredicateError``, raised when an object provided
+as a specification predicate is not callable.
 """
 
 from forging_blocks.foundation.errors.base.error import Error
 from forging_blocks.foundation.errors.builtin.value_error_mixin import ValueErrorMixin
-from forging_blocks.foundation.errors.core import ErrorMessage
+from forging_blocks.foundation.errors.core import ErrorMessage, MetadataValueType
 
 
-class NotCallablePredicateError(ValueErrorMixin, Error[object]):
+class NotCallablePredicateError(ValueErrorMixin, Error[MetadataValueType]):
     """Exception raised when a specification predicate is not callable.
 
-    This error is raised by ExpressionSpecification when the provided predicate
-    argument is not a callable object. The error message includes the actual type
-    of the predicate that was provided, helping developers identify and fix the issue.
+    The error message includes the actual type of the predicate that was
+    provided, helping developers identify and fix the issue.
 
     Attributes:
         message: Structured error message containing the type name of the invalid predicate.
         metadata: Optional metadata providing additional context about the error.
         context: Shortcut access to the metadata context dictionary.
-
-    Example:
-        >>> from forging_blocks.domain.specification import ExpressionSpecification
-        >>> spec = ExpressionSpecification(123)  # Not callable
-        Traceback (most recent call last):
-            ...
-        NotCallablePredicateError: predicate must be Callable and not int
-
     """
 
     def __init__(
