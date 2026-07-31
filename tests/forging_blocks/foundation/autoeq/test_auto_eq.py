@@ -295,3 +295,56 @@ class TestAutoEqDecorator:
 
         assert Point(1) == Point(1)
         assert Point(1) != Point(2)
+
+    def test_when_child_inherits_parent_annotations_then_auto_eq_picks_them_up(
+        self,
+    ) -> None:
+        """auto_eq resolves annotation fields from parent classes in the MRO."""
+
+        class Parent:
+            name: str
+
+        @auto_eq
+        class Child(Parent):
+            id: int
+
+        c1 = Child()
+        c1.id = 1
+        c1.name = "Alice"
+
+        c2 = Child()
+        c2.id = 1
+        c2.name = "Alice"
+        assert c1 == c2
+
+        c3 = Child()
+        c3.id = 2
+        c3.name = "Bob"
+        assert c1 != c3
+
+    def test_when_annotations_only_in_mro_then_auto_eq_picks_them_up(self) -> None:
+        """auto_eq resolves annotation fields from any ancestor in the MRO."""
+
+        class GrandParent:
+            title: str
+
+        class Parent(GrandParent):
+            pass
+
+        @auto_eq
+        class Child(Parent):
+            id: int
+
+        c1 = Child()
+        c1.id = 1
+        c1.title = "Dr."
+
+        c2 = Child()
+        c2.id = 1
+        c2.title = "Dr."
+        assert c1 == c2
+
+        c3 = Child()
+        c3.id = 2
+        c3.title = "Mr."
+        assert c1 != c3

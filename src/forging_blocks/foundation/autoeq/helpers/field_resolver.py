@@ -7,8 +7,9 @@ from collections.abc import Sequence
 class FieldResolver:
     """Resolves which field names contribute to ``__eq__`` for a class."""
 
-    @staticmethod
+    @classmethod
     def resolve(
+        cls,
         class_: type[object],
         fields: Sequence[str] | None = None,
     ) -> list[str]:
@@ -18,11 +19,11 @@ class FieldResolver:
         if dataclasses.is_dataclass(class_):
             return [f.name for f in dataclasses.fields(class_)]
 
-        slots = FieldResolver._collect_slots(class_)
+        slots = cls._collect_slots(class_)
         if slots:
             return sorted(slots)
 
-        annotations = FieldResolver._collect_annotations(class_)
+        annotations = cls._collect_annotations(class_)
         if annotations:
             return sorted(annotations)
 
@@ -32,11 +33,11 @@ class FieldResolver:
         )
         raise TypeError(msg)
 
-    @staticmethod
-    def _collect_slots(class_: type[object]) -> set[str]:
+    @classmethod
+    def _collect_slots(cls, class_: type[object]) -> set[str]:
         all_slots: set[str] = set()
-        for cls in class_.__mro__:
-            slots = getattr(cls, "__slots__", ())
+        for c in class_.__mro__:
+            slots = getattr(c, "__slots__", ())
             if isinstance(slots, str):
                 slots = (slots,)
             for slot in slots:

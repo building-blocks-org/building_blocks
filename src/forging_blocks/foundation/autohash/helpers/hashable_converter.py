@@ -1,7 +1,8 @@
 """Convert arbitrary field values into hashable equivalents.
 
-Used by the auto_hash decorator to ensure that field values such as
-``list`` and ``dict`` can participate in ``__hash__`` computations.
+Ensures that field values such as ``list`` and ``dict`` can
+participate in ``__hash__`` computations by converting them to
+immutable types.
 """
 
 from collections.abc import Hashable
@@ -16,6 +17,7 @@ class HashableConverter:
     """Recursively converts non-hashable values to hashable equivalents.
 
     - ``list`` → ``tuple`` (recursively)
+    - ``set`` → ``frozenset``
     - ``dict``  → ``frozenset`` of ``(key, hashable_value)`` pairs (recursively)
     - Already-hashable values (``str``, ``int``, ``None``, ``tuple``,
       ``frozenset``, etc.) are returned unchanged.
@@ -23,51 +25,52 @@ class HashableConverter:
     """
 
     @classmethod
-    def convert(cls, value: object) -> Hashable:
+    def convert(cls, value: object, field_name: str | None = None) -> Hashable:
         """Convert *value* to a hashable equivalent.
+
+        Uses structural pattern matching for type dispatch, ensuring that
+        tuple and frozenset are handled before the generic Hashable arm so
+        nested unhashable contents are recursively converted.
 
         Args:
             value: Any value that may appear as a field on a decorated class.
+            field_name: Optional field name where the value was encountered.
 
         Returns:
             A hashable representation of *value*.
 
         Raises:
-            NonHashableValueError: When *value* cannot be made hashable (e.g. a mutable
-                set or a custom non-hashable object).
+            NonHashableValueError: When *value* cannot be made hashable (e.g. a
+                custom non-hashable object).
 
         """
-        if isinstance(value, Hashable):
-            return cls._ensure_deeply_hashable(value)
-        if isinstance(value, list):
-            return cls._convert_list(cast("list[object]", value))
-        if isinstance(value, dict):
-            return cls._convert_dict(cast("dict[object, object]", value))
-        raise NonHashableValueError(type(value).__name__)
-
-    @classmethod
-    def _ensure_deeply_hashable(cls, value: Hashable) -> Hashable:
-        """Verify and convert nested elements of an already-hashable container.
-
-        ``tuple`` and ``frozenset`` pass ``isinstance(..., Hashable)`` even when
-        they contain unhashable elements (e.g. ``([1,2],)``).  Recursively convert
-        those interior values.
-        """
-        if isinstance(value, tuple):
-            return tuple(cls.convert(v) for v in cast("tuple[object, ...]", value))
-        if isinstance(value, frozenset):
-            return frozenset(cls.convert(v) for v in cast("frozenset[object]", value))
-        return value
-
-    @classmethod
-    def _convert_list[T](cls, items: list[T]) -> tuple[Hashable, ...]:
-        return tuple(cls.convert(v) for v in items)
-
-    @classmethod
-    def _convert_dict[K, V](cls, mapping: dict[K, V]) -> frozenset[tuple[K, Hashable]]:
-        """Convert *mapping* to a `frozenset` of ``(key, hashable_value)`` pairs.
-
-        Uses `frozenset` rather than ``tuple(sorted(...))`` because
-        dict keys must be hashable but are not required to be orderable.
-        """
-        return frozenset((k, cls.convert(v)) for k, v in mapping.items())
+        match value:
+            case tuple():
+                converted = (
+                    cls.convert(v, field_name=field_name) for v in cast("tuple[object, ...]", value)
+                )
+                return tuple(converted)
+            case frozenset():
+                converted = (
+                    cls.convert(v, field_name=field_name) for v in cast("frozenset[object]", value)
+                )
+                return frozenset(converted)
+            case _ if isinstance(value, Hashable):
+                return value
+            case list():
+                converted = (
+                    cls.convert(v, field_name=field_name) for v in cast("list[object]", value)
+                )
+                return tuple(converted)
+            case dict():
+                return frozenset(
+                    (k, cls.convert(v, field_name=field_name))
+                    for k, v in cast("dict[object, object]", value).items()
+                )
+            case set():
+                converted = (
+                    cls.convert(v, field_name=field_name) for v in cast("set[object]", value)
+                )
+                return frozenset(converted)
+            case _:
+                raise NonHashableValueError(type(value).__name__, field_name=field_name)
