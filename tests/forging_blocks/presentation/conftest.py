@@ -3,6 +3,7 @@
 
 from forging_blocks.application.ports.inbound import UseCasePort
 from forging_blocks.foundation import Error, ErrorMessage
+from forging_blocks.foundation.errors import MetadataValueType
 from forging_blocks.foundation.result import Err, Ok, Result
 from forging_blocks.presentation import RequestAdapter, ResponseAdapter
 from forging_blocks.presentation.errors.error_view_model import ErrorViewModel
@@ -63,10 +64,10 @@ class ResultSuccessUseCase(UseCasePort[str, Result[str, object]]):
         return Ok(f"result:{request}")
 
 
-class ResultErrorUseCase(UseCasePort[str, Result[str, Error[object]]]):
+class ResultErrorUseCase(UseCasePort[str, Result[str, Error[MetadataValueType]]]):
     """Returns Err with a framework Error."""
 
-    async def execute(self, request: str) -> Result[str, Error[object]]:
+    async def execute(self, request: str) -> Result[str, Error[MetadataValueType]]:
         error = Error(ErrorMessage("Use case failed"))
         return Err(error)
 
