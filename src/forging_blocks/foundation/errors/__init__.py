@@ -12,7 +12,7 @@ from .combined.combined_validation_errors import CombinedValidationErrors
 from .combined.field_errors import FieldErrors
 from .combined.validation_field_errors import ValidationFieldErrors
 from .configuration_error import ConfigurationError
-from .core import ErrorMessage, ErrorMetadata, FieldReference
+from .core import ErrorMessage, ErrorMetadata, FieldReference, MetadataValueType
 from .non_hashable_value_error import NonHashableValueError
 from .none_not_allowed_error import NoneNotAllowedError
 from .result_access_error import ResultAccessError
@@ -31,6 +31,7 @@ __all__ = [
     "ErrorMetadata",
     "FieldErrors",
     "FieldReference",
+    "MetadataValueType",
     "NoneNotAllowedError",
     "NonHashableValueError",
     "ResultAccessError",
