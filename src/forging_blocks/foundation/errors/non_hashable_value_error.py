@@ -1,15 +1,17 @@
 """Error raised when a field value cannot be converted to a hashable equivalent.
 
 Raised when a value is neither natively hashable nor one of the
-supported convertible types (``list``, ``dict``).
+supported convertible types (``list``, ``dict``). Extends ``ValueErrorMixin``
+and ``Error[MetadataValueType]``, making it catchable as both ``ValueError``
+and ``Exception``.
 """
 
 from forging_blocks.foundation.errors.base.error import Error
 from forging_blocks.foundation.errors.builtin.value_error_mixin import ValueErrorMixin
-from forging_blocks.foundation.errors.core import ErrorMessage, ErrorMetadata
+from forging_blocks.foundation.errors.core import ErrorMessage, ErrorMetadata, MetadataValueType
 
 
-class NonHashableValueError(ValueErrorMixin, Error[str]):
+class NonHashableValueError(ValueErrorMixin, Error[MetadataValueType]):
     """Raised when a value cannot be made hashable during ``__hash__`` computation.
 
     Automatic hashability conversion supports ``list`` → ``tuple`` and
@@ -32,7 +34,7 @@ class NonHashableValueError(ValueErrorMixin, Error[str]):
             f"in fields hashed by @auto_hash."
             + (f" Field: {field_name!r}." if field_name is not None else "")
         )
-        metadata = ErrorMetadata({"type_name": type_name})
+        metadata: ErrorMetadata[MetadataValueType] = ErrorMetadata({"type_name": type_name})
         if field_name is not None:
             metadata.context["field_name"] = field_name
         super().__init__(message, metadata)
