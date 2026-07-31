@@ -4,7 +4,7 @@ Defines ``ValidationFailedError``, the concrete throwable leaf class
 for validation failures. ``ValidationError`` is the abstract base;
 code that constructs and raises a validation error MUST use
 ``ValidationFailedError``. It extends ``ValidationError`` (which extends
-``ValueErrorMixin`` and ``Error[object]``).
+``ValueErrorMixin`` and ``Error[MetadataValueType]``).
 """
 
 from forging_blocks.foundation.errors.base.validation_error import ValidationError

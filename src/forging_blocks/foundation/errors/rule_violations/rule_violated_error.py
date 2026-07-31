@@ -5,7 +5,7 @@ constructing and raising a rule violation. ``RuleViolationError`` is the
 abstract base class — it cannot be directly instantiated.
 
 Extends ``RuleViolationError`` (which extends ``RuntimeErrorMixin`` and
-``Error[object]``).
+``Error[MetadataValueType]``).
 """
 
 from forging_blocks.foundation.errors.base.rule_violation_error import RuleViolationError
