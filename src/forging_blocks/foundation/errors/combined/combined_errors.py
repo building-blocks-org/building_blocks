@@ -6,10 +6,10 @@ Defines CombinedErrors which aggregates multiple Error instances into one.
 from typing import Iterable, Iterator, Sequence
 
 from ..base.error import Error
-from ..core import ErrorMessage
+from ..core import ErrorMessage, MetadataValueType
 
 
-class CombinedErrors[ErrorType: Error[object]](Error[object]):
+class CombinedErrors[ErrorType: Error[MetadataValueType]](Error[MetadataValueType]):
     """Base class for combining multiple errors into one."""
 
     def __init__(self, errors: Iterable[ErrorType]) -> None:

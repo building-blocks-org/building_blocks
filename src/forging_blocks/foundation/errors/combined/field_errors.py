@@ -7,11 +7,11 @@ associated with a single field.
 from typing import Iterable, Iterator, Sequence
 
 from ..base.error import Error
-from ..core import ErrorMessage, FieldReference
+from ..core import ErrorMessage, FieldReference, MetadataValueType
 from ..rule_violations.rule_violated_error import RuleViolatedError
 
 
-class FieldErrors[ContainedErrorType: Error[object]](Error[object]):
+class FieldErrors[ContainedErrorType: Error[MetadataValueType]](Error[MetadataValueType]):
     """Base class for errors associated with a specific field."""
 
     def __init__(self, field: FieldReference, errors: Iterable[ContainedErrorType]) -> None:
