@@ -23,7 +23,18 @@ _INIT_DEPTH_FLAG = "_autofreeze__init_depth"
 
 @dataclass(frozen=True)
 class FrozenStateConfig:
-    """Read-only snapshot of an instance's frozen state."""
+    """Read-only snapshot of an instance's frozen state.
+
+    Example:
+        ```python
+        config = FrozenStateConfig(is_full_freeze=True, frozen_attrs=None)
+        assert config.is_full_freeze
+        assert config.frozen_attrs is None
+
+        partial = FrozenStateConfig(is_full_freeze=False, frozen_attrs=frozenset(["name"]))
+        assert "name" in partial.frozen_attrs
+        ```
+    """
 
     is_full_freeze: bool
     frozen_attrs: frozenset[str] | None
@@ -44,6 +55,20 @@ class FrozenStateManager:
     so that lookups never trigger ``__hash__`` on the instance — the
     instance may still be inside ``__init__`` and its fields may not be
     populated yet.
+
+    Example:
+        ```python
+        @dataclass
+        class Point:
+            x: float = 0.0
+            y: float = 0.0
+
+
+        p = Point()
+        FrozenStateManager.apply_full_freeze(p)
+        state = FrozenStateManager.get_state(p)
+        assert state.is_full_freeze
+        ```
     """
 
     _RefKey = int

@@ -24,6 +24,24 @@ class FrozenInitWrapper:
     3. Decrements the depth in a ``finally`` block.
     4. When depth reaches zero and the class is concrete, applies the
        appropriate freeze (full or selective).
+
+    Example:
+        ```python
+        class Person:
+            name: str
+            age: int
+
+            def __init__(self, name: str, age: int) -> None:
+                self.name = name
+                self.age = age
+
+
+        wrapper = FrozenInitWrapper(
+            original_init=Person.__init__, target_class=Person, freeze_attrs=None
+        )
+        wrapped = wrapper.wrap()
+        # wrapped replaces Person.__init__; freeze applied after construction
+        ```
     """
 
     def __init__(
