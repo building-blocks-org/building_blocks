@@ -16,7 +16,6 @@ structural equality comparisons.
 Example:
     ```python
     @auto_eq
-    @auto_eq
     class Point:
         __slots__ = ("x", "y")
 

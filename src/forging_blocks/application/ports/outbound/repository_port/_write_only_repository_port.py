@@ -14,9 +14,10 @@ class WriteOnlyRepositoryPort[TWriteAggregateRoot, TWriteId](OutboundPort):
     Example:
         ```python
         class Account:
-            id: str
-            name: str
-            balance: float
+            def __init__(self, id: str, name: str, balance: float) -> None:
+                self.id = id
+                self.name = name
+                self.balance = balance
 
 
         acc = Account(id="1", name="savings", balance=100.0)

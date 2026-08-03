@@ -39,7 +39,7 @@ class AuthorizationPort[AuthorizationCheckContext](InboundPort):
 
         class AccessControl(AuthorizationPort[UserContext]):
             async def check_permission(self, context: UserContext, permission: Permission) -> bool:
-                return Permission("orders:read") in await self.get_user_permissions(context.user_id)
+                return Permission.READ in await self.get_user_permissions(context.user_id)
 
             ...
         ```

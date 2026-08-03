@@ -27,14 +27,24 @@ class DictMessageCodec[M: Message[dict[str, object]]](MessageCodec[M, dict[str, 
 
     Example:
         ```python
-        class Command[T]:
-            def __init__(self) -> None:
-                pass
-
-
         class CreateOrder(Command[dict[str, object]]):
             def __init__(self, customer_id: str) -> None:
+                super().__init__()
                 self.customer_id = customer_id
+
+            @property
+            def _payload(self) -> dict[str, object]:
+                return {"customer_id": self.customer_id}
+
+            @classmethod
+            def from_payload_fields(
+                cls, payload: dict[str, object], metadata: MessageMetadata | None = None
+            ) -> CreateOrder:
+                return cls(customer_id=str(payload["customer_id"]))
+
+            @property
+            def value(self) -> dict[str, object]:
+                return self._payload
 
 
         codec = DictMessageCodec[CreateOrder]()

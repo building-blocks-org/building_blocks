@@ -39,7 +39,7 @@ class InMemoryEventStoreBase[EventPayloadType](EventStoreBase[EventPayloadType])
 
 
         store = InMemoryEventStoreBase[dict[str, object]]()
-        aggregate_id = "agg-1"
+        aggregate_id = UUID("agg-1")
         event = OrderCompleted(order_id="abc-123")
 
         result = await store.append_events(aggregate_id, [event])

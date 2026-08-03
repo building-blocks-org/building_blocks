@@ -33,7 +33,7 @@ class EventStorePort[EventPayloadType](
     Example:
         ```python
         store = MyEventStore[OrderEventData]()
-        await store.append_events("agg-1", [OrderPlaced(order_id="42")])
+        await store.append_events(UUID("agg-1"), [OrderPlaced(order_id="42")])
         result = await store.get_events("agg-1", from_version=0)
         ```
     """

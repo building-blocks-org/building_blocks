@@ -35,6 +35,20 @@ class Message[MessageRawType](ABC):
                 super().__init__()
                 self.description = description
 
+            @property
+            def _payload(self) -> str:
+                return self.description
+
+            @classmethod
+            def from_payload_fields(
+                cls, payload: str, metadata: MessageMetadata | None = None
+            ) -> PlaceOrder:
+                return cls(payload)
+
+            @property
+            def value(self) -> str:
+                return self.description
+
 
         cmd = PlaceOrder("Buy groceries")
         print(cmd.message_id)  # unique identifier

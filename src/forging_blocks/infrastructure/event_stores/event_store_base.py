@@ -30,13 +30,13 @@ class EventStoreBase[EventPayloadType](ABC):
 
 
         class InMemoryEventStore:
-            async def append(self, aggregate_id, events): ...
-            async def load(self, aggregate_id): ...
+            async def append_events(self, aggregate_id, events): ...
+            async def get_events(self, aggregate_id): ...
 
 
         store = InMemoryEventStore()
-        await store.append("acc-1", [AccountDebited(amount=50)])
-        events = await store.load("acc-1")
+        await store.append_events(UUID("acc-1"), [AccountDebited(amount=50)])
+        events = await store.get_events(UUID("acc-1"))
         ```
     """
 

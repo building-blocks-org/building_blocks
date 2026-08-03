@@ -26,13 +26,36 @@ class AggregateRoot[TId: Hashable, EventPayloadType](Entity[TId], metaclass=Fina
 
     Example:
         ```python
+        from forging_blocks.domain.messages.message._metadata import MessageMetadata
+
+
+        class ItemAdded(Event[str]):
+            def __init__(self, item_name: str) -> None:
+                super().__init__()
+                self.item_name = item_name
+
+            @property
+            def _payload(self) -> str:
+                return self.item_name
+
+            @classmethod
+            def from_payload_fields(
+                cls, payload: str, metadata: MessageMetadata | None = None
+            ) -> ItemAdded:
+                return cls(payload)
+
+            @property
+            def value(self) -> str:
+                return self.item_name
+
+
         class ShoppingCart(AggregateRoot[str, str]):
             def _handle(self, event: Event[str]) -> None:
                 pass
 
 
         cart = ShoppingCart("cart-1")
-        cart.apply(Event.from_payload_fields("ItemAdded"))
+        cart.apply(ItemAdded("Running Shoes"))
         print(cart.uncommitted_changes)  # [ItemAdded(...)]
         print(cart.version)  # 1
         ```

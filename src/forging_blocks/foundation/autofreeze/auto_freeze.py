@@ -13,7 +13,6 @@ should be immutable after construction.
 Example:
     ```python
     @auto_freeze
-    @auto_freeze
     class Money:
         def __init__(self, amount: int, currency: str) -> None:
             if amount < 0:

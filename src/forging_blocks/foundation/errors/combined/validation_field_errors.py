@@ -20,7 +20,7 @@ class ValidationFieldErrors(ValueErrorMixin, FieldErrors[Error[object]]):
         from forging_blocks.foundation.errors import Error as FBError
 
         err = FBError[str](ErrorMessage("Too short"))
-        field_errs = ValidationFieldErrors("username", [err])
+        field_errs = ValidationFieldErrors(FieldReference("username"), [err])
         assert field_errs.field == FieldReference("username")
         assert len(field_errs) == 1
         assert isinstance(field_errs, ValueError)

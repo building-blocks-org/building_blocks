@@ -16,7 +16,6 @@ consistent hashing for sets or dictionary keys.
 Example:
     ```python
     @auto_hash
-    @auto_hash
     class Point2D:
         __slots__ = ("x", "y")
 

@@ -21,12 +21,17 @@ class CombinedValidationErrors(ValueErrorMixin, CombinedErrors[ValidationFieldEr
         from forging_blocks.foundation.errors import (
             CombinedValidationErrors,
             ErrorMessage,
+            FieldReference,
             ValidationFieldErrors,
         )
         from forging_blocks.foundation.errors import Error as FBError
 
-        fe1 = ValidationFieldErrors("username", [FBError[str](ErrorMessage("Too short"))])
-        fe2 = ValidationFieldErrors("email", [FBError[str](ErrorMessage("Invalid format"))])
+        fe1 = ValidationFieldErrors(
+            FieldReference("username"), [FBError[str](ErrorMessage("Too short"))]
+        )
+        fe2 = ValidationFieldErrors(
+            FieldReference("email"), [FBError[str](ErrorMessage("Invalid format"))]
+        )
         combined = CombinedValidationErrors([fe1, fe2])
         assert isinstance(combined, ValueError)
         print(len(combined))  # 2

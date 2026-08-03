@@ -16,9 +16,10 @@ class RepositoryPort[TAggregateRoot, TId](
     Example:
         ```python
         class Task:
-            id: str
-            name: str
-            done: bool
+            def __init__(self, id: str, name: str, done: bool) -> None:
+                self.id = id
+                self.name = name
+                self.done = done
 
 
         task = Task(id="t1", name="Review PR", done=False)
