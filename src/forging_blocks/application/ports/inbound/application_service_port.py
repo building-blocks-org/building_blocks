@@ -33,11 +33,8 @@ class ApplicationServicePort[RequestType, ResponseType](
 
     Example:
         ```python
-        from typing import Any
-
-        class CreateOrderUseCase(ApplicationServicePort[dict[str, Any], Order]):
-            async def execute(self, request: dict[str, Any]) -> Order:
-                ...
+        class CreateOrderUseCase(ApplicationServicePort[dict[str, object], Order]):
+            async def execute(self, request: dict[str, object]) -> Order: ...
         ```
     """
 

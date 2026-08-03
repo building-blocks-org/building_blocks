@@ -33,10 +33,9 @@ class AuthorizationPort[AuthorizationCheckContext](InboundPort):
 
     Example:
         ```python
-        from forging_blocks.foundation.permission import Permission
-
         class UserContext:
             user_id: str
+
 
         class AccessControl(AuthorizationPort[UserContext]):
             async def check_permission(self, context: UserContext, permission: Permission) -> bool:

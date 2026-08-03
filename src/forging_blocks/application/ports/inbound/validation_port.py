@@ -30,14 +30,15 @@ class ValidationPort[CommandPayloadType, QueryPayloadType](InboundPort):
 
     Example:
         ```python
-        from forging_blocks.domain.messages.command import Command
-
         class CreateOrderCommand:
             product_id: str
             quantity: int
 
+
         class CreateOrderValidator(ValidationPort[CreateOrderCommand, object]):
-            async def validate_command(self, command: Command[CreateOrderCommand]) -> list[RuleViolationError]:
+            async def validate_command(
+                self, command: Command[CreateOrderCommand]
+            ) -> list[RuleViolationError]:
                 return []
 
             ...
