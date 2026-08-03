@@ -30,9 +30,6 @@ class ValidationMiddleware[RequestType, ResponseType](Middleware[RequestType, Re
 
     Example:
         ```python
-        from forging_blocks.presentation.builtin import ValidationMiddleware
-
-
         def validate(request: MyRequest) -> MyResponse | None:
             if request.is_invalid:
                 return MyResponse(error="Invalid request")

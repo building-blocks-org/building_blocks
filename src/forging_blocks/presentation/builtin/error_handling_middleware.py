@@ -34,8 +34,8 @@ class ErrorHandlingMiddleware[RequestType, ResponseType](Middleware[RequestType,
 
     Example:
         ```python
-        from forging_blocks.presentation.errors.error_view_model import ErrorViewModel
-        from forging_blocks.presentation.builtin import ErrorHandlingMiddleware
+        class ErrorViewModel:
+            messages: list = []
 
 
         def on_error(vm: ErrorViewModel) -> MyResponse:

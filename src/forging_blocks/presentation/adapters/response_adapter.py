@@ -15,7 +15,16 @@ class ResponseAdapter[UseCaseOutput, RawResponse](Protocol):
 
     Example:
         ```python
-        from myapp.adapters import JsonResponseAdapter
+        class OrderResponse:
+            def __init__(self, order_id: str, status: str) -> None:
+                self.order_id = order_id
+                self.status = status
+
+
+        class JsonResponseAdapter:
+            def adapt(self, output: object) -> object:
+                return {"data": output}
+
 
         adapter = JsonResponseAdapter()
         response = adapter.adapt(OrderResponse(order_id="42", status="paid"))

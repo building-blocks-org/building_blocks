@@ -17,9 +17,6 @@ class Pipeline[RequestType, ResponseType]:
 
     Example:
         ```python
-        from forging_blocks.presentation.middleware.pipeline import Pipeline
-
-
         async def handler(req: MyRequest) -> MyResponse:
             return MyResponse(...)
 

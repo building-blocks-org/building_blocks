@@ -24,8 +24,19 @@ class ErrorPresenter:
 
     Example:
         ```python
-        from forging_blocks.foundation.result import Ok, Err
-        from forging_blocks.presentation.errors.error_presenter import ErrorPresenter
+        class Ok:
+            def __init__(self, value: object) -> None:
+                self.value = value
+
+
+        class Err:
+            def __init__(self, error: object) -> None:
+                self.error = error
+
+
+        class Error(Exception):
+            pass
+
 
         presenter = ErrorPresenter()
 

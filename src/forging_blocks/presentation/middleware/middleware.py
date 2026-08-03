@@ -27,16 +27,26 @@ class Middleware[RequestType, ResponseType](Protocol):
 
     Example:
         ```python
-        from forging_blocks.presentation.middleware import Middleware, NextHandler
+        class NextHandler:
+            pass
+
+
+        class AuthService:
+            def is_authenticated(self, request: object) -> bool:
+                return False
+
+
+        class UnauthorizedResponse:
+            pass
 
 
         class AuthMiddleware[Req, Res](Middleware[Req, Res]):
             def __init__(self, auth_service: AuthService) -> None:
                 self._auth = auth_service
 
-            async def process(self, request: Req, next_handler: NextHandler[Req, Res]) -> Res:
+            async def process(self, request: Req, next_handler: NextHandler) -> Res:
                 if not self._auth.is_authenticated(request):
-                    return cast("Res", UnauthorizedResponse())
+                    return UnauthorizedResponse()
                 return await next_handler(request)
         ```
 

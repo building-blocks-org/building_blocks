@@ -12,7 +12,10 @@ class RequestAdapter[RawRequest, UseCaseInput](Protocol):
 
     Example:
         ```python
-        from myapp.adapters import JsonRequestAdapter
+        class JsonRequestAdapter:
+            def adapt(self, raw: object) -> object:
+                return {}
+
 
         adapter = JsonRequestAdapter()
         input_dto = adapter.adapt(http_request)
