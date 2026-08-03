@@ -12,9 +12,7 @@ should be immutable after construction.
 
 Example:
     ```python
-    from forging_blocks.foundation.autofreeze import auto_freeze
-
-
+    @auto_freeze
     @auto_freeze
     class Money:
         def __init__(self, amount: int, currency: str) -> None:
@@ -34,22 +32,23 @@ Example:
 
     With selective freezing:
     ```python
-    @auto_freeze(attrs=["_id"])
-    class User:
-        def __init__(self, user_id: str, name: str) -> None:
-            self._id = user_id
-            self._name = name
+    @auto_freeze(attrs=["_key"])
+    class CacheEntry:
+        def __init__(self, key: str, value: str) -> None:
+            self._key = key
+            self._value = value
 
         @property
-        def id(self) -> str:
-            return self._id
+        def key(self) -> str:
+            return self._key
 
         @property
-        def name(self) -> str:
-            return self._name
+        def value(self) -> str:
+            return self._value
     ```
 
 """
+
 from collections.abc import Callable, Sequence
 from typing import overload
 
