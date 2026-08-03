@@ -7,10 +7,11 @@ arguments). Application errors signal infrastructure or coordination problems:
 a transaction that won't commit, an event store that can't append, a concurrency
 conflict between competing updates.
 
-- **UnitOfWorkError** — Transaction commit or rollback failure
-- **EventStoreError** — Event append or retrieval failure
-- **ConcurrencyError** — Optimistic concurrency conflict
-- **EventBusError** — Event publishing failure
+- **UnitOfWorkError** — Transaction commit or rollback failure.
+- **EventStoreError** — Event append or retrieval failure.
+- **ConcurrencyError** — Optimistic concurrency conflict.
+- **EventBusError** — Event publishing failure.
+- **TransactionError** — Transaction begin, commit, or rollback failure.
 
 All application errors use `RuntimeErrorMixin`, making them catchable as `RuntimeError`.
 
