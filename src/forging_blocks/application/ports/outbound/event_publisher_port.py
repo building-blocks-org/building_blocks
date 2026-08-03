@@ -21,7 +21,16 @@ from forging_blocks.foundation.ports import OutboundPort
 class EventPublisherPort[EventPayloadType](
     OutboundPort,
 ):
-    """ABC for publishing domain events asynchronously."""
+    """ABC for publishing domain events asynchronously.
+
+    Example:
+        ```python
+        from dataclasses import dataclass
+
+        publisher = MyEventPublisher[OrderEventData]()
+        await publisher.publish(OrderPlaced(order_id="42"))
+        ```
+    """
 
     @abstractmethod
     async def publish(self, event: Event[EventPayloadType]) -> None:

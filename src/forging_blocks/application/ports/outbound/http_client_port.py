@@ -26,6 +26,14 @@ class HttpClientPort[RequestType, ResponseType](
     Type Parameters:
         RequestType: The type of the request body.
         ResponseType: The type of the response body.
+    Example:
+        ```python
+        from dataclasses import dataclass
+
+        client = MyHttpClient[dict[str, object], bytes]()
+        data = await client.get("https://api.example.com/orders/42")
+        result = await client.post("https://api.example.com/orders", body={"item": "widget"})
+        ```
     """
 
     @abstractmethod

@@ -27,6 +27,14 @@ class CachePort[KeyType, ValueType](
     Type Parameters:
         KeyType: The type of cache keys (typically str).
         ValueType: The type of cached values.
+    Example:
+        ```python
+        from pathlib import Path
+
+        cache = MyCache[str, bytes]()
+        await cache.set("avatar", Path("photo.png").read_bytes(), ttl=3600)
+        data = await cache.get("avatar")
+        ```
     """
 
     @abstractmethod

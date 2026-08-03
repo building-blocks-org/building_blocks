@@ -25,6 +25,14 @@ class FileSystemPort(
         - Resolve symlinks or handle special file types.
         - Provide atomic or transactional file operations.
         - Stream large files — the whole content is read into memory.
+    Example:
+        ```python
+        from pathlib import Path
+
+        fs = MyFileSystem()
+        await fs.write("data.json", b'{"key": "value"}')
+        content = await fs.read("data.json")
+        ```
     """
 
     @abstractmethod

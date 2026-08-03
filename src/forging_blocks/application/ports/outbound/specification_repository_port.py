@@ -26,6 +26,15 @@ class SpecificationRepositoryPort[TEntity, TId](ReadOnlyRepositoryPort[TEntity, 
         - Compile or optimize ``Specification`` predicates.
         - Paginate or sort specification results.
         - Provide indexing strategies — that belongs to infrastructure.
+    Example:
+        ```python
+        from dataclasses import dataclass
+        from uuid import UUID
+
+        repo = MySpecRepo[Account, UUID]()
+        active = await repo.find_matching(IsActive())
+        count = await repo.count_matching(HasBalanceAbove(100.0))
+        ```
     """
 
     @abstractmethod

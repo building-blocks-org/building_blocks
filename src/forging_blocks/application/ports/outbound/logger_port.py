@@ -28,6 +28,14 @@ class LoggerPort(OutboundPort):
     Implementations MAY accept wider types for ``*args`` (e.g.
     ``*args: object``) — the port contract only constrains callers,
     not implementors.
+    Example:
+        ```python
+        import logging
+
+        log = MyLogger()
+        log.info("Order %s placed by user %s", "42", "alice")
+        log.error("Payment failed for order %s", "42")
+        ```
     """
 
     @abstractmethod

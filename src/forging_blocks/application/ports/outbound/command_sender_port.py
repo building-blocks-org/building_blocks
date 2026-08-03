@@ -33,6 +33,13 @@ class CommandSenderPort[CommandPayloadType](
         - Implement retry, delivery guarantees, or dead-letter handling.
         - Handle registration — registrations happen through a message bus,
           not through this port.
+    Example:
+        ```python
+        from dataclasses import dataclass
+
+        sender = MyCommandSender[PlaceOrderPayload]()
+        await sender.send(PlaceOrder(order_id="42"))
+        ```
     """
 
     @abstractmethod
