@@ -20,6 +20,15 @@ class EventBusBase[EventPayloadType, CommandPayloadType, HandlerType](ABC):
       - Publishing events to one or more registered handlers.
       - Sending commands to a single registered handler.
       - Registering handlers for specific message types.
+
+    Example:
+        ```python
+        from myapp.bus import InMemoryEventBus
+
+        bus = InMemoryEventBus()
+        bus.register_handler(OrderCreated, order_created_handler)
+        await bus.publish(OrderCreated(order_id="42"))
+        ```
     """
 
     @abstractmethod

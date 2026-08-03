@@ -21,6 +21,16 @@ class EventStoreBase[EventPayloadType](ABC):
       - Retrieving events within an optional version range.
       - Tracking the current version of each event stream.
       - Optimistic concurrency via ``expected_version``.
+
+    Example:
+        ```python
+        from uuid import uuid4
+        from myapp.store import InMemoryEventStore
+
+        store = InMemoryEventStore()
+        await store.append(account_id, [AccountDebited(amount=50)])
+        events = await store.load(account_id)
+        ```
     """
 
     @abstractmethod

@@ -14,6 +14,15 @@ class MessageCodec[M, Raw](ABC):
         M: The message type this codec handles.
         Raw: The raw representation produced/consumed (e.g., ``dict``,
             ``bytes``, ``str``).
+
+    Example:
+        ```python
+        from myapp.codecs import JsonMessageCodec
+
+        codec = JsonMessageCodec()
+        raw = codec.encode(Notification(topic="orders", body="Shipped"))
+        msg = codec.decode(raw, Notification)
+        ```
     """
 
     @abstractmethod
