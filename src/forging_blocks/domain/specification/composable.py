@@ -26,6 +26,37 @@ class ComposableSpecification[T](Specification[T]):
     - not_() / __invert__() → delegates to NotSpecification
 
     Subclasses inherit these automatically. Do NOT reimplement in subclasses.
+
+    Example:
+        ```python
+        from typing import TypedDict
+
+        from forging_blocks.domain.specification.composable import (
+            ComposableSpecification,
+        )
+
+
+        class UserRecord(TypedDict):
+            active: bool
+            role: str
+
+
+        class IsActive(ComposableSpecification[UserRecord]):
+            def is_satisfied_by(self, candidate: UserRecord) -> bool:
+                return candidate.get("active", False)
+
+
+        class IsAdmin(ComposableSpecification[UserRecord]):
+            def is_satisfied_by(self, candidate: UserRecord) -> bool:
+                return candidate.get("role") == "admin"
+
+
+        # Operators produce logical combinations
+        active_and_admin = IsActive() & IsAdmin()  # AndSpecification
+        active_or_admin = IsActive() | IsAdmin()  # OrSpecification
+        not_active = ~IsActive()  # NotSpecification
+        complex_rule = (IsActive() & IsAdmin()) | ~IsBanned()
+        ```
     """
 
     def and_(self, other: Specification[T]) -> Specification[T]:

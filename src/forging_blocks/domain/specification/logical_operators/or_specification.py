@@ -9,6 +9,24 @@ class OrSpecification[T](ComposableSpecification[T]):
 
     Inherits composition operators from ``ComposableSpecification`` so that the
     result of a disjunction is itself composable (e.g. ``(a | b) & c``).
+
+    Example:
+        ```python
+        from forging_blocks.domain.specification.logical_operators.or_specification import (
+            OrSpecification,
+        )
+        from forging_blocks.domain.specification.expression import (
+            ExpressionSpecification,
+        )
+
+        is_admin = ExpressionSpecification(lambda u: u.role == "admin", "is_admin")
+        is_manager = ExpressionSpecification(lambda u: u.role == "manager", "is_manager")
+
+        # Direct construction
+        admin_or_manager = OrSpecification(is_admin, is_manager)
+        # Equivalent via operator
+        same = is_admin | is_manager  # Produces an OrSpecification
+        ```
     """
 
     __slots__ = ("_left_specification", "_right_specification")

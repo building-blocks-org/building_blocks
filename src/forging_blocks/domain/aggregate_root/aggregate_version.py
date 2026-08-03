@@ -7,6 +7,16 @@ class AggregateVersion(ValueObject[int]):
     """Immutable value object representing the version of an aggregate root.
 
     Used for optimistic concurrency control to detect conflicting updates.
+
+    Example:
+        ```python
+        from forging_blocks.domain.aggregate_root.aggregate_version import AggregateVersion
+
+        version = AggregateVersion(1)
+        assert version.value == 1
+        new_version = version.increment()
+        assert new_version.value == 2
+        ```
     """
 
     __slots__ = ("_value",)

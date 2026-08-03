@@ -22,16 +22,31 @@ class ErrorPresenter:
     presentation adapters (CLI, web, etc.) can render in their own
     medium. It does not depend on any transport or I/O.
 
-    Usage::
+    Example:
+        ```python
+        from forging_blocks.foundation.result import Ok, Err
+        from forging_blocks.presentation.errors.error_presenter import ErrorPresenter
 
         presenter = ErrorPresenter()
 
+        # Idiomatic: handle a Result with structural pattern matching
+        result = await use_case.execute(request)
+        match result:
+            case Ok(value):
+                ...  # handle success
+            case Err(error):
+                view_model = presenter.to_view_model(error)
+                for msg in view_model.messages:
+                    print(f"  {msg.title}")
+
+        # Alternative: exception-based handling
         try:
             result = await use_case.execute(request)
         except Error as exc:
             view_model = presenter.to_view_model(exc)
             for msg in view_model.messages:
                 print(f"  {msg.title}")
+        ```
     """
 
     __slots__ = ()
@@ -61,17 +76,19 @@ class ErrorPresenter:
         from forging_blocks.foundation.errors import CombinedErrors, Error, FieldErrors
         from forging_blocks.foundation.result import Err
 
-        if isinstance(error, CombinedErrors):
-            return self._from_combined_errors(cast("CombinedErrors[Error[object]]", error))
-        if isinstance(error, FieldErrors):
-            return self._from_field_errors(cast("FieldErrors[Error[object]]", error))
-        if isinstance(error, Error):
-            return self._from_framework_error(cast("Error[object]", error))
-        if isinstance(error, Err):
-            return self._from_result_err(cast("Err[object, object]", error))
-        if isinstance(error, Exception):
-            return self._from_exception(error)
-        return self._from_unknown(error)
+        match error:
+            case CombinedErrors():
+                return self._from_combined_errors(cast("CombinedErrors[Error[object]]", error))
+            case FieldErrors():
+                return self._from_field_errors(cast("FieldErrors[Error[object]]", error))
+            case Error():
+                return self._from_framework_error(cast("Error[object]", error))
+            case Err():
+                return self._from_result_err(cast("Err[object, object]", error))
+            case Exception():
+                return self._from_exception(error)
+            case _:
+                return self._from_unknown(error)
 
     def _from_framework_error(self, error: "Error[object]") -> list[ErrorMessageModel]:
         """Convert a framework ``Error`` whose ``ErrorMetadata`` may hold

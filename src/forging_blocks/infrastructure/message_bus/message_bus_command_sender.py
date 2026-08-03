@@ -13,6 +13,31 @@ class MessageBusCommandSender[CommandPayloadType](CommandSenderPort[CommandPaylo
 
     Implements ``CommandSenderPort`` by delegating ``send`` to
     ``MessageBusPort.dispatch``.
+
+    Example:
+        ```python
+        from forging_blocks.infrastructure.message_bus.in_memory_message_bus import (
+            InMemoryMessageBus,
+        )
+        from forging_blocks.infrastructure.message_bus.message_bus_command_sender import (
+            MessageBusCommandSender,
+        )
+        from forging_blocks.domain.messages.command import Command
+
+
+        class MyCommand(Command[dict[str, object]]):
+            def __init__(self) -> None:
+                super().__init__()
+
+            @property
+            def _payload(self) -> dict[str, object]:
+                return {}
+
+
+        bus = InMemoryMessageBus[MyCommand, None]()
+        sender = MessageBusCommandSender[dict[str, object]](bus)
+        await sender.send(MyCommand())
+        ```
     """
 
     def __init__(self, message_bus: MessageBusPort[Command[CommandPayloadType], None]) -> None:

@@ -31,18 +31,18 @@ Wire them together at startup — a composition root — and pass the resulting 
 ---
 ## Core abstractions
 
-- **[Persistence](infrastructure/persistence.md)** — Repositories, Unit of Work
-- **[Messaging & Events](infrastructure/messaging.md)** — Message Buses, Event Stores, Event Buses
-- **[Technical Adapters](infrastructure/adapters.md)** — Logging, HTTP, File System, Caching, Serialization
-- **[Errors](infrastructure/errors.md)** — Repository error types
+- **[Persistence](infrastructure/persistence.md)** — Repositories, Unit of Work.
+- **[Messaging & Events](infrastructure/messaging.md)** — Message Buses, Event Stores, Event Buses.
+- **[Technical Adapters](infrastructure/adapters.md)** — Logging, HTTP, File System, Caching, Serialization.
+- **[Errors](infrastructure/errors.md)** — Repository error types.
 
 ---
 ## What it does not do
 
-- Define business rules or domain logic
-- Orchestrate workflows
-- Make architectural decisions about port shape
-- Depend on Presentation
+- Define business rules or domain logic.
+- Orchestrate workflows.
+- Make architectural decisions about port shape.
+- Depend on Presentation.
 
 ---
 ## Glossary

@@ -14,11 +14,35 @@ class RepositoryError[MetadataValueType = object](RuntimeErrorMixin, Error[Metad
 
     This is the base error for all repository-level failures. Concrete
     implementations may raise this or more specific subclasses.
+
+    Example:
+        ```python
+        from forging_blocks.infrastructure.errors.repository_errors import (
+            RepositoryError,
+        )
+        from forging_blocks.foundation.errors.core import ErrorMessage
+
+        error = RepositoryError(ErrorMessage("Save failed"))
+        ```
     """
 
 
 class RepositoryNotFoundError[MetadataValueType = object](RepositoryError[MetadataValueType]):
-    """Error raised when attempting to delete or retrieve an aggregate that does not exist."""
+    """Error raised when attempting to delete or retrieve an aggregate that does not exist.
+
+    Example:
+        ```python
+        from forging_blocks.infrastructure.errors.repository_errors import (
+            RepositoryNotFoundError,
+        )
+
+        try:
+            raise RepositoryNotFoundError.for_id("user-42")
+        except RepositoryNotFoundError as exc:
+            print(exc.message)
+        ```
+
+    """
 
     @classmethod
     def for_id(cls, entity_id: object) -> "RepositoryNotFoundError[MetadataValueType]":

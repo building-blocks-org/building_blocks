@@ -11,6 +11,14 @@ class StdlibLogger(LoggerPort):
     Args:
         name: LoggerPort name (default ``"forging_blocks"``).
 
+    Example:
+        ```python
+        from forging_blocks.infrastructure.logging.stdlib_logger import StdlibLogger
+
+        logger = StdlibLogger(name="my_service")
+        logger.info("Service started")
+        logger.error("Connection refused", "retrying...")
+        ```
     """
 
     __slots__ = ("_logger",)

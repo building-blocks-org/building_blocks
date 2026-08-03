@@ -36,7 +36,7 @@ class Middleware[RequestType, ResponseType](Protocol):
 
             async def process(self, request: Req, next_handler: NextHandler[Req, Res]) -> Res:
                 if not self._auth.is_authenticated(request):
-                    return UnauthorizedResponse()  # type: ignore[return-value]
+                    return cast("Res", UnauthorizedResponse())
                 return await next_handler(request)
         ```
 

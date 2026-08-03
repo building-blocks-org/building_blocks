@@ -28,7 +28,45 @@ class InMemoryEventBusBase[EventPayloadType, CommandPayloadType, HandlerType](
     Attributes:
         _event_handlers: Per-event-type list of handlers.
         _command_handlers: Per-command-type single handler.
+    Example:
+        ```python
+        from forging_blocks.domain.messages.decorators import (
+            command_dataclass,
+            event_dataclass,
+        )
+        from forging_blocks.domain.messages.command import Command
+        from forging_blocks.domain.messages.event import Event
+        from forging_blocks.infrastructure.event_buses.in_memory_event_bus_base import (
+            InMemoryEventBusBase,
+        )
 
+
+        @event_dataclass
+        class OrderCompleted(Event[dict[str, object]]):
+            order_id: str
+
+
+        @command_dataclass
+        class CreateOrder(Command[dict[str, object]]):
+            customer_id: str
+
+
+        class OrderCompletedHandler:
+            async def handle(self, event: OrderCompleted) -> None:
+                print(f"Order completed: {event.order_id}")
+
+
+        class CreateOrderHandler:
+            async def handle(self, command: CreateOrder) -> None:
+                print(f"Creating order for: {command.customer_id}")
+
+
+        bus = InMemoryEventBusBase[dict[str, object], dict[str, object], object]()
+        bus.register_handler(OrderCompleted, OrderCompletedHandler())
+        bus.register_handler(CreateOrder, CreateOrderHandler())
+        await bus.publish(OrderCompleted(order_id="abc-123"))
+        await bus.send(CreateOrder(customer_id="cust-42"))
+        ```
     """
 
     __slots__ = ("_command_handlers", "_event_handlers")

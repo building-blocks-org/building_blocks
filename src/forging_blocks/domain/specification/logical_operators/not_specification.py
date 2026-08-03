@@ -9,6 +9,23 @@ class NotSpecification[T](ComposableSpecification[T]):
 
     Inherits composition operators from ``ComposableSpecification`` so that the
     result of a negation is itself composable (e.g. ``(~a) & b``).
+
+    Example:
+        ```python
+        from forging_blocks.domain.specification.logical_operators.not_specification import (
+            NotSpecification,
+        )
+        from forging_blocks.domain.specification.expression import (
+            ExpressionSpecification,
+        )
+
+        is_banned = ExpressionSpecification(lambda u: u.status == "banned", "is_banned")
+
+        # Direct construction
+        not_banned = NotSpecification(is_banned)
+        # Equivalent via operator
+        same = ~is_banned  # Produces a NotSpecification
+        ```
     """
 
     __slots__ = ("_wrapped_specification",)

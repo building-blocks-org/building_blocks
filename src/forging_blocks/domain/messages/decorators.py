@@ -6,20 +6,30 @@ defining message types.  The decorated class is a frozen dataclass whose
 fields are automatically exposed via ``get_payload_fields()`` and are used
 by ``from_payload_fields()`` for reconstruction.
 
-Example::
+Example:
+    ```python
+    from dataclasses import dataclass
 
     from forging_blocks.domain.messages.decorators import event_dataclass
     from forging_blocks.domain.messages.event import Event
 
 
+    @dataclass
+    class OrderPayload:
+        order_id: str
+        customer_id: str
+        total: float
+
+
     @event_dataclass
-    class OrderCreated(Event[dict[str, object]]):
+    class OrderCreated(Event[OrderPayload]):
         order_id: str
         customer_id: str
         total: float
 
 
     event = OrderCreated(order_id="ORD-001", customer_id="CUST-42", total=99.95)
+    ```
 """
 
 import dataclasses

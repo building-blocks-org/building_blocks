@@ -8,7 +8,7 @@ dictionaries; swap in a real database adapter behind the same `RepositoryPort` f
 ## Repositories
 
 - **InMemory Repository** — Shared identity-keyed storage: `get_by_id`, `save`, `delete_by_id`
-- **In-Memory Write Repository** — Dictionary-backed append-only store for testing
+- **In-Memory Write Repository** — Dictionary-backed identity-keyed store for testing
 - **In-Memory Read Repository** — Query-oriented read store for CQRS projections
 - **Aggregate Repository** — Integrates with `UnitOfWorkPort` and `EventBusPort`;
   tracks new and dirty aggregates, publishes collected events on commit

@@ -9,7 +9,25 @@ from forging_blocks.foundation.rules import ValidationRule
 
 
 class RequiredValidator(ValidationRule):
-    """Fails when the value is ``None`` or an empty string."""
+    """Fails when the value is ``None`` or an empty string.
+
+    Example:
+        ```python
+        from forging_blocks.domain.validators import RequiredValidator
+
+        validator = RequiredValidator("username")
+
+        errors = validator.validate("alice")
+        assert errors == []
+
+        errors = validator.validate("")
+        assert len(errors) == 1  # required field is empty
+
+        errors = validator.validate(None)
+        assert len(errors) == 1  # required field is missing
+        ```
+
+    """
 
     def __init__(self, field: str) -> None:
         self._field = field

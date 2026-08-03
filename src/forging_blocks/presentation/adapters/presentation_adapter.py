@@ -30,7 +30,11 @@ if TYPE_CHECKING:
 class PresentationAdapter[RawRequest, UseCaseInput, UseCaseOutput, RawResponse]:
     """Orchestrates the full request/response lifecycle for a use case.
 
-    Usage::
+    Example:
+        ```python
+        from forging_blocks.presentation.adapters.presentation_adapter import (
+            PresentationAdapter,
+        )
 
         adapter = PresentationAdapter(
             use_case=create_order_use_case,
@@ -39,6 +43,7 @@ class PresentationAdapter[RawRequest, UseCaseInput, UseCaseOutput, RawResponse]:
             error_presenter=ErrorPresenter(),
         )
         response = await adapter.handle(http_request)
+        ```
     """
 
     __slots__ = (

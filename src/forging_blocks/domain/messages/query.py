@@ -16,14 +16,22 @@ class Query[QueryPayloadType](Message[QueryPayloadType]):
 
     Example:
         ```python
-        class GetOrder(Query[dict[str, object]]):
+        from dataclasses import dataclass
+
+
+        @dataclass
+        class GetOrderPayload:
+            order_id: str
+
+
+        class GetOrder(Query[GetOrderPayload]):
             def __init__(self, order_id: str):
                 super().__init__()
                 self._order_id = order_id
 
             @property
-            def _payload(self) -> dict[str, object]:
-                return {"order_id": self._order_id}
+            def _payload(self) -> GetOrderPayload:
+                return GetOrderPayload(order_id=self._order_id)
         ```
 
     """

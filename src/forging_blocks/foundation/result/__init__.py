@@ -7,7 +7,7 @@ try/except blocks through your code, you compose operations with
 `Result.map`, `Result.flat_map`, and
 `Result.map_error`.
 
-Quick start:
+Example:
 
     ```python
     from forging_blocks.foundation.result import Ok, Err

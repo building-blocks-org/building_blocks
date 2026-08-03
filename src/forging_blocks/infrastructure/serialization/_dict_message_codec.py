@@ -24,6 +24,28 @@ class DictMessageCodec[M: Message[dict[str, object]]](MessageCodec[M, dict[str, 
     ``message.metadata.value`` for the metadata section.  Reconstruction
     goes through the ``from_payload_fields`` classmethod that every
     concrete ``Message`` subclass provides.
+
+    Example:
+        ```python
+        from forging_blocks.domain.messages import Command
+        from forging_blocks.domain.messages.decorators import command_dataclass
+        from forging_blocks.infrastructure.serialization._dict_message_codec import (
+            DictMessageCodec,
+        )
+
+
+        @command_dataclass
+        class CreateOrder(Command[dict[str, object]]):
+            customer_id: str
+
+
+        codec = DictMessageCodec[CreateOrder]()
+        original = CreateOrder(customer_id="cust-42")
+        encoded = codec.encode(original)
+        decoded = codec.decode(encoded, CreateOrder)
+        assert decoded.customer_id == original.customer_id
+        ```
+
     """
 
     def encode(self, message: M) -> dict[str, object]:
