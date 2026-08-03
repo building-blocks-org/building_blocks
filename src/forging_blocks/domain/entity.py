@@ -23,17 +23,22 @@ class Entity[TId: Hashable](ABC):
     completes. Intermediate abstract classes remain unfrozen so their concrete leaf subclasses
     can finish setting up via ``super().__init__()``.
 
+    Example:
         ```python
-        class Customer(Entity[str]):
-            def __init__(self, customer_id: str, name: str) -> None:
-                super().__init__(customer_id)
+        class User(Entity[int]):
+            def __init__(self, user_id: int | None, name: str) -> None:
+                super().__init__(user_id)
                 self.name = name
 
 
-        c = Customer("cust-1", "Acme Corp")
-        print(c.id)  # cust-1
-        print(c.name)  # Acme Corp
-        # c.id = "other"   # raises CantModifyImmutableAttributeError
+        u1 = User(1, "Alice")
+        u2 = User(1, "Alice")
+        u3 = User(2, "Alice")
+        draft = User(None, "Bob")
+
+        assert u1 == u2  # same type and id
+        assert u1 != u3  # different id
+        assert draft.is_persisted() is False
         ```
     """
 

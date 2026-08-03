@@ -23,6 +23,12 @@ class DraftEntityIsNotHashableError(RuntimeErrorMixin, Error[MetadataValueType])
     in a ``set``, use as a ``dict`` key, or any hash-based lookup —
     triggers this error. Once the entity receives an identity, hashing
     becomes valid.
+    Example:
+        ```python
+        error = DraftEntityIsNotHashableError.from_class_name("User")
+        # error.message = "Unhashable User: draft entities (id=None) are not hashable"
+        # error.metadata = {"class_name": "User"}
+        ```
     """
 
     @classmethod

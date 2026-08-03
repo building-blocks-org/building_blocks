@@ -43,6 +43,17 @@ class _PatchedMessage(Protocol):
     This protocol allows pyright to verify that the patched attributes exist
     and have the correct signatures, replacing attribute assignment suppressions
     with a proper type-safe cast boundary.
+    Example:
+        ```python
+        # A @message_dataclass-decorated message class satisfies this
+        # protocol structurally after the decorator patches it:
+        #
+        #   decorated.get_payload_fields()          -> dict[str, object]
+        #   Type.from_payload_fields(data, metadata) -> Self
+        #
+        # isinstance check (runtime_checkable):
+        #   isinstance(decorated_class, _PatchedMessage)
+        ```
     """
 
     def get_payload_fields(self) -> dict[str, object]: ...
