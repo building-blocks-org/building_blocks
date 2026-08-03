@@ -24,9 +24,6 @@ class PresenterPort[ResponseType](InboundPort):
 
     Example:
         ```python
-        from forging_blocks.presentation.presenter_contract import PresenterPort
-
-
         class CliPresenter(PresenterPort[str]):
             async def present(self, response: str) -> None:
                 print(f"Result: {response}")

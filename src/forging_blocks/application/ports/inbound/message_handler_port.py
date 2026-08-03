@@ -43,9 +43,9 @@ class MessageHandlerPort[MessageType, MessageHandlerResultType](
         class CreateOrder(CreateOrderCommand):
             product_id: str
 
+
         class CreateOrderHandler(MessageHandlerPort[CreateOrder, None]):
-            async def handle(self, message: CreateOrder) -> None:
-                ...
+            async def handle(self, message: CreateOrder) -> None: ...
         ```
     """
 
