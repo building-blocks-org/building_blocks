@@ -3,7 +3,7 @@
 import inspect
 from abc import ABC
 from collections.abc import Hashable
-from typing import Any
+from typing import Any, cast
 
 from forging_blocks.domain.errors import (
     DraftEntityIsNotHashableError,
@@ -65,7 +65,7 @@ class Entity[TId: Hashable](ABC):
         if type(self) is not type(other):
             return False
 
-        other_entity: Entity[TId] = other  # type: ignore[assignment]
+        other_entity = cast("Entity[TId]", other)
 
         if self._id is None or other_entity._id is None:
             return self is other_entity
