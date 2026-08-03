@@ -30,19 +30,15 @@ class Message[MessageRawType](ABC):
 
     Example:
         ```python
-        from dataclasses import dataclass
-
-        from forging_blocks.domain.messages import Command
-
-
-        @dataclass
         class PlaceOrder(Command[str]):
-            description: str
+            def __init__(self, description: str) -> None:
+                super().__init__()
+                self.description = description
 
 
         cmd = PlaceOrder("Buy groceries")
-        print(cmd.message_id)  # UUID
-        print(cmd.value)  # "Buy groceries"
+        print(cmd.message_id)  # unique identifier
+        print(cmd.description)  # "Buy groceries"
         ```
     """
 

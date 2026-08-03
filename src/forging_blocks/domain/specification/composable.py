@@ -29,26 +29,19 @@ class ComposableSpecification[T](Specification[T]):
 
     Example:
         ```python
-        from typing import TypedDict
-
-        from forging_blocks.domain.specification.composable import (
-            ComposableSpecification,
-        )
-
-
-        class UserRecord(TypedDict):
-            active: bool
-            role: str
-
-
-        class IsActive(ComposableSpecification[UserRecord]):
-            def is_satisfied_by(self, candidate: UserRecord) -> bool:
+        class IsActive(ComposableSpecification[dict[str, object]]):
+            def is_satisfied_by(self, candidate: dict[str, object]) -> bool:
                 return candidate.get("active", False)
 
 
-        class IsAdmin(ComposableSpecification[UserRecord]):
-            def is_satisfied_by(self, candidate: UserRecord) -> bool:
+        class IsAdmin(ComposableSpecification[dict[str, object]]):
+            def is_satisfied_by(self, candidate: dict[str, object]) -> bool:
                 return candidate.get("role") == "admin"
+
+
+        class IsBanned(ComposableSpecification[dict[str, object]]):
+            def is_satisfied_by(self, candidate: dict[str, object]) -> bool:
+                return candidate.get("status") == "banned"
 
 
         # Operators produce logical combinations

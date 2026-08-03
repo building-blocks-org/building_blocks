@@ -8,17 +8,11 @@ by ``from_payload_fields()`` for reconstruction.
 
 Example:
     ```python
-    from dataclasses import dataclass
-
-    from forging_blocks.domain.messages.decorators import event_dataclass
-    from forging_blocks.domain.messages.event import Event
-
-
-    @dataclass
     class OrderPayload:
-        order_id: str
-        customer_id: str
-        total: float
+        def __init__(self, order_id: str, customer_id: str, total: float) -> None:
+            self.order_id = order_id
+            self.customer_id = customer_id
+            self.total = total
 
 
     @event_dataclass

@@ -13,12 +13,7 @@ class CompositeValidationRule(ValidationRule):
     short-circuit), so every validation failure is reported.
 
     Example:
-        ```python
-        from forging_blocks.domain.validators import (
-            CompositeValidationRule,
-            LengthValidator,
-            RequiredValidator,
-        )
+
 
         composite = CompositeValidationRule(
             [
@@ -33,7 +28,6 @@ class CompositeValidationRule(ValidationRule):
         errors = composite.validate("alice")
         assert errors == []
         ```
-
     """
 
     def __init__(self, rules: list[ValidationRule]) -> None:

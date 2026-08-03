@@ -14,18 +14,9 @@ class CompositePermissionChecker[PermissionCheckContext](PermissionChecker[Permi
 
     Example:
         ```python
-        from dataclasses import dataclass
-
-        from forging_blocks.domain.permissions.composite_permission_checker import (
-            CompositePermissionChecker,
-        )
-        from forging_blocks.domain.permissions.permission_checker import PermissionChecker
-        from forging_blocks.foundation.permission import Permission
-
-
-        @dataclass
         class User:
-            roles: set[Permission]
+            def __init__(self, roles: set[Permission]) -> None:
+                self.roles = roles
 
 
         class ReadChecker(PermissionChecker[User]):

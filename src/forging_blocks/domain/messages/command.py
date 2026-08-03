@@ -18,13 +18,10 @@ class Command[RawCommandType](Message[RawCommandType]):
 
     Example:
         ```python
-        from dataclasses import dataclass
-
-
-        @dataclass
         class CreateOrderPayload:
-            customer_id: str
-            items: list
+            def __init__(self, customer_id: str, items: list) -> None:
+                self.customer_id = customer_id
+                self.items = items
 
 
         class CreateOrder(Command[CreateOrderPayload]):

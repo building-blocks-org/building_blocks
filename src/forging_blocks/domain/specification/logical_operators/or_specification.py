@@ -11,13 +11,7 @@ class OrSpecification[T](ComposableSpecification[T]):
     result of a disjunction is itself composable (e.g. ``(a | b) & c``).
 
     Example:
-        ```python
-        from forging_blocks.domain.specification.logical_operators.or_specification import (
-            OrSpecification,
-        )
-        from forging_blocks.domain.specification.expression import (
-            ExpressionSpecification,
-        )
+
 
         is_admin = ExpressionSpecification(lambda u: u.role == "admin", "is_admin")
         is_manager = ExpressionSpecification(lambda u: u.role == "manager", "is_manager")

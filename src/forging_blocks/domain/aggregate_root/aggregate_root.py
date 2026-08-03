@@ -26,9 +26,6 @@ class AggregateRoot[TId: Hashable, EventPayloadType](Entity[TId], metaclass=Fina
 
     Example:
         ```python
-        from forging_blocks.domain import AggregateRoot, Event
-
-
         class ShoppingCart(AggregateRoot[str, str]):
             def _handle(self, event: Event[str]) -> None:
                 pass
@@ -37,7 +34,7 @@ class AggregateRoot[TId: Hashable, EventPayloadType](Entity[TId], metaclass=Fina
         cart = ShoppingCart("cart-1")
         cart.apply(Event.from_payload_fields("ItemAdded"))
         print(cart.uncommitted_changes)  # [ItemAdded(...)]
-        print(cart.version)              # 1
+        print(cart.version)  # 1
         ```
     """
 
@@ -91,9 +88,6 @@ class AggregateRoot[TId: Hashable, EventPayloadType](Entity[TId], metaclass=Fina
 
         Example:
             ```python
-            from forging_blocks.domain import AggregateRoot, Event
-
-
             class OrderAggregate(AggregateRoot[str, str]):
                 def _handle(self, event: Event[str]) -> None:
                     pass
@@ -120,9 +114,6 @@ class AggregateRoot[TId: Hashable, EventPayloadType](Entity[TId], metaclass=Fina
 
         Example:
             ```python
-            from forging_blocks.domain import AggregateRoot, Event
-
-
             class OrderAggregate(AggregateRoot[str, str]):
                 def _handle(self, event: Event[str]) -> None:
                     pass
@@ -146,9 +137,6 @@ class AggregateRoot[TId: Hashable, EventPayloadType](Entity[TId], metaclass=Fina
 
         Example:
             ```python
-            from forging_blocks.domain import AggregateRoot, Event
-
-
             class OrderAggregate(AggregateRoot[str, str]):
                 def _handle(self, event: Event[str]) -> None:
                     pass
@@ -176,9 +164,6 @@ class AggregateRoot[TId: Hashable, EventPayloadType](Entity[TId], metaclass=Fina
 
         Example:
             ```python
-            from forging_blocks.domain import AggregateRoot, Event
-
-
             class OrderAggregate(AggregateRoot[str, str]):
                 def _handle(self, event: Event[str]) -> None:
                     pass
@@ -207,9 +192,6 @@ class AggregateRoot[TId: Hashable, EventPayloadType](Entity[TId], metaclass=Fina
 
         Example:
             ```python
-            from forging_blocks.domain import AggregateRoot, Event
-
-
             class OrderAggregate(AggregateRoot[str, str]):
                 def _handle(self, event: Event[str]) -> None:
                     pass

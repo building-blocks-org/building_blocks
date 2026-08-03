@@ -18,14 +18,11 @@ class Event[RawEventType](Message[RawEventType]):
 
     Example:
         ```python
-        from dataclasses import dataclass
-
-
-        @dataclass
         class OrderCreatedPayload:
-            order_id: str
-            customer_id: str
-            total: float
+            def __init__(self, order_id: str, customer_id: str, total: float) -> None:
+                self.order_id = order_id
+                self.customer_id = customer_id
+                self.total = total
 
 
         class OrderCreated(Event[OrderCreatedPayload]):

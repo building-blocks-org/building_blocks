@@ -17,8 +17,7 @@ class Specification[T](ABC):
     Composition (and_, or_, not_) is added by ComposableSpecification.
 
     Example:
-        ```python
-        from forging_blocks.domain.specification import Specification
+
 
 
         class ActiveOrderSpecification(Specification[int]):

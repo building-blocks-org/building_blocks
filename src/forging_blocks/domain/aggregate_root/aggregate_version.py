@@ -9,8 +9,7 @@ class AggregateVersion(ValueObject[int]):
     Used for optimistic concurrency control to detect conflicting updates.
 
     Example:
-        ```python
-        from forging_blocks.domain.aggregate_root.aggregate_version import AggregateVersion
+
 
         version = AggregateVersion(1)
         assert version.value == 1
