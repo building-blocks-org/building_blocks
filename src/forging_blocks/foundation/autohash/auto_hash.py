@@ -19,32 +19,33 @@ Example:
 
 
     @auto_hash
-    class UserId:
-        __slots__ = ("value",)
+    class Point2D:
+        __slots__ = ("x", "y")
 
-        def __init__(self, value: str) -> None:
-            self.value = value
+        def __init__(self, x: float, y: float) -> None:
+            self.x = x
+            self.y = y
 
 
-    u1 = UserId("abc")
-    u2 = UserId("abc")
-    assert hash(u1) == hash(u2)
+    p1 = Point2D(1.0, 2.0)
+    p2 = Point2D(1.0, 2.0)
+    assert hash(p1) == hash(p2)
     ```
 
     With selective fields:
     ```python
     @auto_hash(fields=["id"])
-    class Entity:
-        __slots__ = ("id", "name")
+    class Record:
+        __slots__ = ("id", "data")
 
-        def __init__(self, id: str, name: str) -> None:
+        def __init__(self, id: str, data: str) -> None:
             self.id = id
-            self.name = name
+            self.data = data
 
 
-    e1 = Entity("1", "Alice")
-    e2 = Entity("1", "Bob")
-    assert hash(e1) == hash(e2)
+    r1 = Record("abc", "payload-a")
+    r2 = Record("abc", "payload-b")
+    assert hash(r1) == hash(r2)
     ```
 
 """
