@@ -13,9 +13,13 @@ class WriteOnlyRepositoryPort[TWriteAggregateRoot, TWriteId](OutboundPort):
 
     Example:
         ```python
-        from accounts.models import Account
+        class Account:
+            id: str
+            name: str
+            balance: float
 
-        acc = Account(name="savings", balance=100.0)
+
+        acc = Account(id="1", name="savings", balance=100.0)
         await repo.save(acc)
         await repo.delete_by_id(acc.id)
         ```

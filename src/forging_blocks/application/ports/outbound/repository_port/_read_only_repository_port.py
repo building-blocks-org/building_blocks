@@ -14,7 +14,10 @@ class ReadOnlyRepositoryPort[TReadAggregateRoot, TId](OutboundPort):
 
     Example:
         ```python
-        from orders.models import Order
+        class Order:
+            id: str
+            total: float
+
 
         order: Order | None = await repo.get_by_id("order-42")
         all_orders: list[Order] = await repo.list_all()

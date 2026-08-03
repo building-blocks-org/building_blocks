@@ -32,11 +32,9 @@ class EventStorePort[EventPayloadType](
         - Manage snapshots or compaction strategies.
     Example:
         ```python
-        from uuid import uuid4
-
         store = MyEventStore[OrderEventData]()
-        await store.append_events(uuid4(), [OrderPlaced(order_id="42")])
-        result = await store.get_events(uuid4(), from_version=0)
+        await store.append_events("agg-1", [OrderPlaced(order_id="42")])
+        result = await store.get_events("agg-1", from_version=0)
         ```
     """
 

@@ -15,9 +15,13 @@ class RepositoryPort[TAggregateRoot, TId](
 
     Example:
         ```python
-        from tasks.models import Task
+        class Task:
+            id: str
+            name: str
+            done: bool
 
-        task = Task(name="Review PR", done=False)
+
+        task = Task(id="t1", name="Review PR", done=False)
         await repo.save(task)
         found = await repo.get_by_id(task.id)
         await repo.delete_by_id(task.id)

@@ -28,9 +28,7 @@ class SpecificationRepositoryPort[TEntity, TId](ReadOnlyRepositoryPort[TEntity, 
         - Provide indexing strategies — that belongs to infrastructure.
     Example:
         ```python
-        from uuid import UUID
-
-        repo = MySpecRepo[Account, UUID]()
+        repo = MySpecRepo[Account, str]()
         active = await repo.find_matching(IsActive())
         count = await repo.count_matching(HasBalanceAbove(100.0))
         ```
