@@ -9,6 +9,15 @@ class RequestAdapter[RawRequest, UseCaseInput](Protocol):
     Implementations handle transport-specific deserialization (e.g.
     parsing JSON bodies, extracting headers, normalising query
     parameters) and produce a typed use-case input DTO or command.
+
+    Example:
+        ```python
+        from myapp.adapters import JsonRequestAdapter
+
+        adapter = JsonRequestAdapter()
+        input_dto = adapter.adapt(http_request)
+        # input_dto is a CreateOrderInput instance
+        ```
     """
 
     def adapt(self, raw: RawRequest) -> UseCaseInput:
