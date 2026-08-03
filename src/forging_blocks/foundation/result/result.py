@@ -20,13 +20,44 @@ class Result[ValueType, ErrorType](Protocol):
 
     Example:
         ```python
-        from forging_blocks.foundation.result import Ok, Err
+        class Ok[T]:
+            def __init__(self, value: T) -> None:
+                self._value = value
+
+            @property
+            def is_ok(self) -> bool:
+                return True
+
+            @property
+            def value(self) -> T:
+                return self._value
+
+            def get_value_or(self, default: T) -> T:
+                return self._value
+
+
+        class Err[E]:
+            def __init__(self, error: E) -> None:
+                self._error = error
+
+            @property
+            def is_ok(self) -> bool:
+                return False
+
+            @property
+            def value(self) -> E:
+                return self._error
+
+            def get_value_or[T](self, default: T) -> T:
+                return default
+
 
         def parse_int(raw: str) -> Ok[int] | Err[str]:
             try:
                 return Ok(int(raw))
             except ValueError:
                 return Err(f"Cannot parse '{raw}' as int")
+
 
         result = parse_int("42")
         if result.is_ok():
