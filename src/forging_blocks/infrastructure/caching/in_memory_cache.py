@@ -10,6 +10,15 @@ class InMemoryCache[KeyType, ValueType](CachePort[KeyType, ValueType]):
 
     Supports optional TTL (time-to-live) for cache entries.
     Expired entries are removed lazily on access.
+
+    Example:
+        ```python
+        from forging_blocks.infrastructure.caching.in_memory_cache import InMemoryCache
+
+        cache = InMemoryCache[str, dict[str, object]]()
+        await cache.set("user:1", {"name": "Alice"}, ttl=300)
+        user_data = await cache.get("user:1")
+        ```
     """
 
     def __init__(self) -> None:
