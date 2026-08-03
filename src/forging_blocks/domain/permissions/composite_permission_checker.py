@@ -11,6 +11,29 @@ class CompositePermissionChecker[PermissionCheckContext](PermissionChecker[Permi
 
     Type Args:
         PermissionCheckContext: The application-defined context for permission checks.
+
+    Example:
+        ```python
+        from forging_blocks.domain.permissions.composite_permission_checker import (
+            CompositePermissionChecker,
+        )
+        from forging_blocks.domain.permissions.permission_checker import PermissionChecker
+        from forging_blocks.foundation.permission import Permission
+
+
+        class ReadChecker(PermissionChecker[object]):
+            async def check(self, context: object, permission: Permission) -> bool:
+                return permission == Permission.READ
+
+
+        class WriteChecker(PermissionChecker[object]):
+            async def check(self, context: object, permission: Permission) -> bool:
+                return permission == Permission.WRITE
+
+
+        composite = CompositePermissionChecker([ReadChecker(), WriteChecker()])
+        granted = await composite.check(None, Permission.READ)
+        ```
     """
 
     __match_args__ = ("_checkers",)

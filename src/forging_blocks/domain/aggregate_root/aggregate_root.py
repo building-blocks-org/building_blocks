@@ -73,7 +73,25 @@ class AggregateRoot[TId: Hashable, EventPayloadType](Entity[TId], metaclass=Fina
 
         Called by the Unit of Work or repository after persistence.
         No version side-effect — version is already correct from apply().
+
+        Example:
+            ```python
+            from forging_blocks.domain import AggregateRoot, Event
+
+
+            class OrderAggregate(AggregateRoot[str, str]):
+                def _handle(self, event: Event[str]) -> None:
+                    pass
+
+
+            aggregate = OrderAggregate("order-1")
+            aggregate.apply(OrderPlaced("order-1"))
+            events = aggregate.collect_events()
+            # events contains [OrderPlaced(...)]; internal queue is now empty
+            ```
+
         """
+
         events = self._uncommitted_events.copy()
         self._uncommitted_events.clear()
         return events
@@ -84,6 +102,23 @@ class AggregateRoot[TId: Hashable, EventPayloadType](Entity[TId], metaclass=Fina
 
         Clears the queue without touching version — the committed
         version must remain consistent with persisted state.
+
+        Example:
+            ```python
+            from forging_blocks.domain import AggregateRoot, Event
+
+
+            class OrderAggregate(AggregateRoot[str, str]):
+                def _handle(self, event: Event[str]) -> None:
+                    pass
+
+
+            aggregate = OrderAggregate("order-1")
+            aggregate.apply(OrderPlaced("order-1"))
+            aggregate.discard_events()
+            # uncommitted events are cleared; the committed version is unchanged
+            ```
+
         """
         self._uncommitted_events.clear()
 
@@ -93,6 +128,22 @@ class AggregateRoot[TId: Hashable, EventPayloadType](Entity[TId], metaclass=Fina
 
         Use for integration events or application-layer concerns
         that do not trigger a state transition.
+
+        Example:
+            ```python
+            from forging_blocks.domain import AggregateRoot, Event
+
+
+            class OrderAggregate(AggregateRoot[str, str]):
+                def _handle(self, event: Event[str]) -> None:
+                    pass
+
+
+            aggregate = OrderAggregate("order-1")
+            aggregate.record_event(OrderNotified("order-1"))
+            # event is queued but no state mutation occurs via _handle()
+            ```
+
         """
         self._uncommitted_events.append(domain_event)
 
@@ -107,6 +158,22 @@ class AggregateRoot[TId: Hashable, EventPayloadType](Entity[TId], metaclass=Fina
         Intended for *new* command-time transitions only.
         For event store reconstitution, use replay() instead,
         which applies the event without queuing it.
+
+        Example:
+            ```python
+            from forging_blocks.domain import AggregateRoot, Event
+
+
+            class OrderAggregate(AggregateRoot[str, str]):
+                def _handle(self, event: Event[str]) -> None:
+                    pass
+
+
+            aggregate = OrderAggregate("order-1")
+            aggregate.apply(OrderPlaced("order-1"))
+            # _handle() mutates state, version is incremented, event is queued
+            ```
+
         """
         self._handle(event)
         self._version = self._version.increment()
@@ -122,6 +189,22 @@ class AggregateRoot[TId: Hashable, EventPayloadType](Entity[TId], metaclass=Fina
         changes (replayed events must not be re-published).
 
         Use apply() for new command-time transitions.
+
+        Example:
+            ```python
+            from forging_blocks.domain import AggregateRoot, Event
+
+
+            class OrderAggregate(AggregateRoot[str, str]):
+                def _handle(self, event: Event[str]) -> None:
+                    pass
+
+
+            aggregate = OrderAggregate("order-1")
+            aggregate.replay(OrderPlaced("order-1"))
+            # _handle() mutates state, version is incremented, event is NOT queued
+            ```
+
         """
         self._handle(event)
         self._version = self._version.increment()
