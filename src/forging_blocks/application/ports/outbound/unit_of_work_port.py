@@ -30,8 +30,6 @@ class UnitOfWorkPort(OutboundPort):
     behaviour (``__aenter__`` / ``__aexit__``).
     Example:
         ```python
-        from dataclasses import dataclass
-
         async with MyUnitOfWork() as uow:
             repo = uow.accounts
             account = await repo.get_by_id("42")

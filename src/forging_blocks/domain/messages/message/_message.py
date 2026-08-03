@@ -32,7 +32,7 @@ class Message[MessageRawType](ABC):
         ```python
         from dataclasses import dataclass
 
-        from forging_blocks.domain.messages import Command, Event
+        from forging_blocks.domain.messages import Command
 
 
         @dataclass
@@ -42,7 +42,7 @@ class Message[MessageRawType](ABC):
 
         cmd = PlaceOrder("Buy groceries")
         print(cmd.message_id)  # UUID
-        print(cmd.value)       # "Buy groceries"
+        print(cmd.value)  # "Buy groceries"
         ```
     """
 

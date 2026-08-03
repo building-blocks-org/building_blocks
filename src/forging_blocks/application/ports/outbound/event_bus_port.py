@@ -31,8 +31,6 @@ class EventBusPort[EventPayloadType, CommandPayloadType, HandlerType](
           to infrastructure.
     Example:
         ```python
-        from dataclasses import dataclass
-
         bus = MyEventBus[OrderData, PlaceOrderData, object]()
         bus.register_handler(OrderShipped, ship_order_handler)
         await bus.publish(OrderShipped(order_id="42"))

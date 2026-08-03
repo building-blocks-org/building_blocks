@@ -26,8 +26,6 @@ class NotifierPort[NotificationType](
     mechanisms.
     Example:
         ```python
-        from dataclasses import dataclass
-
         notifier = MyNotifier[Notification]()
         await notifier.notify(Notification(recipient="alice@example.com", body="Order shipped"))
         ```

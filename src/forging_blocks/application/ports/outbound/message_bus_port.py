@@ -29,8 +29,6 @@ class MessageBusPort[MessageType, MessageBusResultType](
     synchronously or asynchronously without changing the contract.
     Example:
         ```python
-        from dataclasses import dataclass
-
         bus = MyMessageBus[PlaceOrderCommand, str]()
         result = await bus.dispatch(PlaceOrderCommand(order_id="42"))
         ```

@@ -27,8 +27,6 @@ class QueryFetcherPort[QueryPayloadType, QueryFetcherResult](
 
     Example:
         ```python
-        from dataclasses import dataclass
-
         fetcher = MyQueryFetcher[OrderQueryPayload, list[dict[str, object]]]()
         orders = await fetcher.fetch(GetOrdersByStatus(status="pending"))
         ```

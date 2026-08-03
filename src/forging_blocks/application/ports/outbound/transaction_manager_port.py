@@ -35,8 +35,6 @@ class TransactionManagerPort[TransactionSessionContext, TransactionErrorType](Ou
         - Manage connection pooling or resource cleanup.
     Example:
         ```python
-        from dataclasses import dataclass
-
         tm = MyTransactionManager[DbSession, TransactionError]()
         await tm.begin(session)
         await tm.commit()

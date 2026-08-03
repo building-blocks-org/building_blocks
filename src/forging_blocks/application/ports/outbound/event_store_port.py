@@ -33,7 +33,6 @@ class EventStorePort[EventPayloadType](
     Example:
         ```python
         from uuid import uuid4
-        from dataclasses import dataclass
 
         store = MyEventStore[OrderEventData]()
         await store.append_events(uuid4(), [OrderPlaced(order_id="42")])

@@ -28,7 +28,6 @@ class SpecificationRepositoryPort[TEntity, TId](ReadOnlyRepositoryPort[TEntity, 
         - Provide indexing strategies — that belongs to infrastructure.
     Example:
         ```python
-        from dataclasses import dataclass
         from uuid import UUID
 
         repo = MySpecRepo[Account, UUID]()

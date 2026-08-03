@@ -30,8 +30,6 @@ class LoggerPort(OutboundPort):
     not implementors.
     Example:
         ```python
-        import logging
-
         log = MyLogger()
         log.info("Order %s placed by user %s", "42", "alice")
         log.error("Payment failed for order %s", "42")

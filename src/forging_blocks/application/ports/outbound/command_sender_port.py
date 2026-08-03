@@ -35,8 +35,6 @@ class CommandSenderPort[CommandPayloadType](
           not through this port.
     Example:
         ```python
-        from dataclasses import dataclass
-
         sender = MyCommandSender[PlaceOrderPayload]()
         await sender.send(PlaceOrder(order_id="42"))
         ```

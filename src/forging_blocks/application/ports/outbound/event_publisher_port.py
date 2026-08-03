@@ -25,8 +25,6 @@ class EventPublisherPort[EventPayloadType](
 
     Example:
         ```python
-        from dataclasses import dataclass
-
         publisher = MyEventPublisher[OrderEventData]()
         await publisher.publish(OrderPlaced(order_id="42"))
         ```

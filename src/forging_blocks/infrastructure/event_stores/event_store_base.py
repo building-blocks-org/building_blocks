@@ -24,7 +24,6 @@ class EventStoreBase[EventPayloadType](ABC):
 
     Example:
         ```python
-        from uuid import uuid4
         from myapp.store import InMemoryEventStore
 
         store = InMemoryEventStore()
