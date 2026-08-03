@@ -15,6 +15,31 @@ class MessageBusQueryFetcher[QueryPayloadType, QueryFetcherResult](
 
     Implements ``QueryFetcherPort`` by delegating ``fetch`` to
     ``MessageBusPort.dispatch``.
+
+    Example:
+        ```python
+        from forging_blocks.infrastructure.message_bus.in_memory_message_bus import (
+            InMemoryMessageBus,
+        )
+        from forging_blocks.infrastructure.message_bus.message_bus_query_fetcher import (
+            MessageBusQueryFetcher,
+        )
+        from forging_blocks.domain.messages.query import Query
+
+
+        class MyQuery(Query[dict[str, object]]):
+            def __init__(self) -> None:
+                super().__init__()
+
+            @property
+            def _payload(self) -> dict[str, object]:
+                return {}
+
+
+        bus = InMemoryMessageBus[MyQuery, str]()
+        fetcher = MessageBusQueryFetcher[dict[str, object], str](bus)
+        result = await fetcher.fetch(MyQuery())
+        ```
     """
 
     def __init__(

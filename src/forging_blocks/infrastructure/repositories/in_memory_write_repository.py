@@ -23,6 +23,25 @@ class InMemoryWriteRepository[TEntity: Identified[Any], TId](WriteOnlyRepository
 
     The storage mapping is injected via the constructor and copied on init
     to ensure independence from external mutation.
+
+    Example:
+        ```python
+        from forging_blocks.infrastructure.repositories.in_memory_write_repository import (
+            InMemoryWriteRepository,
+        )
+
+
+        class MyEntity:
+            def __init__(self, id: int, name: str) -> None:
+                self.id = id
+                self.name = name
+
+
+        repo = InMemoryWriteRepository[MyEntity, int]()
+        entity = MyEntity(id=1, name="alpha")
+        await repo.save(entity)
+        await repo.delete_by_id(1)
+        ```
     """
 
     def __init__(

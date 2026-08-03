@@ -10,7 +10,22 @@ from forging_blocks.foundation.rules import ValidationRule
 
 
 class EmailValidator(ValidationRule):
-    """Validates that a string value is a well-formed email address."""
+    """Validates that a string value is a well-formed email address.
+
+    Example:
+        ```python
+        from forging_blocks.domain.validators import EmailValidator
+
+        validator = EmailValidator("email_address")
+
+        errors = validator.validate("user@example.com")
+        assert errors == []
+
+        errors = validator.validate("not-an-email")
+        assert len(errors) == 1
+        ```
+
+    """
 
     _EMAIL_PATTERN: re.Pattern[str] = re.compile(
         r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}"

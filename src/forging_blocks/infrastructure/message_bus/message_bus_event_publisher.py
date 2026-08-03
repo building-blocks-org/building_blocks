@@ -13,6 +13,31 @@ class MessageBusEventPublisher[EventPayloadType](EventPublisherPort[EventPayload
 
     Implements ``EventPublisherPort`` by delegating ``publish`` to
     ``MessageBusPort.dispatch``.
+
+    Example:
+        ```python
+        from forging_blocks.infrastructure.message_bus.in_memory_message_bus import (
+            InMemoryMessageBus,
+        )
+        from forging_blocks.infrastructure.message_bus.message_bus_event_publisher import (
+            MessageBusEventPublisher,
+        )
+        from forging_blocks.domain.messages.event import Event
+
+
+        class MyEvent(Event[dict[str, object]]):
+            def __init__(self) -> None:
+                super().__init__()
+
+            @property
+            def _payload(self) -> dict[str, object]:
+                return {}
+
+
+        bus = InMemoryMessageBus[MyEvent, None]()
+        publisher = MessageBusEventPublisher[dict[str, object]](bus)
+        await publisher.publish(MyEvent())
+        ```
     """
 
     def __init__(self, message_bus: MessageBusPort[Event[EventPayloadType], None]) -> None:

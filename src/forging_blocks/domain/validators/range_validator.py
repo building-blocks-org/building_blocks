@@ -9,7 +9,22 @@ from forging_blocks.foundation.rules import ValidationRule
 
 
 class RangeValidator(ValidationRule):
-    """Validates that a numeric value falls within a ``[minimum, maximum]`` range."""
+    """Validates that a numeric value falls within a ``[minimum, maximum]`` range.
+
+    Example:
+        ```python
+        from forging_blocks.domain.validators import RangeValidator
+
+        validator = RangeValidator("age", minimum_value=0, maximum_value=150)
+
+        errors = validator.validate(42)
+        assert errors == []
+
+        errors = validator.validate(-5)
+        assert len(errors) == 1  # below minimum
+        ```
+
+    """
 
     def __init__(
         self,
