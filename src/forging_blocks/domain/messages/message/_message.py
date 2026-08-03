@@ -27,6 +27,23 @@ class Message[MessageRawType](ABC):
 
     This class should not be used directly.  Import `Event` or
     `Command` instead.
+
+    Example:
+        ```python
+        from dataclasses import dataclass
+
+        from forging_blocks.domain.messages import Command, Event
+
+
+        @dataclass
+        class PlaceOrder(Command[str]):
+            description: str
+
+
+        cmd = PlaceOrder("Buy groceries")
+        print(cmd.message_id)  # UUID
+        print(cmd.value)       # "Buy groceries"
+        ```
     """
 
     def __init_subclass__(cls, **kwargs: Any) -> None:

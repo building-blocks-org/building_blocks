@@ -24,6 +24,21 @@ class AggregateRoot[TId: Hashable, EventPayloadType](Entity[TId], metaclass=Fina
         Vernon, V. (2013). Implementing Domain-Driven Design.
         Addison-Wesley. Ch.8, Ch.10, Appendix A.
 
+    Example:
+        ```python
+        from forging_blocks.domain import AggregateRoot, Event
+
+
+        class ShoppingCart(AggregateRoot[str, str]):
+            def _handle(self, event: Event[str]) -> None:
+                pass
+
+
+        cart = ShoppingCart("cart-1")
+        cart.apply(Event.from_payload_fields("ItemAdded"))
+        print(cart.uncommitted_changes)  # [ItemAdded(...)]
+        print(cart.version)              # 1
+        ```
     """
 
     def __init__(self, aggregate_id: TId, version: AggregateVersion | None = None) -> None:

@@ -22,6 +22,23 @@ class Entity[TId: Hashable](ABC):
     Concrete subclasses are automatically frozen (selective freeze on '_id') after ``__init__``
     completes. Intermediate abstract classes remain unfrozen so their concrete leaf subclasses
     can finish setting up via ``super().__init__()``.
+
+    Example:
+        ```python
+        from forging_blocks.domain import Entity
+
+
+        class Customer(Entity[str]):
+            def __init__(self, customer_id: str, name: str) -> None:
+                super().__init__(customer_id)
+                self.name = name
+
+
+        c = Customer("cust-1", "Acme Corp")
+        print(c.id)       # cust-1
+        print(c.name)     # Acme Corp
+        # c.id = "other"   # raises CantModifyImmutableAttributeError
+        ```
     """
 
     _id: TId | None
