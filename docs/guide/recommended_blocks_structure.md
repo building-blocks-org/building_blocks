@@ -41,6 +41,8 @@ flowchart TD
     D -->|Builds on| F
     A -->|Builds on| F
     I -->|Builds on| F
+    P -->|Builds on| F
+    I -->|Builds on| A
 
     %% --- Node styling ---
     style P fill:#3c3836,stroke:#fabd2f,color:#ebdbb2  %% Presentation: Dark Gray, Yellow Outline
