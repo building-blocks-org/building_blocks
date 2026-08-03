@@ -18,7 +18,17 @@ class Event[RawEventType](Message[RawEventType]):
 
     Example:
         ```python
-        class OrderCreated(Event[dict[str, object]]):
+        from dataclasses import dataclass
+
+
+        @dataclass
+        class OrderCreatedPayload:
+            order_id: str
+            customer_id: str
+            total: float
+
+
+        class OrderCreated(Event[OrderCreatedPayload]):
             def __init__(self, order_id: str, customer_id: str, total: float):
                 super().__init__()
                 self._order_id = order_id
@@ -26,12 +36,12 @@ class Event[RawEventType](Message[RawEventType]):
                 self._total = total
 
             @property
-            def _payload(self) -> dict[str, object]:
-                return {
-                    "order_id": self._order_id,
-                    "customer_id": self._customer_id,
-                    "total": self._total,
-                }
+            def _payload(self) -> OrderCreatedPayload:
+                return OrderCreatedPayload(
+                    order_id=self._order_id,
+                    customer_id=self._customer_id,
+                    total=self._total,
+                )
         ```
 
     """

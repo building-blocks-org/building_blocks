@@ -14,6 +14,8 @@ class CompositePermissionChecker[PermissionCheckContext](PermissionChecker[Permi
 
     Example:
         ```python
+        from dataclasses import dataclass
+
         from forging_blocks.domain.permissions.composite_permission_checker import (
             CompositePermissionChecker,
         )
@@ -21,18 +23,24 @@ class CompositePermissionChecker[PermissionCheckContext](PermissionChecker[Permi
         from forging_blocks.foundation.permission import Permission
 
 
-        class ReadChecker(PermissionChecker[object]):
-            async def check(self, context: object, permission: Permission) -> bool:
+        @dataclass
+        class User:
+            roles: set[Permission]
+
+
+        class ReadChecker(PermissionChecker[User]):
+            async def check(self, context: User, permission: Permission) -> bool:
                 return permission == Permission.READ
 
 
-        class WriteChecker(PermissionChecker[object]):
-            async def check(self, context: object, permission: Permission) -> bool:
+        class WriteChecker(PermissionChecker[User]):
+            async def check(self, context: User, permission: Permission) -> bool:
                 return permission == Permission.WRITE
 
 
         composite = CompositePermissionChecker([ReadChecker(), WriteChecker()])
-        granted = await composite.check(None, Permission.READ)
+        user = User(roles={Permission.READ})
+        granted = await composite.check(user, Permission.READ)
         ```
     """
 

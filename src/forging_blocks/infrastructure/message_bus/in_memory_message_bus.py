@@ -28,7 +28,14 @@ class InMemoryMessageBus[MessageType: Message[object], MessageBusResultType](
         )
         from forging_blocks.domain.messages.command import Command
 
-        bus = InMemoryMessageBus[Command[object], None]()
+
+        class MyCommand(Command[None]):
+            @property
+            def _payload(self) -> None:
+                return None
+
+
+        bus = InMemoryMessageBus[MyCommand, None]()
         bus.register(MyCommand, my_handler)
         await bus.dispatch(MyCommand())
         ```

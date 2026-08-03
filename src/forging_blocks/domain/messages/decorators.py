@@ -8,12 +8,21 @@ by ``from_payload_fields()`` for reconstruction.
 
 Example:
     ```python
+    from dataclasses import dataclass
+
     from forging_blocks.domain.messages.decorators import event_dataclass
     from forging_blocks.domain.messages.event import Event
 
 
+    @dataclass
+    class OrderPayload:
+        order_id: str
+        customer_id: str
+        total: float
+
+
     @event_dataclass
-    class OrderCreated(Event[dict[str, object]]):
+    class OrderCreated(Event[OrderPayload]):
         order_id: str
         customer_id: str
         total: float
