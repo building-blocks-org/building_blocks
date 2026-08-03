@@ -11,7 +11,19 @@ from forging_blocks.foundation.errors.core import ErrorMessage
 
 
 class EventBusError[MetadataValueType = object](RuntimeErrorMixin, Error[MetadataValueType]):
-    """Base error for event bus operations."""
+    """Base error for event bus publishing and dispatch failures.
+
+    Indicates that an event handler failed or the message bus cannot
+    deliver an event. Extends ``RuntimeErrorMixin``, making it
+    catchable as ``RuntimeError``.
+
+    Example:
+        ```python
+        error = EventBusError("Failed to publish event to message bus")
+        raise error
+        ```
+
+    """
 
     def __init__(self, message: str) -> None:
         super().__init__(ErrorMessage(message))

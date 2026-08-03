@@ -11,7 +11,19 @@ from forging_blocks.foundation.errors.core import ErrorMessage
 
 
 class EventStoreError[MetadataValueType = object](RuntimeErrorMixin, Error[MetadataValueType]):
-    """Base error for event store operations."""
+    """Base error for event persistence operations.
+
+    Raised when append, read, or snapshot operations on the event
+    store fail. Extends ``RuntimeErrorMixin``, making it catchable
+    as ``RuntimeError``.
+
+    Example:
+        ```python
+        error = EventStoreError("Failed to append events to event stream")
+        raise error
+        ```
+
+    """
 
     def __init__(self, message: str) -> None:
         super().__init__(ErrorMessage(message))

@@ -22,6 +22,16 @@ class ConcurrencyError[MetadataValueType = object](EventStoreError[MetadataValue
         expected_version: The version the caller expected.
         actual_version: The version currently stored.
 
+
+    Example:
+        ```python
+        error = ConcurrencyError(
+            aggregate_id=uuid.UUID("12345678-1234-5678-1234-567812345678"),
+            expected_version=1,
+            actual_version=2,
+        )
+        raise error
+        ```
     """
 
     def __init__(self, aggregate_id: UUID, expected_version: int, actual_version: int) -> None:
