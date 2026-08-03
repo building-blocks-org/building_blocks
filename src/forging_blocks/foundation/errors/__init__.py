@@ -15,6 +15,7 @@ from .configuration_error import ConfigurationError
 from .core import ErrorMessage, ErrorMetadata, FieldReference
 from .non_hashable_value_error import NonHashableValueError
 from .none_not_allowed_error import NoneNotAllowedError
+from .not_callable_predicate_error import NotCallablePredicateError
 from .result_access_error import ResultAccessError
 from .rule_violations.rule_violated_error import RuleViolatedError
 from .validation.validation_failed_error import ValidationFailedError
@@ -33,6 +34,7 @@ __all__ = [
     "FieldReference",
     "NoneNotAllowedError",
     "NonHashableValueError",
+    "NotCallablePredicateError",
     "ResultAccessError",
     "RuleViolatedError",
     "RuleViolationError",
