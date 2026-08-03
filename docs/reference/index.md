@@ -22,6 +22,7 @@ flowchart LR
     I[Infrastructure<br/>Technical adapters] -->|depends on| A
     I -->|depends on| F
     P[Presentation<br/>Input boundaries] -->|depends on| A
+    P -->|depends on| F
 ```
 
 ---
