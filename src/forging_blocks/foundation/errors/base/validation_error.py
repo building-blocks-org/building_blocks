@@ -15,8 +15,17 @@ from .error import Error
 
 
 class ValidationError(ValueErrorMixin, Error[object], ABC):
-    """Base class for validation errors — abstract, use ``ValidationFailedError`` to throw."""
+    """Base class for validation errors — abstract, use ``ValidationFailedError`` to throw.
 
+    Example:
+        ```python
+        from forging_blocks.foundation.errors import ValidationFailedError, ErrorMessage
+
+        error = ValidationFailedError(ErrorMessage("Email is required"))
+        isinstance(error, ValueError)  # True
+        ```
+
+    """
     def __init__(
         self, message: ErrorMessage, metadata: ErrorMetadata[object] | None = None
     ) -> None:

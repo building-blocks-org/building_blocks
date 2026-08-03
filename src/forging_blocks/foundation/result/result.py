@@ -16,7 +16,26 @@ from typing import Protocol, runtime_checkable
 
 @runtime_checkable
 class Result[ValueType, ErrorType](Protocol):
-    """Protocol that defines the shared interface for `Ok` and `Err`."""
+    """Protocol that defines the shared interface for `Ok` and `Err`.
+
+    Example:
+        ```python
+        from forging_blocks.foundation.result import Ok, Err
+
+        def parse_int(raw: str) -> Ok[int] | Err[str]:
+            try:
+                return Ok(int(raw))
+            except ValueError:
+                return Err(f"Cannot parse '{raw}' as int")
+
+        result = parse_int("42")
+        if result.is_ok():
+            print(result.value)  # 42
+
+        result = parse_int("abc")
+        print(result.get_value_or(0))  # 0
+        ```
+    """
 
     @property
     def is_ok(self) -> bool:

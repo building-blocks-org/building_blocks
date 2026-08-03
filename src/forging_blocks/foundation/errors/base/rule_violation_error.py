@@ -17,8 +17,17 @@ from .error import Error
 
 
 class RuleViolationError(RuntimeErrorMixin, Error[object], ABC):
-    """Base class for rule violation errors — abstract, use ``RuleViolatedError`` to throw."""
+    """Base class for rule violation errors — abstract, use ``RuleViolatedError`` to throw.
 
+    Example:
+        ```python
+        from forging_blocks.foundation.errors import RuleViolatedError, ErrorMessage
+
+        error = RuleViolatedError(ErrorMessage("Insufficient funds"))
+        isinstance(error, RuntimeError)  # True
+        ```
+
+    """
     def __init__(
         self, message: ErrorMessage, metadata: ErrorMetadata[object] | None = None
     ) -> None:
