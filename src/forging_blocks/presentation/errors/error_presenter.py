@@ -22,7 +22,9 @@ class ErrorPresenter:
     presentation adapters (CLI, web, etc.) can render in their own
     medium. It does not depend on any transport or I/O.
 
-    Usage::
+    Example:
+        ```python
+        from forging_blocks.presentation.errors.error_presenter import ErrorPresenter
 
         presenter = ErrorPresenter()
 
@@ -32,6 +34,7 @@ class ErrorPresenter:
             view_model = presenter.to_view_model(exc)
             for msg in view_model.messages:
                 print(f"  {msg.title}")
+        ```
     """
 
     __slots__ = ()

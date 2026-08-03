@@ -22,11 +22,16 @@ class InMemoryUnitOfWork[IdType, EventPayloadType](UnitOfWorkPort):
     is handled by the repositories, while this class coordinates event
     publication and transactional consistency.
 
-    Usage::
+    Example:
+        ```python
+        from forging_blocks.infrastructure.unit_of_work.in_memory_unit_of_work import (
+            InMemoryUnitOfWork,
+        )
 
         async with InMemoryUnitOfWork(event_publisher) as uow:
             uow.register_modified(aggregate)
             await write_repo.save(aggregate)
+        ```
     """
 
     __slots__ = ("_committed", "_event_publisher", "_modified_aggregates", "_rolled_back")

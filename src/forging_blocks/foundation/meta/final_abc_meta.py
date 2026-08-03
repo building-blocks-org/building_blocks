@@ -16,7 +16,9 @@ class FinalABCMeta(FinalMeta, ABCMeta):
     Enables both abstract base class functionality via `ABCMeta`
     and runtime enforcement of methods decorated with `runtime_final`.
 
-    Usage::
+    Example:
+        ```python
+        from forging_blocks.foundation.meta import FinalABCMeta
 
         class MyBase(metaclass=FinalABCMeta):
             @runtime_final
@@ -24,8 +26,9 @@ class FinalABCMeta(FinalMeta, ABCMeta):
 
             @abstractmethod
             def abstract_method(self) -> None: ...
-    """
+        ```
 
+    """
     def __new__(
         mcls: Type[type],
         name: str,

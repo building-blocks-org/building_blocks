@@ -21,11 +21,18 @@ class InMemoryMessageBus[MessageType: Message[object], MessageBusResultType](
     message of that type is dispatched. Suitable for testing, prototyping,
     and simple intra-process communication.
 
-    Usage::
+    Example:
+        ```python
+        from forging_blocks.infrastructure.message_bus.in_memory_message_bus import (
+            InMemoryMessageBus,
+        )
+        from forging_blocks.domain.messages.command import Command
 
         bus = InMemoryMessageBus[Command[object], None]()
         bus.register(MyCommand, my_handler)
         await bus.dispatch(MyCommand())
+        ```
+
     """
 
     __slots__ = ("_handlers",)
