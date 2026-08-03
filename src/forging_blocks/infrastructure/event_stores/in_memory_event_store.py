@@ -24,7 +24,29 @@ class InMemoryEventStore[EventPayloadType](EventStorePort[EventPayloadType]):
     Attributes:
         _streams: Per-aggregate ordered event lists.
         _versions: Per-aggregate current version counters.
+    Example:
+        ```python
+        from uuid import uuid4
 
+        from forging_blocks.domain.messages.decorators import event_dataclass
+        from forging_blocks.domain.messages.event import Event
+        from forging_blocks.infrastructure.event_stores.in_memory_event_store import (
+            InMemoryEventStore,
+        )
+
+
+        @event_dataclass
+        class OrderCompleted(Event[dict[str, object]]):
+            order_id: str
+
+
+        store = InMemoryEventStore[dict[str, object]]()
+        aggregate_id = uuid4()
+        event = OrderCompleted(order_id="abc-123")
+
+        result = await store.append_events(aggregate_id, [event])
+        events = await store.get_events(aggregate_id)
+        ```
     """
 
     __slots__ = ("_streams", "_versions")
