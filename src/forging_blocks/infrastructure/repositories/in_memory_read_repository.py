@@ -18,6 +18,23 @@ class InMemoryReadRepository[TEntity, TId](ReadOnlyRepositoryPort[TEntity, TId])
 
     The storage mapping is injected via the constructor and copied on init
     to ensure independence from external mutation.
+
+    Example:
+        ```python
+        from forging_blocks.infrastructure.repositories.in_memory_read_repository import (
+            InMemoryReadRepository,
+        )
+        from forging_blocks.domain.specification import (
+            ExpressionSpecification,
+        )
+
+        storage = {1: {"id": 1, "name": "alpha"}, 2: {"id": 2, "name": "beta"}}
+        repo = InMemoryReadRepository[dict, int](storage=storage)
+
+        entity = await repo.get_by_id(1)
+        active = ExpressionSpecification(lambda e: e["name"].startswith("a"))
+        results = await repo.find_matching(active)
+        ```
     """
 
     def __init__(self, storage: Mapping[TId, TEntity] | None = None) -> None:
@@ -31,17 +48,17 @@ class InMemoryReadRepository[TEntity, TId](ReadOnlyRepositoryPort[TEntity, TId])
         super().__init__()
         self._storage: dict[TId, TEntity] = dict(storage) if storage is not None else {}
 
-    async def get_by_id(self, id: TId) -> TEntity | None:  # noqa: A002
+    async def get_by_id(self, entity_id: TId) -> TEntity | None:
         """Retrieve an entity by ID.
 
         Args:
-            id: Unique identifier of the entity.
+            entity_id: Unique identifier of the entity.
 
         Returns:
             The entity if found, otherwise None.
 
         """
-        return self._storage.get(id)
+        return self._storage.get(entity_id)
 
     async def list_all(self) -> Sequence[TEntity]:
         """Retrieve all resources in the repository.

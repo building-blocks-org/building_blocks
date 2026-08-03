@@ -14,11 +14,11 @@ class ReadOnlyRepositoryPort[TReadAggregateRoot, TId](OutboundPort):
     """
 
     @abstractmethod
-    async def get_by_id(self, id: TId) -> TReadAggregateRoot | None:
+    async def get_by_id(self, entity_id: TId) -> TReadAggregateRoot | None:
         """Retrieve an aggregate or read model by ID.
 
         Args:
-            id: Unique identifier of the resource.
+            entity_id: Unique identifier of the resource.
 
         Returns:
             The retrieved instance or None if not found.
