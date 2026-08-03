@@ -20,6 +20,7 @@ class FinalABCMeta(FinalMeta, ABCMeta):
         ```python
         from forging_blocks.foundation.meta import FinalABCMeta
 
+
         class MyBase(metaclass=FinalABCMeta):
             @runtime_final
             def sealed_method(self) -> None: ...
@@ -29,6 +30,7 @@ class FinalABCMeta(FinalMeta, ABCMeta):
         ```
 
     """
+
     def __new__(
         mcls: Type[type],
         name: str,
