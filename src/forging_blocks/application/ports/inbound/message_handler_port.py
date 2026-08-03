@@ -37,6 +37,16 @@ class MessageHandlerPort[MessageType, MessageHandlerResultType](
         - Validate or transform the incoming message.
         - Orchestrate domain operations.
         - Invoke repositories, outbound ports, and publish domain events.
+
+    Example:
+        ```python
+        class CreateOrder(CreateOrderCommand):
+            product_id: str
+
+        class CreateOrderHandler(MessageHandlerPort[CreateOrder, None]):
+            async def handle(self, message: CreateOrder) -> None:
+                ...
+        ```
     """
 
     @abstractmethod

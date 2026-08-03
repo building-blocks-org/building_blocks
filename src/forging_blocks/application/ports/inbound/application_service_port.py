@@ -30,6 +30,15 @@ class ApplicationServicePort[RequestType, ResponseType](
     involve multiple domain objects and outbound interactions. Use cases
     must remain free of infrastructure dependencies and must uphold
     application-level invariants.
+
+    Example:
+        ```python
+        from typing import Any
+
+        class CreateOrderUseCase(ApplicationServicePort[dict[str, Any], Order]):
+            async def execute(self, request: dict[str, Any]) -> Order:
+                ...
+        ```
     """
 
     @abstractmethod

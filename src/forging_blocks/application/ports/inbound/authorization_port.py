@@ -30,6 +30,20 @@ class AuthorizationPort[AuthorizationCheckContext](InboundPort):
     Non-Responsibilities:
         - Manage user identities or credentials.
         - Define permission hierarchies (delegated to domain or configuration).
+
+    Example:
+        ```python
+        from forging_blocks.foundation.permission import Permission
+
+        class UserContext:
+            user_id: str
+
+        class AccessControl(AuthorizationPort[UserContext]):
+            async def check_permission(self, context: UserContext, permission: Permission) -> bool:
+                return Permission("orders:read") in await self.get_user_permissions(context.user_id)
+
+            ...
+        ```
     """
 
     @abstractmethod

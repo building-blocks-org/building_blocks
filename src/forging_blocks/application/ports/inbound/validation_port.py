@@ -27,6 +27,21 @@ class ValidationPort[CommandPayloadType, QueryPayloadType](InboundPort):
     Non-Responsibilities:
         - Enforce authorization (handled by ``AuthorizationPort``).
         - Modify command or query state.
+
+    Example:
+        ```python
+        from forging_blocks.domain.messages.command import Command
+
+        class CreateOrderCommand:
+            product_id: str
+            quantity: int
+
+        class CreateOrderValidator(ValidationPort[CreateOrderCommand, object]):
+            async def validate_command(self, command: Command[CreateOrderCommand]) -> list[RuleViolationError]:
+                return []
+
+            ...
+        ```
     """
 
     @abstractmethod
