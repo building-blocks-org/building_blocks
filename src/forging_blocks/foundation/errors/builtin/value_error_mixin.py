@@ -10,4 +10,18 @@ arguments, and precondition failures.
 
 
 class ValueErrorMixin(ValueError):
-    """Mixin — attach before ``Error[...]`` in MRO to make errors ``isinstance(ValueError)``."""
+    """Mixin — attach before ``Error[...]`` in MRO to make errors ``isinstance(ValueError)``.
+
+    Example:
+        ```python
+        from forging_blocks.foundation.errors import Error, ErrorMessage
+
+
+        class InvalidInputError(ValueErrorMixin, Error[str]):
+            pass  # This error represents invalid input
+
+
+        err = InvalidInputError(ErrorMessage("Bad input"))
+        assert isinstance(err, ValueError)
+        ```
+    """
