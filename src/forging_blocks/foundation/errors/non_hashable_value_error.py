@@ -16,6 +16,12 @@ class NonHashableValueError(ValueErrorMixin, Error[str]):
     ``dict`` → ``frozenset`` of ``(key, value)`` pairs. Values of other
     mutable types (e.g. ``bytearray``, custom objects without ``__hash__``)
     trigger this error.
+
+    Example:
+        ```python
+        error = NonHashableValueError(type_name="MyMutableClass", field_name="config")
+        raise error
+        ```
     """
 
     def __init__(self, type_name: str, field_name: str | None = None) -> None:

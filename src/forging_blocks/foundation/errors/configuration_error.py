@@ -17,6 +17,12 @@ class ConfigurationError(ValueErrorMixin, Error[MetadataValueType]):
     This error signals operational misconfiguration at runtime —
     for example, a URL with a disallowed scheme, an invalid
     filesystem path, or an out-of-range parameter value.
+
+    Example:
+        ```python
+        error = ConfigurationError("Port must be between 1 and 65535, got 0")
+        raise error
+        ```
     """
 
     def __init__(self, message: str) -> None:

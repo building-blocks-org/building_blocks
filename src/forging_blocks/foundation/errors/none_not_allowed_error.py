@@ -11,4 +11,12 @@ from forging_blocks.foundation.errors.builtin.value_error_mixin import ValueErro
 
 
 class NoneNotAllowedError(ValueErrorMixin, Error[str]):
-    """Error indicating that a None value was provided where it is not allowed."""
+    """Error indicating that a None value was provided where it is not allowed.
+
+    Example:
+        ```python
+        error = NoneNotAllowedError(ErrorMessage("Value cannot be None"))
+        raise error
+        ```
+
+    """

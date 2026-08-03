@@ -19,6 +19,14 @@ class NotCallablePredicateError(ValueErrorMixin, Error[MetadataValueType]):
         message: Structured error message containing the type name of the invalid predicate.
         metadata: Optional metadata providing additional context about the error.
         context: Shortcut access to the metadata context dictionary.
+
+    Example:
+        ```python
+        error = NotCallablePredicateError(predicate="not_a_function")
+        raise error
+        ```
+
+
     """
 
     def __init__(
