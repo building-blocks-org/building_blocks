@@ -12,7 +12,7 @@
         <meta name="author" content="ForgingBlocks Org">
       
       
-        <link rel="canonical" href="https://forging-blocks-org.github.io/dev/reference/foundation/errors/">
+        <link rel="canonical" href="https://forging-blocks-org.github.io/forging-blocks/dev/reference/foundation/errors/">
       
       
         <link rel="prev" href="../ports/">
@@ -7792,22 +7792,31 @@
 <li><strong>Error</strong> — Base class. Carries an <code>ErrorMessage</code> and <code>ErrorMetadata</code>.</li>
 <li><strong>ErrorMessage</strong> — A value object representing the human-readable description.</li>
 <li><strong>ErrorMetadata</strong> — Context dict for extra fields (field name, detail, codes).</li>
+<li><strong>FieldReference</strong> — A value object referencing a field by name (<code>value: str</code>).</li>
 </ul>
 <h2 id="concrete-error-types">Concrete error types<a class="headerlink" href="#concrete-error-types" title="Permanent link">&para;</a></h2>
 <h3 id="validation">Validation<a class="headerlink" href="#validation" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>ValidationError</strong> — Base for validation failures. Status code: 400.</li>
-<li><strong>FieldErrors</strong> — Groups errors by field. Carries a field name and child errors.</li>
+<li><strong>ValidationError</strong> — Abstract base for validation failures. Not meant to be thrown directly.</li>
+<li><strong>ValidationFailedError</strong> — Concrete validation error. The type to raise when input validation fails.</li>
+<li><strong>FieldErrors</strong> — Groups errors by field. Carries a <code>FieldReference</code> and child errors.</li>
 <li><strong>CombinedErrors</strong> — Groups multiple errors from different sources.</li>
+<li><strong>ValidationFieldErrors</strong> — Groups validation errors for a specific field. Carries a <code>FieldReference</code> and child errors.</li>
+<li><strong>CombinedValidationErrors</strong> — Groups multiple validation errors that share the <code>ValueErrorMixin</code> taxonomy.</li>
 </ul>
 <h3 id="rule-violations">Rule violations<a class="headerlink" href="#rule-violations" title="Permanent link">&para;</a></h3>
 <ul>
-<li><strong>RuleViolationError</strong> — Base for business rule failures. Status code: 409.</li>
+<li><strong>RuleViolationError</strong> — Abstract base for business rule failures. Not meant to be thrown directly.</li>
+<li><strong>RuleViolatedError</strong> — Concrete rule violation error. The type to raise when a business rule is violated.</li>
+<li><strong>CombinedRuleViolationErrors</strong> — Groups multiple rule violation errors that share the <code>RuntimeErrorMixin</code> taxonomy.</li>
 </ul>
 <h3 id="structural-errors">Structural errors<a class="headerlink" href="#structural-errors" title="Permanent link">&para;</a></h3>
 <ul>
+<li><strong>ArchitectureError</strong> — Raised when a structural invariant of the architecture is violated.</li>
 <li><strong>CantModifyImmutableAttributeError</strong> — Raised when a frozen attribute is reassigned.</li>
+<li><strong>ConfigurationError</strong> — Raised when configuration is invalid.</li>
 <li><strong>NoneNotAllowedError</strong> — Raised when <code>None</code> is provided where disallowed.</li>
+<li><strong>NonHashableValueError</strong> — Raised when a non-hashable value is provided where hashability is required.</li>
 <li><strong>NotCallablePredicateError</strong> — Raised when a specification predicate is not callable.</li>
 <li><strong>ResultAccessError</strong> — Raised when accessing <code>value</code> on <code>Err</code> or <code>error</code> on <code>Ok</code>.</li>
 </ul>
@@ -7816,7 +7825,7 @@
 <ul>
 <li>
 <p><strong><code>ValueError</code></strong> — Input and precondition errors inherit <code>ValueErrorMixin</code>:<br />
-<code>ValidationError</code>, <code>ConfigurationError</code>, <code>NoneNotAllowedError</code>,<br />
+<code>ValidationFailedError</code>, <code>ConfigurationError</code>, <code>NoneNotAllowedError</code>,<br />
 <code>NonHashableValueError</code>, <code>NotCallablePredicateError</code>,<br />
 <code>ValidationFieldErrors</code>, <code>CombinedValidationErrors</code></p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>  <span class="c1"># catches all of the above</span>
@@ -7824,7 +7833,7 @@
 </li>
 <li>
 <p><strong><code>RuntimeError</code></strong> — State and invariant errors inherit <code>RuntimeErrorMixin</code>:<br />
-<code>RuleViolationError</code>, <code>ArchitectureError</code>,<br />
+<code>RuleViolatedError</code>, <code>ArchitectureError</code>,<br />
 <code>CantModifyImmutableAttributeError</code>, <code>ResultAccessError</code>,<br />
 <code>CombinedRuleViolationErrors</code></p>
 <div class="language-python highlight"><pre><span></span><code><span id="__span-1-1"><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">except</span> <span class="ne">RuntimeError</span><span class="p">:</span>  <span class="c1"># catches all of the above</span>
@@ -7835,7 +7844,7 @@
 errors inherit the mixin from the appropriate base class — see their reference<br />
 pages for details.</p>
 <h2 id="when-to-use">When to use<a class="headerlink" href="#when-to-use" title="Permanent link">&para;</a></h2>
-<p>Subclass <code>Error</code> for your own error types. Use <code>ValidationError</code> for input failures, <code>RuleViolationError</code> for business rule violations. Use <code>FieldErrors</code> and <code>CombinedErrors</code> to group multiple failures. Every error carries an <code>ErrorMessage</code> and <code>ErrorMetadata</code> for structured handling.</p>
+<p>Subclass <code>Error</code> for your own error types. Raise <code>ValidationFailedError</code> for input failures, <code>RuleViolatedError</code> for business rule violations. Use <code>FieldErrors</code> and <code>CombinedErrors</code> to group multiple failures. Every error carries an <code>ErrorMessage</code> and <code>ErrorMetadata</code> for structured handling.</p>
 <div class="admonition note">
 <p class="admonition-title">Related</p>
 <p>See <a href="../../domain/errors/">Domain Errors</a> and <a href="../../application/errors/">Application Errors</a> for block-specific error types.</p>

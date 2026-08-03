@@ -12,7 +12,7 @@
         <meta name="author" content="ForgingBlocks Org">
       
       
-        <link rel="canonical" href="https://forging-blocks-org.github.io/dev/reference/autodoc/domain/entity/">
+        <link rel="canonical" href="https://forging-blocks-org.github.io/forging-blocks/dev/reference/autodoc/domain/entity/">
       
       
         <link rel="prev" href="../../application/ports/outbound/repository_port/_write_only_repository_port/">
@@ -8074,7 +8074,7 @@ can finish setting up via <code>super().__init__()</code>.</p>
 </span><span id="__span-0-65"><a id="__codelineno-0-65" name="__codelineno-0-65"></a>        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
 </span><span id="__span-0-66"><a id="__codelineno-0-66" name="__codelineno-0-66"></a>            <span class="k">return</span> <span class="kc">False</span>
 </span><span id="__span-0-67"><a id="__codelineno-0-67" name="__codelineno-0-67"></a>
-</span><span id="__span-0-68"><a id="__codelineno-0-68" name="__codelineno-0-68"></a>        <span class="n">other_entity</span><span class="p">:</span> <span class="n">Entity</span><span class="p">[</span><span class="n">TId</span><span class="p">]</span> <span class="o">=</span> <span class="n">other</span>  <span class="c1"># type: ignore[assignment]</span>
+</span><span id="__span-0-68"><a id="__codelineno-0-68" name="__codelineno-0-68"></a>        <span class="n">other_entity</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="s2">&quot;Entity[TId]&quot;</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
 </span><span id="__span-0-69"><a id="__codelineno-0-69" name="__codelineno-0-69"></a>
 </span><span id="__span-0-70"><a id="__codelineno-0-70" name="__codelineno-0-70"></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">other_entity</span><span class="o">.</span><span class="n">_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-71"><a id="__codelineno-0-71" name="__codelineno-0-71"></a>            <span class="k">return</span> <span class="bp">self</span> <span class="ow">is</span> <span class="n">other_entity</span>
@@ -8296,7 +8296,7 @@ can finish setting up via <code>super().__init__()</code>.</p>
 </span><span id="__span-0-65"><a id="__codelineno-0-65" name="__codelineno-0-65"></a>    <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
 </span><span id="__span-0-66"><a id="__codelineno-0-66" name="__codelineno-0-66"></a>        <span class="k">return</span> <span class="kc">False</span>
 </span><span id="__span-0-67"><a id="__codelineno-0-67" name="__codelineno-0-67"></a>
-</span><span id="__span-0-68"><a id="__codelineno-0-68" name="__codelineno-0-68"></a>    <span class="n">other_entity</span><span class="p">:</span> <span class="n">Entity</span><span class="p">[</span><span class="n">TId</span><span class="p">]</span> <span class="o">=</span> <span class="n">other</span>  <span class="c1"># type: ignore[assignment]</span>
+</span><span id="__span-0-68"><a id="__codelineno-0-68" name="__codelineno-0-68"></a>    <span class="n">other_entity</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="s2">&quot;Entity[TId]&quot;</span><span class="p">,</span> <span class="n">other</span><span class="p">)</span>
 </span><span id="__span-0-69"><a id="__codelineno-0-69" name="__codelineno-0-69"></a>
 </span><span id="__span-0-70"><a id="__codelineno-0-70" name="__codelineno-0-70"></a>    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_id</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">other_entity</span><span class="o">.</span><span class="n">_id</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-71"><a id="__codelineno-0-71" name="__codelineno-0-71"></a>        <span class="k">return</span> <span class="bp">self</span> <span class="ow">is</span> <span class="n">other_entity</span>

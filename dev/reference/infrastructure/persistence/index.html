@@ -12,7 +12,7 @@
         <meta name="author" content="ForgingBlocks Org">
       
       
-        <link rel="canonical" href="https://forging-blocks-org.github.io/dev/reference/infrastructure/persistence/">
+        <link rel="canonical" href="https://forging-blocks-org.github.io/forging-blocks/dev/reference/infrastructure/persistence/">
       
       
         <link rel="prev" href="../">
@@ -7709,7 +7709,7 @@ dictionaries; swap in a real database adapter behind the same <code>RepositoryPo
 <h2 id="repositories">Repositories<a class="headerlink" href="#repositories" title="Permanent link">&para;</a></h2>
 <ul>
 <li><strong>InMemory Repository</strong> — Shared identity-keyed storage: <code>get_by_id</code>, <code>save</code>, <code>delete_by_id</code></li>
-<li><strong>In-Memory Write Repository</strong> — Dictionary-backed append-only store for testing</li>
+<li><strong>In-Memory Write Repository</strong> — Dictionary-backed identity-keyed store for testing</li>
 <li><strong>In-Memory Read Repository</strong> — Query-oriented read store for CQRS projections</li>
 <li><strong>Aggregate Repository</strong> — Integrates with <code>UnitOfWorkPort</code> and <code>EventBusPort</code>;<br />
   tracks new and dirty aggregates, publishes collected events on commit</li>

@@ -12,7 +12,7 @@
         <meta name="author" content="ForgingBlocks Org">
       
       
-        <link rel="canonical" href="https://forging-blocks-org.github.io/dev/reference/infrastructure/messaging/">
+        <link rel="canonical" href="https://forging-blocks-org.github.io/forging-blocks/dev/reference/infrastructure/messaging/">
       
       
         <link rel="prev" href="../persistence/">
@@ -7724,7 +7724,7 @@
 and domain components. Three building blocks compose to form the full pipeline:</p>
 <ul>
 <li><strong>Message Bus</strong> — dispatches any message to the right handler (commands, queries, events).<br />
-<code>CommandSender</code>, <code>EventPublisher</code>, and <code>QueryFetcher</code> are thin port-satisfying wrappers<br />
+<code>MessageBusCommandSender</code>, <code>MessageBusEventPublisher</code>, and <code>MessageBusQueryFetcher</code> are thin port-satisfying wrappers<br />
   around the bus that expose narrower, role-specific interfaces.</li>
 <li><strong>Event Store</strong> — an append-only log that records domain events chronologically.<br />
   Enables rebuilding aggregate state from history (event sourcing).</li>
@@ -7733,17 +7733,17 @@ and domain components. Three building blocks compose to form the full pipeline:<
 </ul>
 <h2 id="message-bus">Message Bus<a class="headerlink" href="#message-bus" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong>In-Memory Message Bus</strong> — Synchronous dispatcher routing commands, queries, and events to registered handlers</li>
-<li><strong>Command Sender</strong> — Thin adapter implementing <code>CommandSenderPort</code>; fire-and-forget</li>
-<li><strong>Event Publisher</strong> — Thin adapter implementing <code>EventPublisherPort</code>; publishes domain events</li>
-<li><strong>Query Fetcher</strong> — Thin adapter implementing <code>QueryFetcherPort</code>; dispatches queries, returns typed results</li>
+<li><strong>In-Memory Message Bus</strong> — Synchronous dispatcher routing commands, queries, and events to registered handlers.</li>
+<li><strong>Command Sender</strong> — Thin adapter implementing <code>CommandSenderPort</code>; fire-and-forget.</li>
+<li><strong>Event Publisher</strong> — Thin adapter implementing <code>EventPublisherPort</code>; publishes domain events.</li>
+<li><strong>Query Fetcher</strong> — Thin adapter implementing <code>QueryFetcherPort</code>; dispatches queries, returns typed results.</li>
 </ul>
 <h2 id="event-store">Event Store<a class="headerlink" href="#event-store" title="Permanent link">&para;</a></h2>
 <p>Append-only event log storing domain events chronologically. Supports <code>append</code> with optimistic concurrency (expected version check) and <code>get_events</code> for aggregate rebuilding.</p>
 <h2 id="event-bus">Event Bus<a class="headerlink" href="#event-bus" title="Permanent link">&para;</a></h2>
 <p>Publish/subscribe mechanism delivering domain events to registered handlers. Synchronous delivery to all subscribers.</p>
 <h2 id="when-to-use">When to use<a class="headerlink" href="#when-to-use" title="Permanent link">&para;</a></h2>
-<p>Use the in-memory message bus for tests and development. Register handlers at startup, dispatch messages at runtime. Use <code>CommandSender</code>, <code>EventPublisher</code>, and <code>QueryFetcher</code> as thin wrappers that satisfy the corresponding port protocols.</p>
+<p>Use the in-memory message bus for tests and development. Register handlers at startup, dispatch messages at runtime. Use <code>MessageBusCommandSender</code>, <code>MessageBusEventPublisher</code>, and <code>MessageBusQueryFetcher</code> as thin wrappers that satisfy the corresponding port protocols.</p>
 
 
 

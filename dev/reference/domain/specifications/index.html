@@ -12,7 +12,7 @@
         <meta name="author" content="ForgingBlocks Org">
       
       
-        <link rel="canonical" href="https://forging-blocks-org.github.io/dev/reference/domain/specifications/">
+        <link rel="canonical" href="https://forging-blocks-org.github.io/forging-blocks/dev/reference/domain/specifications/">
       
       
         <link rel="prev" href="../aggregates/">
@@ -1212,6 +1212,15 @@
   <a href="#when-to-use" class="md-nav__link">
     <span class="md-ellipsis">
       When to use
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#composablespecification" class="md-nav__link">
+    <span class="md-ellipsis">
+      ComposableSpecification
     </span>
   </a>
   
@@ -7641,6 +7650,15 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#composablespecification" class="md-nav__link">
+    <span class="md-ellipsis">
+      ComposableSpecification
+    </span>
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -7670,6 +7688,16 @@
 <p>A <code>Specification</code> encapsulates a rule evaluated with <code>is_satisfied_by(candidate)</code>. Compositions (<code>&amp;</code>, <code>|</code>, <code>~</code>) allow rules to be combined into richer predicates.</p>
 <h2 id="when-to-use">When to use<a class="headerlink" href="#when-to-use" title="Permanent link">&para;</a></h2>
 <p>Subclass <code>Specification</code> and implement <code>is_satisfied_by(candidate) → bool</code>. Compose with <code>&amp;</code>, <code>|</code>, <code>~</code> instead of nesting if-statements. Each specification is a single, testable unit of logic.</p>
+<h2 id="composablespecification">ComposableSpecification<a class="headerlink" href="#composablespecification" title="Permanent link">&para;</a></h2>
+<p><code>ComposableSpecification</code> combines multiple specifications into a single rule using logical operators<br />
+(<code>&amp;</code>, <code>|</code>, <code>~</code>) and short-circuits:</p>
+<ul>
+<li><code>AndSpecification</code> — Both specifications must be satisfied.</li>
+<li><code>OrSpecification</code> — At least one specification must be satisfied.</li>
+<li><code>NotSpecification</code> — The specification must not be satisfied.</li>
+</ul>
+<p>Each operator returns a new <code>ComposableSpecification</code> instance, so chains are immutable and<br />
+composable without side effects.</p>
 <div class="admonition note">
 <p class="admonition-title">Where the implementation lives</p>
 <p>The specification pattern is defined in the Domain block alongside Entity and AggregateRoot. It is imported from <code>forging_blocks.domain.specification</code>.</p>

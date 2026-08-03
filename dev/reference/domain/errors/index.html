@@ -12,7 +12,7 @@
         <meta name="author" content="ForgingBlocks Org">
       
       
-        <link rel="canonical" href="https://forging-blocks-org.github.io/dev/reference/domain/errors/">
+        <link rel="canonical" href="https://forging-blocks-org.github.io/forging-blocks/dev/reference/domain/errors/">
       
       
         <link rel="prev" href="../permissions/">
@@ -7697,9 +7697,10 @@ They extend the <a href="../../foundation/">Foundation</a> <code>Error</code> ba
 <li><strong>EntityIdDeletionError</strong> — Raised when attempting to delete an entity's identifier</li>
 <li><strong>DraftEntityIsNotHashableError</strong> — Raised because draft (unsaved) entities are not hashable</li>
 </ul>
-<p>All domain errors use <code>RuntimeErrorMixin</code>, making them catchable as <code>RuntimeError</code>.<br />
-<code>EntityIdNoneError</code> extends <code>ValueErrorMixin</code> and <code>Error[MetadataValueType]</code><br />
-directly, making it catchable as <code>ValueError</code>.</p>
+<p>Domain errors use <code>RuntimeErrorMixin</code> or <code>ValueErrorMixin</code>, making them catchable<br />
+as <code>RuntimeError</code> or <code>ValueError</code> respectively. <code>EntityIdNoneError</code> extends<br />
+<code>ValueErrorMixin</code> and <code>Error[MetadataValueType]</code> directly, making it catchable as<br />
+<code>ValueError</code>.</p>
 <h2 id="when-to-use">When to use<a class="headerlink" href="#when-to-use" title="Permanent link">&para;</a></h2>
 <p>Raise these errors from domain code when an entity's identity contract is violated. They extend the <a href="../../foundation/">Foundation</a> <code>Error</code> base class, so they carry structured messages and metadata consistent with the rest of the system.</p>
 <div class="admonition note">

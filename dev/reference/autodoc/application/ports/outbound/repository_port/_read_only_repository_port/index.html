@@ -12,7 +12,7 @@
         <meta name="author" content="ForgingBlocks Org">
       
       
-        <link rel="canonical" href="https://forging-blocks-org.github.io/dev/reference/autodoc/application/ports/outbound/repository_port/_read_only_repository_port/">
+        <link rel="canonical" href="https://forging-blocks-org.github.io/forging-blocks/dev/reference/autodoc/application/ports/outbound/repository_port/_read_only_repository_port/">
       
       
         <link rel="prev" href="../../unit_of_work_port/">
@@ -7856,11 +7856,11 @@ It provides type-safe retrieval of aggregates or read models.</p>
 </span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="sd">    &quot;&quot;&quot;</span>
 </span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a>
 </span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a>    <span class="nd">@abstractmethod</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="n">TId</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TReadAggregateRoot</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17"></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity_id</span><span class="p">:</span> <span class="n">TId</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TReadAggregateRoot</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;Retrieve an aggregate or read model by ID.</span>
 </span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19"></a>
 </span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="sd">        Args:</span>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="sd">            id: Unique identifier of the resource.</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="sd">            entity_id: Unique identifier of the resource.</span>
 </span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22"></a>
 </span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23"></a><span class="sd">        Returns:</span>
 </span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24"></a><span class="sd">            The retrieved instance or None if not found.</span>
@@ -7903,7 +7903,7 @@ It provides type-safe retrieval of aggregates or read models.</p>
 
 
 <h4 id="forging_blocks.application.ports.outbound.repository_port._read_only_repository_port.ReadOnlyRepositoryPort.get_by_id" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_by_id</span><span class="p">(</span><span class="nb">id</span><span class="p">:</span> <span class="n">TId</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TReadAggregateRoot</span> <span class="o">|</span> <span class="kc">None</span></code>
+            <code class="highlight language-python"><span class="n">get_by_id</span><span class="p">(</span><span class="n">entity_id</span><span class="p">:</span> <span class="n">TId</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TReadAggregateRoot</span> <span class="o">|</span> <span class="kc">None</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
@@ -7931,7 +7931,7 @@ It provides type-safe retrieval of aggregates or read models.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                <code>id</code>
+                <code>entity_id</code>
             </td>
             <td>
                   <code><span title="forging_blocks.application.ports.outbound.repository_port._read_only_repository_port.ReadOnlyRepositoryPort[TId]">TId</span></code>
@@ -8000,11 +8000,11 @@ It provides type-safe retrieval of aggregates or read models.</p>
 <span class="normal"><a href="#__codelineno-0-31">31</a></span>
 <span class="normal"><a href="#__codelineno-0-32">32</a></span>
 <span class="normal"><a href="#__codelineno-0-33">33</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="nd">@abstractmethod</span>
-</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="n">TId</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TReadAggregateRoot</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">get_by_id</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">entity_id</span><span class="p">:</span> <span class="n">TId</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TReadAggregateRoot</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
 </span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Retrieve an aggregate or read model by ID.</span>
 </span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19"></a>
 </span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="sd">    Args:</span>
-</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="sd">        id: Unique identifier of the resource.</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21"></a><span class="sd">        entity_id: Unique identifier of the resource.</span>
 </span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22"></a>
 </span><span id="__span-0-23"><a id="__codelineno-0-23" name="__codelineno-0-23"></a><span class="sd">    Returns:</span>
 </span><span id="__span-0-24"><a id="__codelineno-0-24" name="__codelineno-0-24"></a><span class="sd">        The retrieved instance or None if not found.</span>

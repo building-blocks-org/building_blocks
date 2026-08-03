@@ -12,7 +12,7 @@
         <meta name="author" content="ForgingBlocks Org">
       
       
-        <link rel="canonical" href="https://forging-blocks-org.github.io/dev/reference/domain/messages/">
+        <link rel="canonical" href="https://forging-blocks-org.github.io/forging-blocks/dev/reference/domain/messages/">
       
       
         <link rel="prev" href="../value-objects/">
@@ -1161,6 +1161,15 @@
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#core-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core types
+    </span>
+  </a>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#types" class="md-nav__link">
@@ -7651,6 +7660,15 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#core-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      Core types
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#types" class="md-nav__link">
     <span class="md-ellipsis">
       Types
@@ -7703,6 +7721,10 @@
 
 <h1 id="messages">Messages<a class="headerlink" href="#messages" title="Permanent link">&para;</a></h1>
 <p>Messages are immutable, architecture-neutral data carriers — <strong>Command</strong>, <strong>Event</strong>, and <strong>Query</strong>.</p>
+<h2 id="core-types">Core types<a class="headerlink" href="#core-types" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>MessageMetadata</strong> — Typed metadata container attached to every message at construction.</li>
+</ul>
 <p>All messages are frozen dataclasses. Their type communicates intent: a Command asks for action, an Event records a fact, a Query requests data. Serialization is handled by codecs in the infrastructure layer (see <code>DictMessageCodec</code>).</p>
 <h2 id="types">Types<a class="headerlink" href="#types" title="Permanent link">&para;</a></h2>
 <ul>

@@ -12,7 +12,7 @@
         <meta name="author" content="ForgingBlocks Org">
       
       
-        <link rel="canonical" href="https://forging-blocks-org.github.io/dev/reference/">
+        <link rel="canonical" href="https://forging-blocks-org.github.io/forging-blocks/dev/reference/">
       
       
         <link rel="prev" href="../guide/recommended_blocks_structure/">
@@ -7686,11 +7686,11 @@
 <h2 id="quick-summary">Quick summary<a class="headerlink" href="#quick-summary" title="Permanent link">&para;</a></h2>
 <p>The <strong>Reference</strong> section defines the <strong>meaning and responsibility</strong> of each ForgingBlocks component. These pages are precise and definition-oriented — meant to be consulted as needed, not read linearly.</p>
 <p>Components:<br />
-- <strong>Foundation</strong> — Core abstractions (Result, Port, Identified)<br />
-- <strong>Domain</strong> — Domain modeling (Entity, ValueObject, AggregateRoot, Messages, Specification)<br />
-- <strong>Application</strong> — Application layer patterns (ApplicationServicePort, CommandHandlerPort, RepositoryPort, EventStorePort)<br />
-- <strong>Infrastructure</strong> — Technical adapters and implementations (Repositories, MessageCodec/DictMessageCodec)<br />
-- <strong>Presentation</strong> — Input/output boundaries</p>
+- <strong>Foundation</strong> — Core abstractions (Result, Port, Identified).<br />
+- <strong>Domain</strong> — Domain modeling (Entity, ValueObject, AggregateRoot, Messages, Specification).<br />
+- <strong>Application</strong> — Application layer patterns (ApplicationServicePort, CommandHandlerPort, RepositoryPort, EventStorePort).<br />
+- <strong>Infrastructure</strong> — Technical adapters and implementations (Repositories, MessageCodec/DictMessageCodec).<br />
+- <strong>Presentation</strong> — Input/output boundaries.</p>
 <p>Dependencies point inward: Infrastructure/Presentation → Application → Domain, all depending on Foundation.</p>
 <hr />
 <pre class="mermaid"><code>flowchart LR
@@ -7699,16 +7699,17 @@
     A --&gt;|depends on| F
     I[Infrastructure&lt;br/&gt;Technical adapters] --&gt;|depends on| A
     I --&gt;|depends on| F
-    P[Presentation&lt;br/&gt;Input boundaries] --&gt;|depends on| A</code></pre>
+    P[Presentation&lt;br/&gt;Input boundaries] --&gt;|depends on| A
+    P --&gt;|depends on| F</code></pre>
 <hr />
 <h2 id="reference-sections">Reference Sections<a class="headerlink" href="#reference-sections" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong><a href="foundation/">Foundation</a></strong> - Core abstractions and utilities (Result, Port, Identified, etc.)</li>
-<li><strong><a href="api-stability/">API Stability</a></strong> - SemVer policy and public API stability guarantees</li>
-<li><strong><a href="domain/">Domain</a></strong> - Domain modeling abstractions (Entity, ValueObject, AggregateRoot, Messages, Specification)</li>
-<li><strong><a href="application/">Application</a></strong> - Application layer patterns (ApplicationServicePort, CommandHandlerPort, RepositoryPort, EventStorePort, SpecificationRepositoryPort)</li>
-<li><strong><a href="infrastructure/">Infrastructure</a></strong> - Infrastructure adapters and implementations (Repositories, MessageCodec/DictMessageCodec)</li>
-<li><strong><a href="presentation/">Presentation</a></strong> - Input/output boundaries and presentation layer</li>
+<li><strong><a href="foundation/">Foundation</a></strong> — Core abstractions and utilities (Result, Port, Identified, etc.).</li>
+<li><strong><a href="api-stability/">API Stability</a></strong> — SemVer policy and public API stability guarantees.</li>
+<li><strong><a href="domain/">Domain</a></strong> — Domain modeling abstractions (Entity, ValueObject, AggregateRoot, Messages, Specification).</li>
+<li><strong><a href="application/">Application</a></strong> — Application layer patterns (ApplicationServicePort, CommandHandlerPort, RepositoryPort, EventStorePort, SpecificationRepositoryPort).</li>
+<li><strong><a href="infrastructure/">Infrastructure</a></strong> — Infrastructure adapters and implementations (Repositories, MessageCodec/DictMessageCodec).</li>
+<li><strong><a href="presentation/">Presentation</a></strong> — Input/output boundaries and presentation layer.</li>
 </ul>
 
 

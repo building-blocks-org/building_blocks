@@ -12,7 +12,7 @@
         <meta name="author" content="ForgingBlocks Org">
       
       
-        <link rel="canonical" href="https://forging-blocks-org.github.io/dev/reference/foundation/">
+        <link rel="canonical" href="https://forging-blocks-org.github.io/forging-blocks/dev/reference/foundation/">
       
       
         <link rel="prev" href="../api-stability/">
@@ -7780,26 +7780,23 @@
 <hr />
 <h2 id="core-abstractions">Core abstractions<a class="headerlink" href="#core-abstractions" title="Permanent link">&para;</a></h2>
 <ul>
-<li><strong><a href="result/">Result</a></strong> — Explicit Ok/Err outcomes without exceptions for control flow</li>
-<li><strong><a href="ports/">Ports</a></strong> — Boundaries between components (InboundPort, OutboundPort)</li>
-<li><strong><a href="errors/">Errors</a></strong> — Structured error model (message + metadata, validation, rule violation, combined)</li>
-<li><strong><a href="auto-decorators/">Auto Decorators</a></strong> — Immutability, equality, and hashing decorators (auto_freeze, auto_eq, auto_hash)</li>
-<li><strong><a href="mappers/">Mappers</a></strong> — Explicit transformations between types</li>
-<li><strong><a href="identified/">Identified</a></strong> — Protocol for objects carrying an identifier</li>
-<li>
-<p><strong><a href="meta/">Meta Utilities</a></strong> — Runtime enforcement (final, sealed, abstract)</p>
-</li>
-<li>
-<p><strong><a href="rules/">Rules</a></strong> — Composable validation rules (ValidationRule)</p>
-</li>
+<li><strong><a href="result/">Result</a></strong> — Explicit Ok/Err outcomes without exceptions for control flow.</li>
+<li><strong><a href="ports/">Ports</a></strong> — Boundaries between components (InboundPort, OutboundPort).</li>
+<li><strong><a href="errors/">Errors</a></strong> — Structured error model (message + metadata, validation, rule violation, combined).</li>
+<li><strong><a href="auto-decorators/">Auto Decorators</a></strong> — Immutability, equality, and hashing decorators (auto_freeze, auto_eq, auto_hash).</li>
+<li><strong><a href="../domain/permissions/">Permissions</a></strong> — Enum-like permission definitions with membership checking.</li>
+<li><strong><a href="mappers/">Mappers</a></strong> — Explicit transformations between types.</li>
+<li><strong><a href="identified/">Identified</a></strong> — Protocol for objects carrying an identifier.</li>
+<li><strong><a href="meta/">Meta Utilities</a></strong> — Runtime enforcement (final, sealed, abstract).</li>
+<li><strong><a href="rules/">Rules</a></strong> — Composable validation rules (ValidationRule).</li>
 </ul>
 <hr />
 <h2 id="what-it-does-not-do">What it does not do<a class="headerlink" href="#what-it-does-not-do" title="Permanent link">&para;</a></h2>
 <ul>
-<li>Contain domain logic or business rules</li>
-<li>Orchestrate workflows or use cases</li>
-<li>Perform I/O or persistence</li>
-<li>Depend on any external library</li>
+<li>Contain domain logic or business rules.</li>
+<li>Orchestrate workflows or use cases.</li>
+<li>Perform I/O or persistence.</li>
+<li>Depend on any external library.</li>
 </ul>
 <hr />
 <h2 id="glossary">Glossary<a class="headerlink" href="#glossary" title="Permanent link">&para;</a></h2>

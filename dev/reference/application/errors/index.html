@@ -12,7 +12,7 @@
         <meta name="author" content="ForgingBlocks Org">
       
       
-        <link rel="canonical" href="https://forging-blocks-org.github.io/dev/reference/application/errors/">
+        <link rel="canonical" href="https://forging-blocks-org.github.io/forging-blocks/dev/reference/application/errors/">
       
       
         <link rel="prev" href="../ports/">
@@ -7673,10 +7673,11 @@ arguments). Application errors signal infrastructure or coordination problems:<b
 a transaction that won't commit, an event store that can't append, a concurrency<br />
 conflict between competing updates.</p>
 <ul>
-<li><strong>UnitOfWorkError</strong> — Transaction commit or rollback failure</li>
-<li><strong>EventStoreError</strong> — Event append or retrieval failure</li>
-<li><strong>ConcurrencyError</strong> — Optimistic concurrency conflict</li>
-<li><strong>EventBusError</strong> — Event publishing failure</li>
+<li><strong>UnitOfWorkError</strong> — Transaction commit or rollback failure.</li>
+<li><strong>EventStoreError</strong> — Event append or retrieval failure.</li>
+<li><strong>ConcurrencyError</strong> — Optimistic concurrency conflict.</li>
+<li><strong>EventBusError</strong> — Event publishing failure.</li>
+<li><strong>TransactionError</strong> — Transaction begin, commit, or rollback failure.</li>
 </ul>
 <p>All application errors use <code>RuntimeErrorMixin</code>, making them catchable as <code>RuntimeError</code>.</p>
 <h2 id="when-to-use">When to use<a class="headerlink" href="#when-to-use" title="Permanent link">&para;</a></h2>
