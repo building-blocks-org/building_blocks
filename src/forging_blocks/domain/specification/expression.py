@@ -18,13 +18,17 @@ class ExpressionSpecification[T](ComposableSpecification[T]):
     do NOT reimplement them here.
 
     Example:
-        >>> is_active = ExpressionSpecification(
-        ...     lambda user: user.is_active, description="is_active"
-        ... )
-        >>> is_admin = ExpressionSpecification(
-        ...     lambda user: user.role == "admin", description="is_admin"
-        ... )
-        >>> active_admin = is_active & is_admin  # Uses inherited operator
+        ```python
+        from forging_blocks.domain.specification.expression import (
+            ExpressionSpecification,
+        )
+
+        is_active = ExpressionSpecification(lambda user: user.is_active, description="is_active")
+        is_admin = ExpressionSpecification(
+            lambda user: user.role == "admin", description="is_admin"
+        )
+        active_admin = is_active & is_admin  # Uses inherited operator
+        ```
 
     """
 
