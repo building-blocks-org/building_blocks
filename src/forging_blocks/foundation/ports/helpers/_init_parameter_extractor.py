@@ -8,7 +8,19 @@ from typing import get_type_hints
 
 
 class InitParameterExtractor:
-    """Extracts the annotated ``__init__`` parameters from a class."""
+    """Extracts the annotated ``__init__`` parameters from a class.
+
+    Example:
+        ```python
+        class MyService:
+            def __init__(self, repo: object, count: int) -> None: ...
+
+
+        extractor = InitParameterExtractor(MyService)
+        params = extractor.extract()
+        # params == {'repo': <class 'object'>, 'count': <class 'int'>}
+        ```
+    """
 
     def __init__(self, cls: type) -> None:
         self._cls = cls
