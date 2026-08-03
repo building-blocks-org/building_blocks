@@ -40,8 +40,6 @@ class URLLibClient(HttpClientPort[str, str]):
 
     Example:
         ```python
-        from forging_blocks.infrastructure.http_client.urllib_client import URLLibClient
-
         client = URLLibClient()
         html = await client.get("https://example.com")
         response = await client.post("https://httpbin.org/post", body="hello")

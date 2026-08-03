@@ -23,7 +23,19 @@ class EventBusBase[EventPayloadType, CommandPayloadType, HandlerType](ABC):
 
     Example:
         ```python
-        from myapp.bus import InMemoryEventBus
+        class OrderCreated:
+            def __init__(self, order_id: str) -> None:
+                self.order_id = order_id
+
+
+        class InMemoryEventBus:
+            def register_handler(self, message_type, handler): ...
+            async def publish(self, event): ...
+
+
+        async def order_created_handler(event: OrderCreated) -> None:
+            print(f"Processing order {event.order_id}")
+
 
         bus = InMemoryEventBus()
         bus.register_handler(OrderCreated, order_created_handler)

@@ -16,22 +16,19 @@ class MessageBusEventPublisher[EventPayloadType](EventPublisherPort[EventPayload
 
     Example:
         ```python
-        from forging_blocks.infrastructure.message_bus.in_memory_message_bus import (
-            InMemoryMessageBus,
-        )
-        from forging_blocks.infrastructure.message_bus.message_bus_event_publisher import (
-            MessageBusEventPublisher,
-        )
-        from forging_blocks.domain.messages.event import Event
+        class Event[T]:
+            def __init__(self) -> None:
+                pass
+
+
+        class InMemoryMessageBus[MT, R]:
+            async def dispatch(self, message: MT) -> R: ...
+            def register(self, message_type, handler): ...
 
 
         class MyEvent(Event[dict[str, object]]):
             def __init__(self) -> None:
-                super().__init__()
-
-            @property
-            def _payload(self) -> dict[str, object]:
-                return {}
+                pass
 
 
         bus = InMemoryMessageBus[MyEvent, None]()

@@ -26,11 +26,6 @@ class InMemoryWriteRepository[TEntity: Identified[Any], TId](WriteOnlyRepository
 
     Example:
         ```python
-        from forging_blocks.infrastructure.repositories.in_memory_write_repository import (
-            InMemoryWriteRepository,
-        )
-
-
         class MyEntity:
             def __init__(self, id: int, name: str) -> None:
                 self.id = id

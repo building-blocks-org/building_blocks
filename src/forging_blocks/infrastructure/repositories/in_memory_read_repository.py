@@ -21,12 +21,13 @@ class InMemoryReadRepository[TEntity, TId](ReadOnlyRepositoryPort[TEntity, TId])
 
     Example:
         ```python
-        from forging_blocks.infrastructure.repositories.in_memory_read_repository import (
-            InMemoryReadRepository,
-        )
-        from forging_blocks.domain.specification import (
-            ExpressionSpecification,
-        )
+        class ExpressionSpecification:
+            def __init__(self, predicate):
+                self._predicate = predicate
+
+            def is_satisfied_by(self, entity):
+                return self._predicate(entity)
+
 
         storage = {1: {"id": 1, "name": "alpha"}, 2: {"id": 2, "name": "beta"}}
         repo = InMemoryReadRepository[dict, int](storage=storage)

@@ -24,10 +24,6 @@ class InMemoryUnitOfWork[IdType, EventPayloadType](UnitOfWorkPort):
 
     Example:
         ```python
-        from forging_blocks.infrastructure.unit_of_work.in_memory_unit_of_work import (
-            InMemoryUnitOfWork,
-        )
-
         async with InMemoryUnitOfWork(event_publisher) as uow:
             uow.register_modified(aggregate)
             await write_repo.save(aggregate)

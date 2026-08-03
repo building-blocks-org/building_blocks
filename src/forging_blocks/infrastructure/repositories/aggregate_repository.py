@@ -36,18 +36,21 @@ class AggregateRepository[
 
     Example:
         ```python
-        from uuid import UUID, uuid4
-
-        from forging_blocks.domain.aggregate_root.aggregate_root import AggregateRoot
-        from forging_blocks.domain.messages.event import Event
-        from forging_blocks.infrastructure.event_stores import InMemoryEventStore
-        from forging_blocks.infrastructure.repositories.aggregate_repository import (
-            AggregateRepository,
-        )
+        class Event[T]:
+            pass
 
 
-        class MyAggregate(AggregateRoot[UUID, str]):
-            def __init__(self, aggregate_id: UUID) -> None:
+        class AggregateRoot[TId, TPayload]:
+            def __init__(self, aggregate_id: TId) -> None:
+                self.id = aggregate_id
+
+
+        class InMemoryEventStore[T]:
+            def __init__(self) -> None: ...
+
+
+        class MyAggregate(AggregateRoot[str, str]):
+            def __init__(self, aggregate_id: str) -> None:
                 super().__init__(aggregate_id)
 
             def _handle(self, event: Event[str]) -> None:
@@ -55,8 +58,8 @@ class AggregateRepository[
 
 
         event_store = InMemoryEventStore[str]()
-        aggregate_id = uuid4()
-        repo = AggregateRepository[str, MyAggregate, UUID](
+        aggregate_id = "agg-1"
+        repo = AggregateRepository[str, MyAggregate, str](
             event_store=event_store,
             aggregate_type=MyAggregate,
         )

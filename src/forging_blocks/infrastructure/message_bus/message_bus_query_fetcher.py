@@ -18,22 +18,19 @@ class MessageBusQueryFetcher[QueryPayloadType, QueryFetcherResult](
 
     Example:
         ```python
-        from forging_blocks.infrastructure.message_bus.in_memory_message_bus import (
-            InMemoryMessageBus,
-        )
-        from forging_blocks.infrastructure.message_bus.message_bus_query_fetcher import (
-            MessageBusQueryFetcher,
-        )
-        from forging_blocks.domain.messages.query import Query
+        class Query[T]:
+            def __init__(self) -> None:
+                pass
+
+
+        class InMemoryMessageBus[MT, R]:
+            async def dispatch(self, message: MT) -> R: ...
+            def register(self, message_type, handler): ...
 
 
         class MyQuery(Query[dict[str, object]]):
             def __init__(self) -> None:
-                super().__init__()
-
-            @property
-            def _payload(self) -> dict[str, object]:
-                return {}
+                pass
 
 
         bus = InMemoryMessageBus[MyQuery, str]()

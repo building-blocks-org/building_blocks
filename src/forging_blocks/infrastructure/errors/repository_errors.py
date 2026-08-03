@@ -17,10 +17,10 @@ class RepositoryError[MetadataValueType = object](RuntimeErrorMixin, Error[Metad
 
     Example:
         ```python
-        from forging_blocks.infrastructure.errors.repository_errors import (
-            RepositoryError,
-        )
-        from forging_blocks.foundation.errors.core import ErrorMessage
+        class ErrorMessage:
+            def __init__(self, message: str) -> None:
+                self.message = message
+
 
         error = RepositoryError(ErrorMessage("Save failed"))
         ```
@@ -32,10 +32,6 @@ class RepositoryNotFoundError[MetadataValueType = object](RepositoryError[Metada
 
     Example:
         ```python
-        from forging_blocks.infrastructure.errors.repository_errors import (
-            RepositoryNotFoundError,
-        )
-
         try:
             raise RepositoryNotFoundError.for_id("user-42")
         except RepositoryNotFoundError as exc:

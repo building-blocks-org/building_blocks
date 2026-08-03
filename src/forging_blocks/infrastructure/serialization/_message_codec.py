@@ -17,7 +17,16 @@ class MessageCodec[M, Raw](ABC):
 
     Example:
         ```python
-        from myapp.codecs import JsonMessageCodec
+        class Notification:
+            def __init__(self, topic: str, body: str) -> None:
+                self.topic = topic
+                self.body = body
+
+
+        class JsonMessageCodec:
+            def encode(self, message): ...
+            def decode(self, data, message_type): ...
+
 
         codec = JsonMessageCodec()
         raw = codec.encode(Notification(topic="orders", body="Shipped"))

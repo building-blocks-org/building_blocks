@@ -24,11 +24,19 @@ class EventStoreBase[EventPayloadType](ABC):
 
     Example:
         ```python
-        from myapp.store import InMemoryEventStore
+        class AccountDebited:
+            def __init__(self, amount: int) -> None:
+                self.amount = amount
+
+
+        class InMemoryEventStore:
+            async def append(self, aggregate_id, events): ...
+            async def load(self, aggregate_id): ...
+
 
         store = InMemoryEventStore()
-        await store.append(account_id, [AccountDebited(amount=50)])
-        events = await store.load(account_id)
+        await store.append("acc-1", [AccountDebited(amount=50)])
+        events = await store.load("acc-1")
         ```
     """
 

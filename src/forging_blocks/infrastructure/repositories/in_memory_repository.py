@@ -28,12 +28,12 @@ class InMemoryRepository[TEntity: Identified[Any], TId](
 
     Example:
         ```python
-        from forging_blocks.infrastructure.repositories.in_memory_repository import (
-            InMemoryRepository,
-        )
-        from forging_blocks.domain.specification import (
-            ExpressionSpecification,
-        )
+        class ExpressionSpecification:
+            def __init__(self, predicate):
+                self._predicate = predicate
+
+            def is_satisfied_by(self, entity):
+                return self._predicate(entity)
 
 
         class MyEntity:

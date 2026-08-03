@@ -30,16 +30,14 @@ class InMemoryEventBus[EventPayloadType, CommandPayloadType, HandlerType](
         _command_handlers: Per-command-type single handler.
     Example:
         ```python
-        from forging_blocks.domain.messages.decorators import event_dataclass
-        from forging_blocks.domain.messages.event import Event
-        from forging_blocks.infrastructure.event_buses.in_memory_event_bus import (
-            InMemoryEventBus,
-        )
+        class Event[T]:
+            def __init__(self) -> None:
+                pass
 
 
-        @event_dataclass
         class OrderCompleted(Event[dict[str, object]]):
-            order_id: str
+            def __init__(self, order_id: str) -> None:
+                self.order_id = order_id
 
 
         class OrderCompletedHandler:
