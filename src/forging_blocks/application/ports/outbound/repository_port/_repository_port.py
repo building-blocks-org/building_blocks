@@ -12,4 +12,14 @@ class RepositoryPort[TAggregateRoot, TId](
 
     Combines read and write capabilities into a single repository interface.
     Suitable for non-CQRS applications or simplified contexts.
+
+    Example:
+        ```python
+        from tasks.models import Task
+
+        task = Task(name="Review PR", done=False)
+        await repo.save(task)
+        found = await repo.get_by_id(task.id)
+        await repo.delete_by_id(task.id)
+        ```
     """

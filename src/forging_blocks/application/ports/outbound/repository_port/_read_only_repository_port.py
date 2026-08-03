@@ -11,6 +11,14 @@ class ReadOnlyRepositoryPort[TReadAggregateRoot, TId](OutboundPort):
 
     This interface is optimized for query-side usage in CQRS architectures.
     It provides type-safe retrieval of aggregates or read models.
+
+    Example:
+        ```python
+        from orders.models import Order
+
+        order: Order | None = await repo.get_by_id("order-42")
+        all_orders: list[Order] = await repo.list_all()
+        ```
     """
 
     @abstractmethod
