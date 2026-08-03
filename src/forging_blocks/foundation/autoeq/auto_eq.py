@@ -15,9 +15,7 @@ structural equality comparisons.
 
 Example:
     ```python
-    from forging_blocks.foundation.autoeq import auto_eq
-
-
+    @auto_eq
     @auto_eq
     class Point:
         __slots__ = ("x", "y")

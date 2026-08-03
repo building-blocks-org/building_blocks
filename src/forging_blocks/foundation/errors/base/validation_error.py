@@ -19,13 +19,17 @@ class ValidationError(ValueErrorMixin, Error[object], ABC):
 
     Example:
         ```python
-        from forging_blocks.foundation.errors import ValidationFailedError, ErrorMessage
+        class ErrorMessage:
+            def __init__(self, text: str) -> None:
+                self.text = text
+
 
         error = ValidationFailedError(ErrorMessage("Email is required"))
         isinstance(error, ValueError)  # True
         ```
 
     """
+
     def __init__(
         self, message: ErrorMessage, metadata: ErrorMetadata[object] | None = None
     ) -> None:

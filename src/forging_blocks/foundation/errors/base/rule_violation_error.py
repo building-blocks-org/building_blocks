@@ -21,13 +21,17 @@ class RuleViolationError(RuntimeErrorMixin, Error[object], ABC):
 
     Example:
         ```python
-        from forging_blocks.foundation.errors import RuleViolatedError, ErrorMessage
+        class ErrorMessage:
+            def __init__(self, text: str) -> None:
+                self.text = text
+
 
         error = RuleViolatedError(ErrorMessage("Insufficient funds"))
         isinstance(error, RuntimeError)  # True
         ```
 
     """
+
     def __init__(
         self, message: ErrorMessage, metadata: ErrorMetadata[object] | None = None
     ) -> None:
