@@ -12,7 +12,7 @@ class OrSpecification[T](ComposableSpecification[T]):
 
     Example:
 
-
+        ```python
         is_admin = ExpressionSpecification(lambda u: u.role == "admin", "is_admin")
         is_manager = ExpressionSpecification(lambda u: u.role == "manager", "is_manager")
 

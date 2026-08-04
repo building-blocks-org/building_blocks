@@ -11,8 +11,7 @@ class NotSpecification[T](ComposableSpecification[T]):
     result of a negation is itself composable (e.g. ``(~a) & b``).
 
     Example:
-
-
+        ```python
         is_banned = ExpressionSpecification(lambda u: u.status == "banned", "is_banned")
 
         # Direct construction

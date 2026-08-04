@@ -19,7 +19,7 @@ class ExpressionSpecification[T](ComposableSpecification[T]):
 
     Example:
 
-
+        ```python
         is_active = ExpressionSpecification(lambda user: user.is_active, description="is_active")
         is_admin = ExpressionSpecification(
             lambda user: user.role == "admin", description="is_admin"

@@ -18,15 +18,14 @@ class Specification[T](ABC):
 
     Example:
 
-
-
+        ```python
         class ActiveOrderSpecification(Specification[int]):
             def is_satisfied_by(self, candidate: int) -> bool:
                 return candidate > 0
 
 
         spec = ActiveOrderSpecification()
-        spec.is_satisfied_by(5)   # True
+        spec.is_satisfied_by(5)  # True
         spec.is_satisfied_by(-3)  # False
         ```
     """

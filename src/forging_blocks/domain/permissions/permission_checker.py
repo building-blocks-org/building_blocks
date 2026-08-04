@@ -16,8 +16,7 @@ class PermissionChecker[PermissionCheckContext](Protocol):
 
     Example:
 
-
-
+        ```python
         class MyChecker(PermissionChecker[dict]):
             async def check(self, context: dict, permission: Permission) -> bool:
                 return permission in context.get("grants", set())

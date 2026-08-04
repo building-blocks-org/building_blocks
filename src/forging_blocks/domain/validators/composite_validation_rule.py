@@ -14,7 +14,7 @@ class CompositeValidationRule(ValidationRule):
 
     Example:
 
-
+        ```python
         composite = CompositeValidationRule(
             [
                 RequiredValidator("username"),

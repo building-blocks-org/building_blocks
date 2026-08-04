@@ -10,7 +10,7 @@ class AggregateVersion(ValueObject[int]):
 
     Example:
 
-
+        ```python
         version = AggregateVersion(1)
         assert version.value == 1
         new_version = version.increment()

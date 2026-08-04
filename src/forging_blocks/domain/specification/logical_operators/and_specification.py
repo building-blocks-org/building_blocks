@@ -12,7 +12,7 @@ class AndSpecification[T](ComposableSpecification[T]):
 
     Example:
 
-
+        ```python
         is_active = ExpressionSpecification(lambda u: u.is_active, "is_active")
         is_admin = ExpressionSpecification(lambda u: u.role == "admin", "is_admin")
 
