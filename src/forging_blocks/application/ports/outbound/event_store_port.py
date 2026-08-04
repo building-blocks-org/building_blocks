@@ -30,6 +30,7 @@ class EventStorePort[EventPayloadType](
         - Serialize or deserialize events — that belongs to infrastructure.
         - Validate event schemas or enforce event versioning.
         - Manage snapshots or compaction strategies.
+
     Example:
         ```python
         store = MyEventStore[OrderEventData]()

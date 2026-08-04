@@ -26,6 +26,7 @@ class HttpClientPort[RequestType, ResponseType](
     Type Parameters:
         RequestType: The type of the request body.
         ResponseType: The type of the response body.
+
     Example:
         ```python
         client = MyHttpClient[dict[str, object], bytes]()

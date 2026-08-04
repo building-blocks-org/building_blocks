@@ -28,6 +28,7 @@ class UnitOfWorkPort(OutboundPort):
     outbound ports. It ensures that state changes and domain events are
     published atomically.  Subclasses provide the concrete context-manager
     behaviour (``__aenter__`` / ``__aexit__``).
+
     Example:
         ```python
         async with MyUnitOfWork() as uow:

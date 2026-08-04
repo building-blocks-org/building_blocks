@@ -24,6 +24,7 @@ class NotifierPort[NotificationType](
 
     Defines an asynchronous notification boundary decoupled from delivery
     mechanisms.
+
     Example:
         ```python
         notifier = MyNotifier[Notification]()

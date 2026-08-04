@@ -25,6 +25,7 @@ class FileSystemPort(
         - Resolve symlinks or handle special file types.
         - Provide atomic or transactional file operations.
         - Stream large files — the whole content is read into memory.
+
     Example:
         ```python
         fs = MyFileSystem()

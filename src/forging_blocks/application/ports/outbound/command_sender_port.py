@@ -33,6 +33,7 @@ class CommandSenderPort[CommandPayloadType](
         - Implement retry, delivery guarantees, or dead-letter handling.
         - Handle registration — registrations happen through a message bus,
           not through this port.
+
     Example:
         ```python
         sender = MyCommandSender[PlaceOrderPayload]()

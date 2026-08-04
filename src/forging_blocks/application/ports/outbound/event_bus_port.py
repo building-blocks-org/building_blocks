@@ -29,6 +29,7 @@ class EventBusPort[EventPayloadType, CommandPayloadType, HandlerType](
         - Persist messages or provide replay capabilities.
         - Manage subscriptions, topics, or routing rules — those belong
           to infrastructure.
+
     Example:
         ```python
         bus = MyEventBus[OrderData, PlaceOrderData, object]()

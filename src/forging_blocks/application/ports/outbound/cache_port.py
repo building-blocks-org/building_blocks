@@ -27,6 +27,7 @@ class CachePort[KeyType, ValueType](
     Type Parameters:
         KeyType: The type of cache keys (typically str).
         ValueType: The type of cached values.
+
     Example:
         ```python
         cache = MyCache[str, bytes]()
