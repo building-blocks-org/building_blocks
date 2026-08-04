@@ -29,10 +29,10 @@ class Result[ValueType, ErrorType](Protocol):
                 return True
 
             @property
-            def value(self) -> T:
+            def value(self) -> ValueType:
                 return self._value
 
-            def get_value_or(self, default: T) -> T:
+            def get_value_or(self, default: ValueType) -> ValueType:
                 return self._value
 
 
@@ -45,7 +45,7 @@ class Result[ValueType, ErrorType](Protocol):
                 return False
 
             @property
-            def value(self) -> E:
+            def value(self) -> ErrorType:
                 return self._error
 
             def get_value_or[T](self, default: T) -> T:
