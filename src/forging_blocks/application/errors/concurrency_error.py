@@ -26,7 +26,7 @@ class ConcurrencyError[MetadataValueType = object](EventStoreError[MetadataValue
     Example:
         ```python
         error = ConcurrencyError(
-            aggregate_id=uuid.UUID("12345678-1234-5678-1234-567812345678"),
+            aggregate_id=UUID("12345678-1234-5678-1234-567812345678"),
             expected_version=1,
             actual_version=2,
         )
