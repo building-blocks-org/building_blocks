@@ -27,7 +27,7 @@ class Middleware[RequestType, ResponseType](Protocol):
 
     Example:
         ```python
-        class NextHandler:
+        class NextFn:
             pass
 
 
@@ -44,7 +44,7 @@ class Middleware[RequestType, ResponseType](Protocol):
             def __init__(self, auth_service: AuthService) -> None:
                 self._auth = auth_service
 
-            async def process(self, request: Req, next_handler: NextHandler) -> Res:
+            async def process(self, request: Req, next_handler: NextFn) -> Res:
                 if not self._auth.is_authenticated(request):
                     return UnauthorizedResponse()
                 return await next_handler(request)
