@@ -49,8 +49,8 @@ class AggregateRepository[
             def __init__(self) -> None: ...
 
 
-        class MyAggregate(AggregateRoot[str, str]):
-            def __init__(self, aggregate_id: str) -> None:
+        class MyAggregate(AggregateRoot[UUID, str]):
+            def __init__(self, aggregate_id: UUID) -> None:
                 super().__init__(aggregate_id)
 
             def _handle(self, event: Event[str]) -> None:
@@ -58,8 +58,8 @@ class AggregateRepository[
 
 
         event_store = InMemoryEventStore[str]()
-        aggregate_id = "agg-1"
-        repo = AggregateRepository[str, MyAggregate, str](
+        aggregate_id = UUID("00000000-0000-0000-0000-000000000001")
+        repo = AggregateRepository[str, MyAggregate, UUID](
             event_store=event_store,
             aggregate_type=MyAggregate,
         )

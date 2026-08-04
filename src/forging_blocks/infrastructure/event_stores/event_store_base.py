@@ -35,8 +35,10 @@ class EventStoreBase[EventPayloadType](ABC):
 
 
         store = InMemoryEventStore()
-        await store.append_events(UUID("acc-1"), [AccountDebited(amount=50)])
-        events = await store.get_events(UUID("acc-1"))
+        await store.append_events(
+            UUID("00000000-0000-0000-0000-000000000001"), [AccountDebited(amount=50)]
+        )
+        events = await store.get_events(UUID("00000000-0000-0000-0000-000000000001"))
         ```
     """
 

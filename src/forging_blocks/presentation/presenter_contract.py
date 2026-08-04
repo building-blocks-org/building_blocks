@@ -24,6 +24,9 @@ class PresenterPort[ResponseType](InboundPort):
 
     Example:
         ```python
+        import sys
+
+
         class CliPresenter(PresenterPort[str]):
             async def present(self, response: str) -> None:
                 print(f"Result: {response}")
