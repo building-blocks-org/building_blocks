@@ -20,7 +20,7 @@ class Result[ValueType, ErrorType](Protocol):
 
     Example:
         ```python
-        class Ok[ValueType, ErrorType]:
+        class SuccessValue[ValueType, ErrorType]:
             def __init__(self, value: ValueType) -> None:
                 self._value = value
 
@@ -36,7 +36,7 @@ class Result[ValueType, ErrorType](Protocol):
                 return self._value
 
 
-        class Err[ValueType, ErrorType]:
+        class FailureValue[ValueType, ErrorType]:
             def __init__(self, error: ErrorType) -> None:
                 self._error = error
 
@@ -52,11 +52,11 @@ class Result[ValueType, ErrorType](Protocol):
                 return default
 
 
-        def parse_int(raw: str) -> Ok[int, str] | Err[int, str]:
+        def parse_int(raw: str) -> SuccessValue[int, str] | FailureValue[int, str]:
             try:
-                return Ok(int(raw))
+                return SuccessValue(int(raw))
             except ValueError:
-                return Err(f"Cannot parse '{raw}' as int")
+                return FailureValue(f"Cannot parse '{raw}' as int")
 
 
         result = parse_int("42")

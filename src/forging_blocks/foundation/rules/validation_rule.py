@@ -14,6 +14,16 @@ class ValidationRule(ABC):
         from forging_blocks.foundation.rules import ValidationRule
 
 
+        class RuleViolationError(Exception):
+            def __init__(self, message: str) -> None:
+                super().__init__(message)
+
+
+        class ErrorMessage:
+            def __init__(self, text: str) -> None:
+                self.text = text
+
+
         class MaxLengthRule(ValidationRule):
             def __init__(self, max_len: int) -> None:
                 self.max_len = max_len

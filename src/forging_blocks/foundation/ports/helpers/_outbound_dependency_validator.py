@@ -15,6 +15,12 @@ class OutboundDependencyValidator:
 
     Example:
         ```python
+        class OutboundPort: ...
+
+
+        class InboundPort: ...
+
+
         class MyOutboundPort(OutboundPort):
             def save(self, data: str) -> str: ...
 

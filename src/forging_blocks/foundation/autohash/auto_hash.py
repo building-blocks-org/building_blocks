@@ -63,6 +63,19 @@ class _AutoHashDecorator:
     The hash is computed by converting each field value to a hashable form and
     then hashing the resulting tuple.
 
+    Example:
+        ```python
+        class Record:
+            __slots__ = ("id",)
+
+            def __init__(self, id: str) -> None:
+                self.id = id
+
+
+        decorator = _AutoHashDecorator(fields=["id"])
+        Record = decorator(Record)
+        assert hash(Record("abc")) == hash(Record("abc"))
+        ```
     """
 
     def __init__(self, *, fields: Sequence[str] | None = None) -> None:

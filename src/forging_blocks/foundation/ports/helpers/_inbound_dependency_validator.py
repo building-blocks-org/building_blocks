@@ -15,6 +15,9 @@ class InboundDependencyValidator:
 
     Example:
         ```python
+        class InboundPort: ...
+
+
         class MyInboundPort(InboundPort):
             def execute(self, request: str) -> str: ...
 

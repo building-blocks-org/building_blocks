@@ -21,12 +21,16 @@ class RuleViolationError(RuntimeErrorMixin, Error[object], ABC):
 
     Example:
         ```python
-        class ErrorMessage:
+        class Msg:
             def __init__(self, text: str) -> None:
                 self.text = text
 
 
-        error = RuleViolatedError(ErrorMessage("Insufficient funds"))
+        class RuleViolated(RuleViolationError[object]):
+            pass
+
+
+        error = RuleViolated(Msg("Insufficient funds"))
         isinstance(error, RuntimeError)  # True
         ```
 

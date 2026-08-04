@@ -67,6 +67,19 @@ class _AutoFreezeDecorator:
 
     Injects a ``__setattr__`` that prevents modifications to frozen attributes.
     No protocol implementation is required on the target class.
+
+    Example:
+        ```python
+        class Config:
+            def __init__(self, value: str) -> None:
+                self.value = value
+
+
+        decorator = _AutoFreezeDecorator()
+        Config = decorator(Config)
+        c = Config("read-only")
+        # c.value = "new" would raise CantModifyImmutableAttributeError
+        ```
     """
 
     def __init__(

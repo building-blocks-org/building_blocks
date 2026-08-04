@@ -19,12 +19,16 @@ class ValidationError(ValueErrorMixin, Error[object], ABC):
 
     Example:
         ```python
-        class ErrorMessage:
+        class Msg:
             def __init__(self, text: str) -> None:
                 self.text = text
 
 
-        error = ValidationFailedError(ErrorMessage("Email is required"))
+        class ValidationFailed(ValidationError[object]):
+            pass
+
+
+        error = ValidationFailed(Msg("Email is required"))
         isinstance(error, ValueError)  # True
         ```
 
