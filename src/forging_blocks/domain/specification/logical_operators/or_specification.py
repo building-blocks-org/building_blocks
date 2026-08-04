@@ -14,7 +14,8 @@ class OrSpecification[T](ComposableSpecification[T]):
         ```python
         class ExpressionSpecification(ComposableSpecification[object]):
             # Inline stub for the example.
-            pass
+            def __init__(self, func, description: str) -> None:
+                pass
 
 
         is_admin = ExpressionSpecification(lambda u: u.role == "admin", "is_admin")

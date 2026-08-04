@@ -15,6 +15,11 @@ Example:
             self.total = total
 
 
+    class Event[T]:
+        # Inline stub for the example.
+        pass
+
+
     @event_dataclass
     class OrderCreated(Event[OrderPayload]):
         order_id: str
