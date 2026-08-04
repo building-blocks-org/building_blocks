@@ -40,7 +40,7 @@ class MessageHandlerPort[MessageType, MessageHandlerResultType](
 
     Example:
         ```python
-        class CreateOrder(CreateOrderCommand):
+        class CreateOrder(Command[dict[str, object]]):
             product_id: str
 
 

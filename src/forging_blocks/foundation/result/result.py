@@ -20,8 +20,8 @@ class Result[ValueType, ErrorType](Protocol):
 
     Example:
         ```python
-        class Ok[T]:
-            def __init__(self, value: T) -> None:
+        class Ok[ValueType, ErrorType]:
+            def __init__(self, value: ValueType) -> None:
                 self._value = value
 
             @property
@@ -36,8 +36,8 @@ class Result[ValueType, ErrorType](Protocol):
                 return self._value
 
 
-        class Err[E]:
-            def __init__(self, error: E) -> None:
+        class Err[ValueType, ErrorType]:
+            def __init__(self, error: ErrorType) -> None:
                 self._error = error
 
             @property
@@ -52,7 +52,7 @@ class Result[ValueType, ErrorType](Protocol):
                 return default
 
 
-        def parse_int(raw: str) -> Ok[int] | Err[str]:
+        def parse_int(raw: str) -> Ok[int, str] | Err[int, str]:
             try:
                 return Ok(int(raw))
             except ValueError:
