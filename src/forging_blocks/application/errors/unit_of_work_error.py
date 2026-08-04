@@ -18,13 +18,13 @@ class UnitOfWorkError[MetadataValueType = object](RuntimeErrorMixin, Error[Metad
 
     Example:
         ```python
-        class ErrorMessage:
+        class Msg:
             # Inline stub for the example.
             def __init__(self, text: str) -> None:
                 self.text = text
 
 
-        error = UnitOfWorkError(ErrorMessage("Unit of Work rollback failed"))
+        error = UnitOfWorkError(Msg("Unit of Work rollback failed"))
         raise error
         ```
 

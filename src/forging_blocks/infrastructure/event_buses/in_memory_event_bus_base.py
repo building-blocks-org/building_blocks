@@ -44,22 +44,22 @@ class InMemoryEventBusBase[EventPayloadType, CommandPayloadType, HandlerType](
 
     Example:
         ```python
-        class Event[T]:
+        class StubEvent[T]:
             def __init__(self) -> None:
                 pass
 
 
-        class Command[T]:
+        class StubCommand[T]:
             def __init__(self) -> None:
                 pass
 
 
-        class OrderCompleted(Event[dict[str, object]]):
+        class OrderCompleted(StubEvent[dict[str, object]]):
             def __init__(self, order_id: str) -> None:
                 self.order_id = order_id
 
 
-        class CreateOrder(Command[dict[str, object]]):
+        class CreateOrder(StubCommand[dict[str, object]]):
             def __init__(self, customer_id: str) -> None:
                 self.customer_id = customer_id
 
