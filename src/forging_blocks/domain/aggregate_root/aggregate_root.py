@@ -24,6 +24,41 @@ class AggregateRoot[TId: Hashable, EventPayloadType](Entity[TId], metaclass=Fina
         Vernon, V. (2013). Implementing Domain-Driven Design.
         Addison-Wesley. Ch.8, Ch.10, Appendix A.
 
+    Example:
+        ```python
+        from forging_blocks.domain.messages.message._metadata import MessageMetadata
+
+
+        class ItemAdded(Event[str]):
+            def __init__(self, item_name: str) -> None:
+                super().__init__()
+                self.item_name = item_name
+
+            @property
+            def _payload(self) -> str:
+                return self.item_name
+
+            @classmethod
+            def from_payload_fields(
+                cls, payload: str, metadata: MessageMetadata | None = None
+            ) -> ItemAdded:
+                return cls(payload)
+
+            @property
+            def value(self) -> str:
+                return self.item_name
+
+
+        class ShoppingCart(AggregateRoot[str, str]):
+            def _handle(self, event: Event[str]) -> None:
+                pass
+
+
+        cart = ShoppingCart("cart-1")
+        cart.apply(ItemAdded("Running Shoes"))
+        print(cart.uncommitted_changes)  # [ItemAdded(...)]
+        print(cart.version)  # 1
+        ```
     """
 
     def __init__(self, aggregate_id: TId, version: AggregateVersion | None = None) -> None:
@@ -73,7 +108,22 @@ class AggregateRoot[TId: Hashable, EventPayloadType](Entity[TId], metaclass=Fina
 
         Called by the Unit of Work or repository after persistence.
         No version side-effect — version is already correct from apply().
+
+        Example:
+            ```python
+            class OrderAggregate(AggregateRoot[str, str]):
+                def _handle(self, event: Event[str]) -> None:
+                    pass
+
+
+            aggregate = OrderAggregate("order-1")
+            aggregate.apply(OrderPlaced("order-1"))
+            events = aggregate.collect_events()
+            # events contains [OrderPlaced(...)]; internal queue is now empty
+            ```
+
         """
+
         events = self._uncommitted_events.copy()
         self._uncommitted_events.clear()
         return events
@@ -84,6 +134,20 @@ class AggregateRoot[TId: Hashable, EventPayloadType](Entity[TId], metaclass=Fina
 
         Clears the queue without touching version — the committed
         version must remain consistent with persisted state.
+
+        Example:
+            ```python
+            class OrderAggregate(AggregateRoot[str, str]):
+                def _handle(self, event: Event[str]) -> None:
+                    pass
+
+
+            aggregate = OrderAggregate("order-1")
+            aggregate.apply(OrderPlaced("order-1"))
+            aggregate.discard_events()
+            # uncommitted events are cleared; the committed version is unchanged
+            ```
+
         """
         self._uncommitted_events.clear()
 
@@ -93,6 +157,19 @@ class AggregateRoot[TId: Hashable, EventPayloadType](Entity[TId], metaclass=Fina
 
         Use for integration events or application-layer concerns
         that do not trigger a state transition.
+
+        Example:
+            ```python
+            class OrderAggregate(AggregateRoot[str, str]):
+                def _handle(self, event: Event[str]) -> None:
+                    pass
+
+
+            aggregate = OrderAggregate("order-1")
+            aggregate.record_event(OrderNotified("order-1"))
+            # event is queued but no state mutation occurs via _handle()
+            ```
+
         """
         self._uncommitted_events.append(domain_event)
 
@@ -107,6 +184,19 @@ class AggregateRoot[TId: Hashable, EventPayloadType](Entity[TId], metaclass=Fina
         Intended for *new* command-time transitions only.
         For event store reconstitution, use replay() instead,
         which applies the event without queuing it.
+
+        Example:
+            ```python
+            class OrderAggregate(AggregateRoot[str, str]):
+                def _handle(self, event: Event[str]) -> None:
+                    pass
+
+
+            aggregate = OrderAggregate("order-1")
+            aggregate.apply(OrderPlaced("order-1"))
+            # _handle() mutates state, version is incremented, event is queued
+            ```
+
         """
         self._handle(event)
         self._version = self._version.increment()
@@ -122,6 +212,19 @@ class AggregateRoot[TId: Hashable, EventPayloadType](Entity[TId], metaclass=Fina
         changes (replayed events must not be re-published).
 
         Use apply() for new command-time transitions.
+
+        Example:
+            ```python
+            class OrderAggregate(AggregateRoot[str, str]):
+                def _handle(self, event: Event[str]) -> None:
+                    pass
+
+
+            aggregate = OrderAggregate("order-1")
+            aggregate.replay(OrderPlaced("order-1"))
+            # _handle() mutates state, version is incremented, event is NOT queued
+            ```
+
         """
         self._handle(event)
         self._version = self._version.increment()

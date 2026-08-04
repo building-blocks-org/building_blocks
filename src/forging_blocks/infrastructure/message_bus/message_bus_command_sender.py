@@ -13,6 +13,28 @@ class MessageBusCommandSender[CommandPayloadType](CommandSenderPort[CommandPaylo
 
     Implements ``CommandSenderPort`` by delegating ``send`` to
     ``MessageBusPort.dispatch``.
+
+    Example:
+        ```python
+        class Command[T]:
+            def __init__(self) -> None:
+                pass
+
+
+        class InMemoryMessageBus[MT, R]:
+            async def dispatch(self, message: MT) -> R: ...
+            def register(self, message_type, handler): ...
+
+
+        class MyCommand(Command[dict[str, object]]):
+            def __init__(self) -> None:
+                pass
+
+
+        bus = InMemoryMessageBus[MyCommand, None]()
+        sender = MessageBusCommandSender[dict[str, object]](bus)
+        await sender.send(MyCommand())
+        ```
     """
 
     def __init__(self, message_bus: MessageBusPort[Command[CommandPayloadType], None]) -> None:

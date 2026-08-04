@@ -11,6 +11,28 @@ class CompositePermissionChecker[PermissionCheckContext](PermissionChecker[Permi
 
     Type Args:
         PermissionCheckContext: The application-defined context for permission checks.
+
+    Example:
+        ```python
+        class User:
+            def __init__(self, roles: set[Permission]) -> None:
+                self.roles = roles
+
+
+        class ReadChecker(PermissionChecker[User]):
+            async def check(self, context: User, permission: Permission) -> bool:
+                return permission == Permission.READ
+
+
+        class WriteChecker(PermissionChecker[User]):
+            async def check(self, context: User, permission: Permission) -> bool:
+                return permission == Permission.WRITE
+
+
+        composite = CompositePermissionChecker([ReadChecker(), WriteChecker()])
+        user = User(roles={Permission.READ})
+        granted = await composite.check(user, Permission.READ)
+        ```
     """
 
     __match_args__ = ("_checkers",)

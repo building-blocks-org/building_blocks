@@ -9,4 +9,18 @@ invariants, and operational failures where ``except RuntimeError`` should apply.
 
 
 class RuntimeErrorMixin(RuntimeError):
-    """Mixin — attach before ``Error[...]`` in MRO to make errors ``isinstance(RuntimeError)``."""
+    """Mixin — attach before ``Error[...]`` in MRO to make errors ``isinstance(RuntimeError)``.
+
+    Example:
+        ```python
+        from forging_blocks.foundation.errors import Error, ErrorMessage
+
+
+        class BrokenInvariantError(RuntimeErrorMixin, Error[str]):
+            pass  # This error represents a broken invariant
+
+
+        err = BrokenInvariantError(ErrorMessage("State corrupted"))
+        assert isinstance(err, RuntimeError)
+        ```
+    """

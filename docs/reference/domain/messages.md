@@ -2,6 +2,10 @@
 
 Messages are immutable, architecture-neutral data carriers — **Command**, **Event**, and **Query**.
 
+## Core types
+
+- **MessageMetadata** — Typed metadata container attached to every message at construction.
+
 All messages are frozen dataclasses. Their type communicates intent: a Command asks for action, an Event records a fact, a Query requests data. Serialization is handled by codecs in the infrastructure layer (see `DictMessageCodec`).
 
 ## Types

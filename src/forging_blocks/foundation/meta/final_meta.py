@@ -47,6 +47,20 @@ class FinalMeta(type):
 
     Any attempt to override a `@runtime_final` method in a subclass raises `TypeError`
     at class creation time.
+
+    Example:
+        ```python
+        class Base(metaclass=FinalMeta):
+            @runtime_final
+            def process(self) -> str:
+                return "base"
+
+
+        # This raises TypeError at class definition time:
+        # class Child(Base):
+        #     def process(self) -> str:
+        #         return "child"
+        ```
     """
 
     def __new__(

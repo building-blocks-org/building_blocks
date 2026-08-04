@@ -38,6 +38,12 @@ class URLLibClient(HttpClientPort[str, str]):
         http.client.HTTPException: On HTTP protocol errors.
         ConfigurationError: On misconfigured URLs (e.g., non-HTTP schemes).
 
+    Example:
+        ```python
+        client = URLLibClient()
+        html = await client.get("https://example.com")
+        response = await client.post("https://httpbin.org/post", body="hello")
+        ```
     """
 
     async def request(

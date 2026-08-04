@@ -31,23 +31,23 @@ The Foundation block is pure Python — standard library only. It introduces no 
 ---
 ## Core abstractions
 
-- **[Result](foundation/result.md)** — Explicit Ok/Err outcomes without exceptions for control flow
-- **[Ports](foundation/ports.md)** — Boundaries between components (InboundPort, OutboundPort)
-- **[Errors](foundation/errors.md)** — Structured error model (message + metadata, validation, rule violation, combined)
-- **[Auto Decorators](foundation/auto-decorators.md)** — Immutability, equality, and hashing decorators (auto_freeze, auto_eq, auto_hash)
-- **[Mappers](foundation/mappers.md)** — Explicit transformations between types
-- **[Identified](foundation/identified.md)** — Protocol for objects carrying an identifier
-- **[Meta Utilities](foundation/meta.md)** — Runtime enforcement (final, sealed, abstract)
-
-- **[Rules](foundation/rules.md)** — Composable validation rules (ValidationRule)
+- **[Result](foundation/result.md)** — Explicit Ok/Err outcomes without exceptions for control flow.
+- **[Ports](foundation/ports.md)** — Boundaries between components (InboundPort, OutboundPort).
+- **[Errors](foundation/errors.md)** — Structured error model (message + metadata, validation, rule violation, combined).
+- **[Auto Decorators](foundation/auto-decorators.md)** — Immutability, equality, and hashing decorators (auto_freeze, auto_eq, auto_hash).
+- **[Permissions](domain/permissions.md)** — Enum-like permission definitions with membership checking.
+- **[Mappers](foundation/mappers.md)** — Explicit transformations between types.
+- **[Identified](foundation/identified.md)** — Protocol for objects carrying an identifier.
+- **[Meta Utilities](foundation/meta.md)** — Runtime enforcement (final, sealed, abstract).
+- **[Rules](foundation/rules.md)** — Composable validation rules (ValidationRule).
 
 ---
 ## What it does not do
 
-- Contain domain logic or business rules
-- Orchestrate workflows or use cases
-- Perform I/O or persistence
-- Depend on any external library
+- Contain domain logic or business rules.
+- Orchestrate workflows or use cases.
+- Perform I/O or persistence.
+- Depend on any external library.
 
 ---
 ## Glossary

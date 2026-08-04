@@ -36,17 +36,17 @@ The Presentation block is the outermost ring. Keep it thin — translate, delega
 ---
 ## Core abstractions
 
-- **[Adapters](presentation/adapters.md)** — RequestAdapter, ResponseAdapter, PresentationAdapter
-- **[Error Handling](presentation/error-handling.md)** — ErrorPresenter, ErrorStatusCodeMapper, ErrorViewModel, PresenterPort
-- **[Middleware Pipeline](presentation/middleware.md)** — Middleware protocol, Pipeline class, and built-in middleware
+- **[Adapters](presentation/adapters.md)** — RequestAdapter, ResponseAdapter, PresentationAdapter.
+- **[Error Handling](presentation/error-handling.md)** — ErrorPresenter, ErrorStatusCodeMapper, ErrorViewModel, PresenterPort.
+- **[Middleware Pipeline](presentation/middleware.md)** — Middleware protocol, Pipeline class, and built-in middleware.
 
 ---
 ## What it does not do
 
-- Contain business rules or domain logic
-- Implement persistence or I/O directly
-- Define transactional boundaries
-- Make decisions about system behavior
+- Contain business rules or domain logic.
+- Implement persistence or I/O directly.
+- Define transactional boundaries.
+- Make decisions about system behavior.
 
 ---
 ## Glossary

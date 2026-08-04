@@ -5,11 +5,11 @@
 The **Reference** section defines the **meaning and responsibility** of each ForgingBlocks component. These pages are precise and definition-oriented — meant to be consulted as needed, not read linearly.
 
 Components:
-- **Foundation** — Core abstractions (Result, Port, Identified)
-- **Domain** — Domain modeling (Entity, ValueObject, AggregateRoot, Messages, Specification)
-- **Application** — Application layer patterns (ApplicationServicePort, CommandHandlerPort, RepositoryPort, EventStorePort)
-- **Infrastructure** — Technical adapters and implementations (Repositories, MessageCodec/DictMessageCodec)
-- **Presentation** — Input/output boundaries
+- **Foundation** — Core abstractions (Result, Port, Identified).
+- **Domain** — Domain modeling (Entity, ValueObject, AggregateRoot, Messages, Specification).
+- **Application** — Application layer patterns (ApplicationServicePort, CommandHandlerPort, RepositoryPort, EventStorePort).
+- **Infrastructure** — Technical adapters and implementations (Repositories, MessageCodec/DictMessageCodec).
+- **Presentation** — Input/output boundaries.
 
 Dependencies point inward: Infrastructure/Presentation → Application → Domain, all depending on Foundation.
 
@@ -22,14 +22,15 @@ flowchart LR
     I[Infrastructure<br/>Technical adapters] -->|depends on| A
     I -->|depends on| F
     P[Presentation<br/>Input boundaries] -->|depends on| A
+    P -->|depends on| F
 ```
 
 ---
 
 ## Reference Sections
-- **[Foundation](foundation.md)** - Core abstractions and utilities (Result, Port, Identified, etc.)
-- **[API Stability](api-stability.md)** - SemVer policy and public API stability guarantees
-- **[Domain](domain.md)** - Domain modeling abstractions (Entity, ValueObject, AggregateRoot, Messages, Specification)
-- **[Application](application.md)** - Application layer patterns (ApplicationServicePort, CommandHandlerPort, RepositoryPort, EventStorePort, SpecificationRepositoryPort)
-- **[Infrastructure](infrastructure.md)** - Infrastructure adapters and implementations (Repositories, MessageCodec/DictMessageCodec)
-- **[Presentation](presentation.md)** - Input/output boundaries and presentation layer
+- **[Foundation](foundation.md)** — Core abstractions and utilities (Result, Port, Identified, etc.).
+- **[API Stability](api-stability.md)** — SemVer policy and public API stability guarantees.
+- **[Domain](domain.md)** — Domain modeling abstractions (Entity, ValueObject, AggregateRoot, Messages, Specification).
+- **[Application](application.md)** — Application layer patterns (ApplicationServicePort, CommandHandlerPort, RepositoryPort, EventStorePort, SpecificationRepositoryPort).
+- **[Infrastructure](infrastructure.md)** — Infrastructure adapters and implementations (Repositories, MessageCodec/DictMessageCodec).
+- **[Presentation](presentation.md)** — Input/output boundaries and presentation layer.

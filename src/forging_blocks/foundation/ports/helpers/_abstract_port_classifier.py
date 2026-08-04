@@ -6,7 +6,18 @@ intermediate classes such as ``UseCasePort`` or ``CommandHandlerPort``.
 
 
 class AbstractPortClassifier:
-    """Determines whether a port class is abstract."""
+    """Determines whether a port class is abstract.
+
+    Example:
+        ```python
+        class MyConcreteClass:
+            def do_work(self) -> str: ...
+
+
+        classifier = AbstractPortClassifier(MyConcreteClass)
+        classifier.is_abstract()  # False (no abstract methods)
+        ```
+    """
 
     def __init__(self, cls: type) -> None:
         self._cls = cls

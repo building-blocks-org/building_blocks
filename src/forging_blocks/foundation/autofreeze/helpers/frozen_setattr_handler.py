@@ -20,6 +20,20 @@ class FrozenSetattrHandler:
 
     If the class already defines a custom ``__setattr__``, it is left
     untouched — we assume the author knows what they are doing.
+
+    Example:
+        ```python
+        class Item:
+            name: str
+
+            def __init__(self, name: str) -> None:
+                self.name = name
+
+
+        handler = FrozenSetattrHandler(Item)
+        if handler.should_override_setattr():
+            Item.__setattr__ = handler.create_frozen_setattr()
+        ```
     """
 
     def __init__(self, target_class: type[object]) -> None:

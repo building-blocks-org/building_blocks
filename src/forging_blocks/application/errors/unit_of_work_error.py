@@ -10,4 +10,22 @@ from forging_blocks.foundation.errors.builtin.runtime_error_mixin import Runtime
 
 
 class UnitOfWorkError[MetadataValueType = object](RuntimeErrorMixin, Error[MetadataValueType]):
-    """Error raised when a Unit of Work operation fails."""
+    """Raised when a Unit of Work commit or rollback fails.
+
+    Indicates failure within the application layer's transactional
+    boundary. Extends ``RuntimeErrorMixin`` so it is catchable as
+    ``RuntimeError``.
+
+    Example:
+        ```python
+        class Msg:
+            # Inline stub for the example.
+            def __init__(self, text: str) -> None:
+                self.text = text
+
+
+        error = UnitOfWorkError(Msg("Unit of Work rollback failed"))
+        raise error
+        ```
+
+    """

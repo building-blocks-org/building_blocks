@@ -21,11 +21,28 @@ class InMemoryMessageBus[MessageType: Message[object], MessageBusResultType](
     message of that type is dispatched. Suitable for testing, prototyping,
     and simple intra-process communication.
 
-    Usage::
+    Example:
+        ```python
+        class Command[T]:
+            def __init__(self) -> None:
+                pass
 
-        bus = InMemoryMessageBus[Command[object], None]()
+
+        class MyCommand(Command[None]):
+            @property
+            def _payload(self) -> None:
+                return None
+
+
+        async def my_handler(message: MyCommand) -> None:
+            pass
+
+
+        bus = InMemoryMessageBus[MyCommand, None]()
         bus.register(MyCommand, my_handler)
         await bus.dispatch(MyCommand())
+        ```
+
     """
 
     __slots__ = ("_handlers",)

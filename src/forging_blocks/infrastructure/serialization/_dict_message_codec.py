@@ -24,6 +24,41 @@ class DictMessageCodec[M: Message[dict[str, object]]](MessageCodec[M, dict[str, 
     ``message.metadata.value`` for the metadata section.  Reconstruction
     goes through the ``from_payload_fields`` classmethod that every
     concrete ``Message`` subclass provides.
+
+    Example:
+        ```python
+        class StubCommand[T](Message[T]):
+            # Inline stub for the example.
+            pass
+
+
+        class CreateOrder(StubCommand[dict[str, object]]):
+            def __init__(self, customer_id: str) -> None:
+                super().__init__()
+                self.customer_id = customer_id
+
+            @property
+            def _payload(self) -> dict[str, object]:
+                return {"customer_id": self.customer_id}
+
+            @classmethod
+            def from_payload_fields(
+                cls, payload: dict[str, object], metadata: MessageMetadata | None = None
+            ) -> CreateOrder:
+                return cls(customer_id=str(payload["customer_id"]))
+
+            @property
+            def value(self) -> dict[str, object]:
+                return self._payload
+
+
+        codec = DictMessageCodec[CreateOrder]()
+        original = CreateOrder(customer_id="cust-42")
+        encoded = codec.encode(original)
+        decoded = codec.decode(encoded, CreateOrder)
+        assert decoded.customer_id == original.customer_id
+        ```
+
     """
 
     def encode(self, message: M) -> dict[str, object]:

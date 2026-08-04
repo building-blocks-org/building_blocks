@@ -16,7 +16,15 @@ class FinalABCMeta(FinalMeta, ABCMeta):
     Enables both abstract base class functionality via `ABCMeta`
     and runtime enforcement of methods decorated with `runtime_final`.
 
-    Usage::
+    Example:
+        ```python
+        def runtime_final(fn):
+            return fn
+
+
+        def abstractmethod(fn):
+            return fn
+
 
         class MyBase(metaclass=FinalABCMeta):
             @runtime_final
@@ -24,6 +32,8 @@ class FinalABCMeta(FinalMeta, ABCMeta):
 
             @abstractmethod
             def abstract_method(self) -> None: ...
+        ```
+
     """
 
     def __new__(

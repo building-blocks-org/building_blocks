@@ -27,6 +27,12 @@ class MessageBusPort[MessageType, MessageBusResultType](
     A MessageBusPort dispatches messages to infrastructure or internal handlers.
     Dispatch routing is decoupled from message structure — the bus may route
     synchronously or asynchronously without changing the contract.
+
+    Example:
+        ```python
+        bus = MyMessageBus[PlaceOrderCommand, str]()
+        result = await bus.dispatch(PlaceOrderCommand(order_id="42"))
+        ```
     """
 
     @abstractmethod

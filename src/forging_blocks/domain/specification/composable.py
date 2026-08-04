@@ -26,6 +26,30 @@ class ComposableSpecification[T](Specification[T]):
     - not_() / __invert__() → delegates to NotSpecification
 
     Subclasses inherit these automatically. Do NOT reimplement in subclasses.
+
+    Example:
+        ```python
+        class IsActive(ComposableSpecification[dict[str, object]]):
+            def is_satisfied_by(self, candidate: dict[str, object]) -> bool:
+                return candidate.get("active", False)
+
+
+        class IsAdmin(ComposableSpecification[dict[str, object]]):
+            def is_satisfied_by(self, candidate: dict[str, object]) -> bool:
+                return candidate.get("role") == "admin"
+
+
+        class IsBanned(ComposableSpecification[dict[str, object]]):
+            def is_satisfied_by(self, candidate: dict[str, object]) -> bool:
+                return candidate.get("status") == "banned"
+
+
+        # Operators produce logical combinations
+        active_and_admin = IsActive() & IsAdmin()  # AndSpecification
+        active_or_admin = IsActive() | IsAdmin()  # OrSpecification
+        not_active = ~IsActive()  # NotSpecification
+        complex_rule = (IsActive() & IsAdmin()) | ~IsBanned()
+        ```
     """
 
     def and_(self, other: Specification[T]) -> Specification[T]:

@@ -12,11 +12,22 @@ Middleware does **not** extend `Port` — its shape `(request, next_handler) →
 ## Pipeline
 
 `Pipeline` composes middleware into an immutable, right-to-left chain. The first middleware executes first inbound and last outbound:
+```mermaid
+sequenceDiagram
+    participant R as Request
+    participant A as Middleware A
+    participant B as Middleware B
+    participant C as Middleware C
+    participant H as Handler
 
-```
-[A, B, C] → A wraps B wraps C wraps handler
-Inbound:   A → B → C → handler
-Outbound:  A ← B ← C ← handler
+    R->>A: inbound
+    A->>B: delegate
+    B->>C: delegate
+    C->>H: delegate
+    H-->>C: response
+    C-->>B: response
+    B-->>A: response
+    A-->>R: outbound
 ```
 
 ## When to use

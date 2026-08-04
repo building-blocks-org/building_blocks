@@ -10,7 +10,20 @@ from ..core import ErrorMessage
 
 
 class CombinedErrors[ErrorType: Error[object]](Error[object]):
-    """Base class for combining multiple errors into one."""
+    """Base class for combining multiple errors into one.
+
+    Example:
+        ```python
+        from forging_blocks.foundation.errors import Error, ErrorMessage
+
+        err1 = Error[str](ErrorMessage("First"))
+        err2 = Error[str](ErrorMessage("Second"))
+        combined = CombinedErrors[Error[str]]([err1, err2])
+        assert len(combined) == 2
+        for e in combined:
+            print(e.message.value)
+        ```
+    """
 
     def __init__(self, errors: Iterable[ErrorType]) -> None:
         """Initialise with an iterable of errors to combine.

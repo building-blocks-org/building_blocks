@@ -13,6 +13,18 @@ class PermissionChecker[PermissionCheckContext](Protocol):
 
     Type Args:
         PermissionCheckContext: The application-defined context for permission checks.
+
+    Example:
+
+        ```python
+        class MyChecker(PermissionChecker[dict]):
+            async def check(self, context: dict, permission: Permission) -> bool:
+                return permission in context.get("grants", set())
+
+
+        checker = MyChecker()
+        result = await checker.check({"grants": {Permission.READ}}, Permission.READ)
+        ```
     """
 
     async def check(self, context: PermissionCheckContext, permission: Permission) -> bool:

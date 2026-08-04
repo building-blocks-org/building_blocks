@@ -14,7 +14,19 @@ from .result import Result
 
 
 class Ok[ValueType, ErrorType](Result[ValueType, ErrorType]):
-    """Represents a successful result, holding a value of type ``ValueType``."""
+    """Represents a successful result, holding a value of type ``ValueType``.
+
+    Example:
+        ```python
+        from forging_blocks.foundation.result import Ok
+
+        result = Ok[int, str](42)
+        assert result.is_ok
+        assert result.value == 42
+        mapped = result.map(lambda x: x * 2)
+        assert mapped.value == 84
+        ```
+    """
 
     __match_args__ = ("_value",)
 

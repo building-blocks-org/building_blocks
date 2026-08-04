@@ -13,6 +13,28 @@ class MessageBusEventPublisher[EventPayloadType](EventPublisherPort[EventPayload
 
     Implements ``EventPublisherPort`` by delegating ``publish`` to
     ``MessageBusPort.dispatch``.
+
+    Example:
+        ```python
+        class Event[T]:
+            def __init__(self) -> None:
+                pass
+
+
+        class InMemoryMessageBus[MT, R]:
+            async def dispatch(self, message: MT) -> R: ...
+            def register(self, message_type, handler): ...
+
+
+        class MyEvent(Event[dict[str, object]]):
+            def __init__(self) -> None:
+                pass
+
+
+        bus = InMemoryMessageBus[MyEvent, None]()
+        publisher = MessageBusEventPublisher[dict[str, object]](bus)
+        await publisher.publish(MyEvent())
+        ```
     """
 
     def __init__(self, message_bus: MessageBusPort[Event[EventPayloadType], None]) -> None:

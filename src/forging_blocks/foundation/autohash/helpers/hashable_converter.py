@@ -22,6 +22,15 @@ class HashableConverter:
     - Already-hashable values (``str``, ``int``, ``None``, ``tuple``,
       ``frozenset``, etc.) are returned unchanged.
     - Everything else raises `NonHashableValueError`.
+
+    Example:
+        ```python
+        from forging_blocks.foundation.autohash.helpers.hashable_converter import HashableConverter
+
+        result = HashableConverter.convert([1, 2, 3])
+        assert result == (1, 2, 3)
+        assert hash(result) is not None
+        ```
     """
 
     @classmethod

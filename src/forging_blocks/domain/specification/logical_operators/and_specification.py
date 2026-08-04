@@ -9,6 +9,23 @@ class AndSpecification[T](ComposableSpecification[T]):
 
     Inherits composition operators from ``ComposableSpecification`` so that the
     result of a conjunction is itself composable (e.g. ``(a & b) | c``).
+
+    Example:
+        ```python
+        class ExpressionSpecification(ComposableSpecification[object]):
+            # Inline stub for the example.
+            def __init__(self, func, description: str) -> None:
+                pass
+
+
+        is_active = ExpressionSpecification(lambda u: u.is_active, "is_active")
+        is_admin = ExpressionSpecification(lambda u: u.role == "admin", "is_admin")
+
+        # Direct construction
+        active_admin = AndSpecification(is_active, is_admin)
+        # Equivalent via operator
+        same = is_active & is_admin  # Produces an AndSpecification
+        ```
     """
 
     __slots__ = ("_left_specification", "_right_specification")

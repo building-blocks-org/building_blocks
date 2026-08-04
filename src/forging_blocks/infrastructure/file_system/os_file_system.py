@@ -11,7 +11,15 @@ from forging_blocks.application.ports.outbound.file_system_port import FileSyste
 
 
 class OSFileSystem(FileSystemPort):
-    """File system implementation backed by ``pathlib`` + ``asyncio.to_thread``."""
+    """File system implementation backed by ``pathlib`` + ``asyncio.to_thread``.
+
+    Example:
+        ```python
+        fs = OSFileSystem()
+        await fs.write("/tmp/cache.json", b'{"key": "value"}')
+        data = await fs.read("/tmp/cache.json")
+        ```
+    """
 
     async def read(self, path: Path | str) -> bytes:
         """Read file contents as bytes."""

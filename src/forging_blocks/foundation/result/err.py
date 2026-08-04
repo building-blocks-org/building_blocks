@@ -15,7 +15,19 @@ from .result import Result
 
 
 class Err[ValueType, ErrorType](Result[ValueType, ErrorType]):
-    """Represents a failed result, holding an error of type ``ErrorType``."""
+    """Represents a failed result, holding an error of type ``ErrorType``.
+
+    Example:
+        ```python
+        from forging_blocks.foundation.result import Err
+
+        result = Err[int, str]("division by zero")
+        assert result.is_err
+        assert result.error == "division by zero"
+        fallback = result.get_value_or(0)
+        assert fallback == 0
+        ```
+    """
 
     __match_args__ = ("_error",)
 

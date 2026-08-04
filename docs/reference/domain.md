@@ -31,22 +31,21 @@ The Domain block is the innermost ring. It imports nothing from outer layers. Wh
 ---
 ## Core abstractions
 
-- **[Entity](domain/entities.md)** — Identity matters over time; identity-based equality
-- **[Value Object](domain/value-objects.md)** — Immutable, defined by its values; prevents primitive obsession
-- **[Aggregate Root](domain/aggregates.md)** — Consistency boundary; controls mutation and invariants
-- **[Specification](domain/specifications.md)** — Composable predicates for business rules, querying, and validation
-- **[Messages](domain/messages.md)** — Command, Event, Query (immutable, architecture-neutral)
-- **[Domain Errors](domain/errors.md)** — Invalid states and rule violations in domain terms
-- **[Validators](domain/validators.md)** — Concrete validation rules (RequiredValidator, EmailValidator, LengthValidator, RangeValidator)
-- **[Permissions](domain/permissions.md)** — Composable permission checkers (protocol-based, application-defined)
+- **[Entity](domain/entities.md)** — Identity matters over time; identity-based equality.
+- **[Value Object](domain/value-objects.md)** — Immutable, defined by its values; prevents primitive obsession.
+- **[Aggregate Root](domain/aggregates.md)** — Consistency boundary; controls mutation and invariants.
+- **[Specification](domain/specifications.md)** — Composable predicates for business rules, querying, and validation.
+- **[Messages](domain/messages.md)** — Command, Event, Query (immutable, architecture-neutral).
+- **[Domain Errors](domain/errors.md)** — Invalid states and rule violations in domain terms.
+- **[Validators](domain/validators.md)** — Concrete validation rules (RequiredValidator, EmailValidator, LengthValidator, RangeValidator).
+- **[Permissions](domain/permissions.md)** — Composable permission checkers (protocol-based, application-defined).
 
 ---
 ## What it does not do
-
-- Orchestrate workflows or use cases
-- Perform I/O or persistence
-- Depend on frameworks or external systems
-- Handle transport or presentation concerns
+- Orchestrate workflows or use cases.
+- Perform I/O or persistence.
+- Depend on frameworks or external systems.
+- Handle transport or presentation concerns.
 
 ---
 ## Glossary

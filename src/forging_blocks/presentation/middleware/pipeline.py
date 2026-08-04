@@ -15,14 +15,16 @@ from forging_blocks.presentation.middleware.middleware import Middleware
 class Pipeline[RequestType, ResponseType]:
     """Composes a sequence of middleware around a terminal handler.
 
-    Usage::
-
+    Example:
+        ```python
         async def handler(req: MyRequest) -> MyResponse:
             return MyResponse(...)
 
 
         pipeline = Pipeline([logging_mw, auth_mw, metrics_mw], handler)
         response = await pipeline.execute(request)
+        ```
+
     """
 
     __slots__ = ("_middlewares", "_handler", "_chain")

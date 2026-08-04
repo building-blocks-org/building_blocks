@@ -23,14 +23,17 @@ class PresenterPort[ResponseType](InboundPort):
         - Handle infrastructure concerns (HTTP, I/O) — those are adapters.
 
     Example:
-        >>> from forging_blocks.presentation.presenter_contract import PresenterPort
-        >>> class CliPresenter(PresenterPort[str]):
-        ...     async def present(self, response: str) -> None:
-        ...         print(f"Result: {response}")
-        ...
-        ...     async def present_error(self, error: Exception) -> None:
-        ...         print(f"Error: {error}", file=sys.stderr)
+        ```python
+        import sys
 
+
+        class CliPresenter(PresenterPort[str]):
+            async def present(self, response: str) -> None:
+                print(f"Result: {response}")
+
+            async def present_error(self, error: Exception) -> None:
+                print(f"Error: {error}", file=sys.stderr)
+        ```
     """
 
     @abstractmethod

@@ -12,4 +12,22 @@ from forging_blocks.foundation.errors.builtin.runtime_error_mixin import Runtime
 
 
 class TransactionError[MetadataValueType = object](RuntimeErrorMixin, Error[MetadataValueType]):
-    """Error raised when a transaction operation fails."""
+    """Raised when a transaction boundary operation fails.
+
+    Covers failures during transaction begin, commit, or rollback.
+    Extends ``RuntimeErrorMixin`` so it is catchable as
+    ``RuntimeError``.
+
+    Example:
+        ```python
+        class Msg:
+            # Inline stub for the example.
+            def __init__(self, text: str) -> None:
+                self.text = text
+
+
+        error = TransactionError(Msg("Transaction commit failed"))
+        raise error
+        ```
+
+    """

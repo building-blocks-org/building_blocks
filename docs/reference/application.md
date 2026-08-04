@@ -35,18 +35,18 @@ Keep use cases thin. They orchestrate; domain objects decide. When a use case gr
 ---
 ## Core abstractions
 
-- **[Use Cases](application/use-cases.md)** — Cohesive units of application behavior; coordinate domain + outbound
-- **[Message Handlers](application/use-cases.md)** — React to commands, events, and queries
-- **[Inbound & Outbound Ports](application/ports.md)** — How the system is interacted with and what it depends on
-- **[Application Errors](application/errors.md)** — Structured error types for application-level failures
+- **[Use Cases](application/use-cases.md)** — Cohesive units of application behavior; coordinate domain + outbound.
+- **[Message Handlers](application/use-cases.md)** — React to commands, events, and queries.
+- **[Inbound & Outbound Ports](application/ports.md)** — How the system is interacted with and what it depends on.
+- **[Application Errors](application/errors.md)** — Structured error types for application-level failures.
 
 ---
 ## What it does not do
 
-- Enforce domain invariants
-- Persist data directly
-- Handle transport or frameworks
-- Implement infrastructure concerns
+- Enforce domain invariants.
+- Persist data directly.
+- Handle transport or frameworks.
+- Implement infrastructure concerns.
 
 ---
 ## Glossary

@@ -12,7 +12,15 @@ from forging_blocks.foundation.errors.core import ErrorMessage, ErrorMetadata
 
 
 class CantModifyImmutableAttributeError(RuntimeErrorMixin, Error[str]):
-    """Raised when there is an attempt to modify an immutable attribute of an object."""
+    """Raised when there is an attempt to modify an immutable attribute of an object.
+
+    Example:
+        ```python
+        error = CantModifyImmutableAttributeError(class_name="MyEntity", attribute_name="id")
+        raise error
+        ```
+
+    """
 
     def __init__(self, class_name: str, attribute_name: str):
         """Initialise the error with the class and attribute that triggered the violation.

@@ -33,6 +33,40 @@ class AggregateRepository[
             bound. The ``cast`` in `save` is the explicit, localized bridge
             across this gap. The invariant is enforced by construction.
         TId: The aggregate identity type, bounded by ``UUID``.
+
+    Example:
+        ```python
+        class Event[T]:
+            pass
+
+
+        class AggregateRoot[TId, TPayload]:
+            def __init__(self, aggregate_id: TId) -> None:
+                self.id = aggregate_id
+
+
+        class InMemoryEventStore[T]:
+            def __init__(self) -> None: ...
+
+
+        class MyAggregate(AggregateRoot[UUID, str]):
+            def __init__(self, aggregate_id: UUID) -> None:
+                super().__init__(aggregate_id)
+
+            def _handle(self, event: Event[str]) -> None:
+                pass
+
+
+        event_store = InMemoryEventStore[str]()
+        aggregate_id = UUID("00000000-0000-0000-0000-000000000001")
+        repo = AggregateRepository[str, MyAggregate, UUID](
+            event_store=event_store,
+            aggregate_type=MyAggregate,
+        )
+        aggregate = MyAggregate(aggregate_id)
+        await repo.save(aggregate)
+        retrieved = await repo.get_by_id(aggregate_id)
+        ```
     """
 
     _event_store: EventStoreBase[EventPayloadType]
@@ -91,15 +125,14 @@ class AggregateRepository[
                 raise result.error
         await super().save(aggregate)
 
-    async def get_by_id(self, id: TId) -> TAggregateRoot | None:
+    async def get_by_id(self, entity_id: TId) -> TAggregateRoot | None:
         """Retrieve an aggregate by ID and replay its events.
 
         Checks the in-memory cache first; if not cached, replays the
         aggregate from the event store and caches the result so subsequent
         reads avoid a full replay.
-
         Args:
-            id: Unique identifier of the aggregate.
+            entity_id: Unique identifier of the aggregate.
 
         Returns:
             The retrieved aggregate or None if not found.
@@ -109,11 +142,11 @@ class AggregateRepository[
                 distinguish infrastructure failures from "not found" (None).
 
         """
-        aggregate = await super().get_by_id(id)
+        aggregate = await super().get_by_id(entity_id)
         if aggregate is not None:
             return aggregate
 
-        result = await self._event_store.get_events(cast(UUID, id))
+        result = await self._event_store.get_events(cast(UUID, entity_id))
 
         if not result.is_ok:
             raise result.error
@@ -123,7 +156,7 @@ class AggregateRepository[
         if not events:
             return None
 
-        aggregate = self._aggregate_type.reconstitute(id, events)
+        aggregate = self._aggregate_type.reconstitute(entity_id, events)
         await super().save(aggregate)
 
         return aggregate

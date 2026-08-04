@@ -15,7 +15,24 @@ from .error import Error
 
 
 class ValidationError(ValueErrorMixin, Error[object], ABC):
-    """Base class for validation errors — abstract, use ``ValidationFailedError`` to throw."""
+    """Base class for validation errors — abstract, use ``ValidationFailedError`` to throw.
+
+    Example:
+        ```python
+        class Msg:
+            def __init__(self, text: str) -> None:
+                self.text = text
+
+
+        class ValidationFailed(ValidationError[object]):
+            pass
+
+
+        error = ValidationFailed(Msg("Email is required"))
+        isinstance(error, ValueError)  # True
+        ```
+
+    """
 
     def __init__(
         self, message: ErrorMessage, metadata: ErrorMetadata[object] | None = None

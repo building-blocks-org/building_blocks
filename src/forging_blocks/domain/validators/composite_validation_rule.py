@@ -11,6 +11,23 @@ class CompositeValidationRule(ValidationRule):
 
     All rules are evaluated and their errors are concatenated (no
     short-circuit), so every validation failure is reported.
+
+    Example:
+
+        ```python
+        composite = CompositeValidationRule(
+            [
+                RequiredValidator("username"),
+                LengthValidator("username", minimum_length=3, maximum_length=20),
+            ]
+        )
+
+        errors = composite.validate("")
+        assert len(errors) == 2  # fails both required and minimum length
+
+        errors = composite.validate("alice")
+        assert errors == []
+        ```
     """
 
     def __init__(self, rules: list[ValidationRule]) -> None:

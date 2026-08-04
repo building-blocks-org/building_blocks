@@ -21,6 +21,18 @@ class ErrorMessageModel:
         status_code: An optional HTTP-like status code (e.g. 400, 422)
             assigned by an ``ErrorStatusCodeMapper``.
 
+    Example:
+        ```python
+        from forging_blocks.presentation.errors import ErrorMessageModel
+
+        model = ErrorMessageModel(
+            title="Validation failed",
+            field="username",
+            code="too_short",
+        )
+        assert model.title == "Validation failed"
+        assert model.field == "username"
+        ```
     """
 
     title: str

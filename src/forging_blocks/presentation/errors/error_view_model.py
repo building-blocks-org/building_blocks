@@ -16,6 +16,17 @@ class ErrorViewModel:
 
     Multiple entries coexist when a single operation results in several
     validation or business-rule failures.
+
+    Example:
+        ```python
+        from forging_blocks.presentation.errors import ErrorMessageModel, ErrorViewModel
+
+        msg1 = ErrorMessageModel(title="Name is required", field="name")
+        msg2 = ErrorMessageModel(title="Email is invalid", field="email")
+        view = ErrorViewModel(messages=(msg1, msg2))
+        assert len(view.messages) == 2
+        assert view.messages[0].title == "Name is required"
+        ```
     """
 
     messages: tuple[ErrorMessageModel, ...] = field(default_factory=tuple[ErrorMessageModel])

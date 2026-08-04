@@ -14,6 +14,21 @@ class ErrorStatusCodeMapper:
         - ``RuleViolationError`` / ``RuleViolatedError``   → 409
         - ``CombinedErrors``/group                    → 422
         - anything else                               → 500
+
+    Example:
+        ```python
+        from forging_blocks.presentation.errors import (
+            ErrorMessageModel,
+            ErrorStatusCodeMapper,
+            ErrorViewModel,
+        )
+
+        mapper = ErrorStatusCodeMapper()
+        msg = ErrorMessageModel(title="Not found")
+        view = ErrorViewModel(messages=(msg,))
+        result = mapper.map(view)
+        assert result.messages[0].status_code is not None
+        ```
     """
 
     def map(self, view_model: ErrorViewModel) -> ErrorViewModel:

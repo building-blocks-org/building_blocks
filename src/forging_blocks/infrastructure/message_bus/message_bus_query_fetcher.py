@@ -15,6 +15,28 @@ class MessageBusQueryFetcher[QueryPayloadType, QueryFetcherResult](
 
     Implements ``QueryFetcherPort`` by delegating ``fetch`` to
     ``MessageBusPort.dispatch``.
+
+    Example:
+        ```python
+        class Query[T]:
+            def __init__(self) -> None:
+                pass
+
+
+        class InMemoryMessageBus[MT, R]:
+            async def dispatch(self, message: MT) -> R: ...
+            def register(self, message_type, handler): ...
+
+
+        class MyQuery(Query[dict[str, object]]):
+            def __init__(self) -> None:
+                pass
+
+
+        bus = InMemoryMessageBus[MyQuery, str]()
+        fetcher = MessageBusQueryFetcher[dict[str, object], str](bus)
+        result = await fetcher.fetch(MyQuery())
+        ```
     """
 
     def __init__(

@@ -26,6 +26,18 @@ class InboundPort(Port):
     Non-Responsibilities:
         - Does NOT perform structural duck-typing — returns
           ``NotImplemented`` from ``__subclasshook__``.
+
+    Example:
+        ```python
+        class CreateUserPort(InboundPort):
+            def __init__(self, repo: "OutboundPort") -> None: ...
+
+            def execute(self, name: str) -> str: ...
+
+
+        # __init_subclass__ validates that every __init__
+        # parameter is an OutboundPort, never an InboundPort.
+        ```
     """
 
     @classmethod

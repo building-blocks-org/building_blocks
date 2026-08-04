@@ -12,7 +12,47 @@ from ..rule_violations.rule_violated_error import RuleViolatedError
 
 
 class FieldErrors[ContainedErrorType: Error[object]](Error[object]):
-    """Base class for errors associated with a specific field."""
+    """Base class for errors associated with a specific field.
+
+    Example:
+        ```python
+        class Msg:
+            def __init__(self, text: str) -> None:
+                self.text = text
+
+
+        class FieldRef:
+            def __init__(self, value: str) -> None:
+                self.value = value
+
+
+        class SomeError(Exception):
+            def __init__(self, message: Msg) -> None:
+                super().__init__(message.text)
+                self._message = message
+
+            def as_debug_string(self) -> str:
+                return f"Error({self._message.text!r})"
+
+
+        class FieldErrorAggregate(FieldErrors[SomeError]):
+            pass
+
+
+        field_errors = FieldErrorAggregate(
+            field=FieldRef("email"),
+            errors=[
+                SomeError(Msg("Format is invalid")),
+                SomeError(Msg("Domain not allowed")),
+            ],
+        )
+        assert field_errors.field.value == "email"
+        assert len(field_errors) == 2
+        for err in field_errors:
+            assert "invalid" in str(err) or "not allowed" in str(err)
+        ```
+
+    """
 
     def __init__(self, field: FieldReference, errors: Iterable[ContainedErrorType]) -> None:
         """Initialise with a field reference and the errors associated with it.

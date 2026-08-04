@@ -27,6 +27,25 @@ class InMemoryEventStoreBase[EventPayloadType](EventStoreBase[EventPayloadType])
         _streams: Per-aggregate ordered event lists.
         _versions: Per-aggregate current version counters.
 
+    Example:
+        ```python
+        class StubEvent[T]:
+            def __init__(self) -> None:
+                pass
+
+
+        class OrderCompleted(StubEvent[dict[str, object]]):
+            def __init__(self, order_id: str) -> None:
+                self.order_id = order_id
+
+
+        store = InMemoryEventStoreBase[dict[str, object]]()
+        aggregate_id = UUID("00000000-0000-0000-0000-000000000001")
+        event = OrderCompleted(order_id="abc-123")
+
+        result = await store.append_events(aggregate_id, [event])
+        events = await store.get_events(aggregate_id)
+        ```
     """
 
     __slots__ = ("_streams", "_versions")

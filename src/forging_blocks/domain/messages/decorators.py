@@ -6,20 +6,29 @@ defining message types.  The decorated class is a frozen dataclass whose
 fields are automatically exposed via ``get_payload_fields()`` and are used
 by ``from_payload_fields()`` for reconstruction.
 
-Example::
+Example:
+    ```python
+    class OrderPayload:
+        def __init__(self, order_id: str, customer_id: str, total: float) -> None:
+            self.order_id = order_id
+            self.customer_id = customer_id
+            self.total = total
 
-    from forging_blocks.domain.messages.decorators import event_dataclass
-    from forging_blocks.domain.messages.event import Event
+
+    class Event[T]:
+        # Inline stub for the example.
+        pass
 
 
     @event_dataclass
-    class OrderCreated(Event[dict[str, object]]):
+    class OrderCreated(Event[OrderPayload]):
         order_id: str
         customer_id: str
         total: float
 
 
     event = OrderCreated(order_id="ORD-001", customer_id="CUST-42", total=99.95)
+    ```
 """
 
 import dataclasses
@@ -39,6 +48,27 @@ class _PatchedMessage(Protocol):
     This protocol allows pyright to verify that the patched attributes exist
     and have the correct signatures, replacing attribute assignment suppressions
     with a proper type-safe cast boundary.
+
+    Example:
+        ```python
+        @message_dataclass
+        class OrderCreated(Event[dict[str, object]]):
+            order_id: str
+
+
+        decorated = OrderCreated
+        assert isinstance(decorated, _PatchedMessage)
+
+        fields = decorated.get_payload_fields()
+        assert fields == {"order_id": "order_id"}
+
+        from_payload = decorated.from_payload_fields(
+            {"order_id": "ORD-001"},
+            metadata=MessageMetadata(),
+        )
+        assert isinstance(from_payload, OrderCreated)
+        assert from_payload.order_id == "ORD-001"
+        ```
     """
 
     def get_payload_fields(self) -> dict[str, object]: ...

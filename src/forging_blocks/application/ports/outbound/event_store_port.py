@@ -30,6 +30,17 @@ class EventStorePort[EventPayloadType](
         - Serialize or deserialize events — that belongs to infrastructure.
         - Validate event schemas or enforce event versioning.
         - Manage snapshots or compaction strategies.
+
+    Example:
+        ```python
+        store = MyEventStore[OrderEventData]()
+        await store.append_events(
+            UUID("00000000-0000-0000-0000-000000000001"), [OrderPlaced(order_id="42")]
+        )
+        result = await store.get_events(
+            UUID("00000000-0000-0000-0000-000000000001"), from_version=0
+        )
+        ```
     """
 
     @abstractmethod

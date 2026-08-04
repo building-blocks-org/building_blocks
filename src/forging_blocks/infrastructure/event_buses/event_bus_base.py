@@ -20,6 +20,28 @@ class EventBusBase[EventPayloadType, CommandPayloadType, HandlerType](ABC):
       - Publishing events to one or more registered handlers.
       - Sending commands to a single registered handler.
       - Registering handlers for specific message types.
+
+    Example:
+        ```python
+        class OrderCreated:
+            def __init__(self, order_id: str) -> None:
+                self.order_id = order_id
+
+
+        class InMemoryEventBus(EventBusBase[dict[str, object], dict[str, object], object]):
+            def register_handler(self, message_type, handler) -> None: ...
+            async def publish(self, event) -> Result[None, EventBusError]: ...
+            async def send(self, command) -> Result[None, EventBusError]: ...
+
+
+        async def order_created_handler(event: OrderCreated) -> None:
+            print(f"Processing order {event.order_id}")
+
+
+        bus = InMemoryEventBus()
+        bus.register_handler(OrderCreated, order_created_handler)
+        await bus.publish(OrderCreated(order_id="42"))
+        ```
     """
 
     @abstractmethod

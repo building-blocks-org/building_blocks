@@ -17,7 +17,24 @@ from .error import Error
 
 
 class RuleViolationError(RuntimeErrorMixin, Error[object], ABC):
-    """Base class for rule violation errors — abstract, use ``RuleViolatedError`` to throw."""
+    """Base class for rule violation errors — abstract, use ``RuleViolatedError`` to throw.
+
+    Example:
+        ```python
+        class Msg:
+            def __init__(self, text: str) -> None:
+                self.text = text
+
+
+        class RuleViolated(RuleViolationError[object]):
+            pass
+
+
+        error = RuleViolated(Msg("Insufficient funds"))
+        isinstance(error, RuntimeError)  # True
+        ```
+
+    """
 
     def __init__(
         self, message: ErrorMessage, metadata: ErrorMetadata[object] | None = None

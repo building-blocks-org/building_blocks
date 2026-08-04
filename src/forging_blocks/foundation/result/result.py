@@ -16,7 +16,57 @@ from typing import Protocol, runtime_checkable
 
 @runtime_checkable
 class Result[ValueType, ErrorType](Protocol):
-    """Protocol that defines the shared interface for `Ok` and `Err`."""
+    """Protocol that defines the shared interface for `Ok` and `Err`.
+
+    Example:
+        ```python
+        class SuccessValue[ValueType, ErrorType]:
+            def __init__(self, value: ValueType) -> None:
+                self._value = value
+
+            @property
+            def is_ok(self) -> bool:
+                return True
+
+            @property
+            def value(self) -> ValueType:
+                return self._value
+
+            def get_value_or(self, default: ValueType) -> ValueType:
+                return self._value
+
+
+        class FailureValue[ValueType, ErrorType]:
+            def __init__(self, error: ErrorType) -> None:
+                self._error = error
+
+            @property
+            def is_ok(self) -> bool:
+                return False
+
+            @property
+            def value(self) -> ErrorType:
+                return self._error
+
+            def get_value_or[T](self, default: T) -> T:
+                return default
+
+
+        def parse_int(raw: str) -> SuccessValue[int, str] | FailureValue[int, str]:
+            try:
+                return SuccessValue(int(raw))
+            except ValueError:
+                return FailureValue(f"Cannot parse '{raw}' as int")
+
+
+        result = parse_int("42")
+        if result.is_ok():
+            print(result.value)  # 42
+
+        result = parse_int("abc")
+        print(result.get_value_or(0))  # 0
+        ```
+    """
 
     @property
     def is_ok(self) -> bool:

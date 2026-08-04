@@ -15,7 +15,20 @@ from forging_blocks.foundation.result import Err, Ok, Result
 
 
 class _Handler[T](Protocol):
-    """Structural protocol for message handlers."""
+    """Structural protocol for message handlers.
+
+    Example:
+        ```python
+        class OrderCompleted:
+            async def handle(self, message: object) -> None:
+                print(f"Handled: {message}")
+
+
+        handler: _Handler[object] = OrderCompleted()
+        await handler.handle("some-message")
+        ```
+
+    """
 
     async def handle(self, message: T) -> None: ...
 
@@ -29,6 +42,27 @@ class InMemoryEventBus[EventPayloadType, CommandPayloadType, HandlerType](
         _event_handlers: Per-event-type list of handlers.
         _command_handlers: Per-command-type single handler.
 
+    Example:
+        ```python
+        class StubEvent[T]:
+            def __init__(self) -> None:
+                pass
+
+
+        class OrderCompleted(StubEvent[dict[str, object]]):
+            def __init__(self, order_id: str) -> None:
+                self.order_id = order_id
+
+
+        class OrderCompletedHandler:
+            async def handle(self, event: OrderCompleted) -> None:
+                print(f"Order completed: {event.order_id}")
+
+
+        bus = InMemoryEventBus[dict[str, object], object, object]()
+        bus.register_handler(OrderCompleted, OrderCompletedHandler())
+        await bus.publish(OrderCompleted(order_id="abc-123"))
+        ```
     """
 
     __slots__ = ("_command_handlers", "_event_handlers")

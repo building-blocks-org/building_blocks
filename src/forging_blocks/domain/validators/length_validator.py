@@ -9,7 +9,20 @@ from forging_blocks.foundation.rules import ValidationRule
 
 
 class LengthValidator(ValidationRule):
-    """Validates that a string's length falls within a ``[minimum, maximum]`` range."""
+    """Validates that a string's length falls within a ``[minimum, maximum]`` range.
+
+    Example:
+        ```python
+        validator = LengthValidator("username", minimum_length=3, maximum_length=20)
+
+        errors = validator.validate("alice")
+        assert errors == []
+
+        errors = validator.validate("ab")
+        assert len(errors) == 1  # too short
+        ```
+
+    """
 
     def __init__(
         self,

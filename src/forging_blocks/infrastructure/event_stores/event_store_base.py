@@ -21,6 +21,25 @@ class EventStoreBase[EventPayloadType](ABC):
       - Retrieving events within an optional version range.
       - Tracking the current version of each event stream.
       - Optimistic concurrency via ``expected_version``.
+
+    Example:
+        ```python
+        class AccountDebited:
+            def __init__(self, amount: int) -> None:
+                self.amount = amount
+
+
+        class InMemoryEventStore:
+            async def append_events(self, aggregate_id, events): ...
+            async def get_events(self, aggregate_id): ...
+
+
+        store = InMemoryEventStore()
+        await store.append_events(
+            UUID("00000000-0000-0000-0000-000000000001"), [AccountDebited(amount=50)]
+        )
+        events = await store.get_events(UUID("00000000-0000-0000-0000-000000000001"))
+        ```
     """
 
     @abstractmethod

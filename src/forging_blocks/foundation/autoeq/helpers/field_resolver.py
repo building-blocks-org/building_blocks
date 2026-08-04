@@ -5,7 +5,22 @@ from collections.abc import Sequence
 
 
 class FieldResolver:
-    """Resolves which field names contribute to ``__eq__`` for a class."""
+    """Resolves which field names contribute to ``__eq__`` for a class.
+
+    Example:
+        ```python
+        from forging_blocks.foundation.autoeq.helpers.field_resolver import FieldResolver
+
+
+        class Point:
+            x: int
+            y: int
+
+
+        fields = FieldResolver.resolve(Point)
+        assert fields == ["x", "y"]
+        ```
+    """
 
     @classmethod
     def resolve(

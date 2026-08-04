@@ -25,6 +25,30 @@ class InMemoryRepository[TEntity: Identified[Any], TId](
     Combines read and write operations into a single class using shared
     dictionary-based storage. Suitable for non-CQRS applications or
     simplified single-process contexts.
+
+    Example:
+        ```python
+        class ExpressionSpecification:
+            def __init__(self, predicate):
+                self._predicate = predicate
+
+            def is_satisfied_by(self, entity):
+                return self._predicate(entity)
+
+
+        class MyEntity:
+            def __init__(self, id: int, name: str) -> None:
+                self.id = id
+                self.name = name
+
+
+        repo = InMemoryRepository[MyEntity, int]()
+        entity = MyEntity(id=1, name="alpha")
+        await repo.save(entity)
+        retrieved = await repo.get_by_id(1)
+        matches = await repo.find_matching(ExpressionSpecification(lambda e: e.name == "alpha"))
+        await repo.delete_by_id(1)
+        ```
     """
 
     def __init__(

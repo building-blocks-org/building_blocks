@@ -37,6 +37,16 @@ class MessageHandlerPort[MessageType, MessageHandlerResultType](
         - Validate or transform the incoming message.
         - Orchestrate domain operations.
         - Invoke repositories, outbound ports, and publish domain events.
+
+    Example:
+        ```python
+        class CreateOrder(Command[dict[str, object]]):
+            product_id: str
+
+
+        class CreateOrderHandler(MessageHandlerPort[CreateOrder, None]):
+            async def handle(self, message: CreateOrder) -> None: ...
+        ```
     """
 
     @abstractmethod
@@ -64,16 +74,76 @@ class MessageHandlerPort[MessageType, MessageHandlerResultType](
 class CommandHandlerPort[CommandPayloadType](
     MessageHandlerPort[Command[CommandPayloadType], None],
 ):
-    """Inbound port for handling commands asynchronously."""
+    """Inbound port for handling commands.
+
+    Commands are fire-and-forget: the handler returns ``None`` on
+    success and raises on failure.
+
+    Example:
+        ```python
+        class CreateOrder(Command[dict[str, object]]):
+            def __init__(self) -> None:
+                super().__init__()
+
+            @property
+            def _payload(self) -> dict[str, object]:
+                return {}
+
+
+        class CreateOrderHandler(CommandHandlerPort[dict[str, object]]):
+            async def handle(self, message: Command[dict[str, object]]) -> None: ...
+        ```
+
+    """
 
 
 class QueryHandlerPort[QueryPayloadType, QueryResultType](
     MessageHandlerPort[Query[QueryPayloadType], QueryResultType],
 ):
-    """Inbound port for handling queries asynchronously."""
+    """Inbound port for handling queries.
+
+    Queries return a typed result; the handler must not mutate
+    observable state.
+
+    Example:
+        ```python
+        class GetOrder(Query[dict[str, object]]):
+            def __init__(self) -> None:
+                super().__init__()
+
+            @property
+            def _payload(self) -> dict[str, object]:
+                return {}
+
+
+        class GetOrderHandler(QueryHandlerPort[dict[str, object], dict[str, object]]):
+            async def handle(self, message: Query[dict[str, object]]) -> dict[str, object]: ...
+        ```
+
+    """
 
 
 class EventHandlerPort[EventPayloadType](
     MessageHandlerPort[Event[EventPayloadType], None],
 ):
-    """Inbound port for handling events asynchronously."""
+    """Inbound port for handling domain events.
+
+    Event handlers react to domain events; they return ``None`` and
+    may trigger side effects through outbound ports.
+
+    Example:
+        ```python
+        class OrderCreated(Event[dict[str, object]]):
+            def __init__(self) -> None:
+                super().__init__()
+
+            @property
+            def _payload(self) -> dict[str, object]:
+                return {}
+
+
+        class OrderCreatedHandler(EventHandlerPort[dict[str, object]]):
+            async def handle(self, message: Event[dict[str, object]]) -> None: ...
+        ```
+
+    """
