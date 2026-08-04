@@ -27,12 +27,12 @@ class DictMessageCodec[M: Message[dict[str, object]]](MessageCodec[M, dict[str, 
 
     Example:
         ```python
-        class Command[T](Message[T]):
+        class StubCommand[T](Message[T]):
             # Inline stub for the example.
             pass
 
 
-        class CreateOrder(Command[dict[str, object]]):
+        class CreateOrder(StubCommand[dict[str, object]]):
             def __init__(self, customer_id: str) -> None:
                 super().__init__()
                 self.customer_id = customer_id

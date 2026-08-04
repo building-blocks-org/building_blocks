@@ -22,6 +22,7 @@ class InMemoryUnitOfWork[IdType, EventPayloadType](UnitOfWorkPort):
     is handled by the repositories, while this class coordinates event
     publication and transactional consistency.
 
+    Example:
         ```python
         # Dependencies injected by the DI container
         event_publisher: object = ...  # EventPublisherPort[EventPayloadType]
