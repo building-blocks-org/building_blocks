@@ -15,7 +15,20 @@ from forging_blocks.infrastructure.event_buses.event_bus_base import EventBusBas
 
 
 class _Handler[T](Protocol):
-    """Structural protocol for message handlers."""
+    """Structural protocol for message handlers.
+
+    Example:
+        ```python
+        class OrderCompletedHandler:
+            async def handle(self, message: object) -> None:
+                print(f"Handled: {message}")
+
+
+        handler: _Handler[object] = OrderCompletedHandler()
+        await handler.handle("some-message")
+        ```
+
+    """
 
     async def handle(self, message: T) -> None: ...
 
@@ -28,6 +41,7 @@ class InMemoryEventBusBase[EventPayloadType, CommandPayloadType, HandlerType](
     Attributes:
         _event_handlers: Per-event-type list of handlers.
         _command_handlers: Per-command-type single handler.
+
     Example:
         ```python
         class Event[T]:

@@ -22,8 +22,12 @@ class InMemoryUnitOfWork[IdType, EventPayloadType](UnitOfWorkPort):
     is handled by the repositories, while this class coordinates event
     publication and transactional consistency.
 
-    Example:
         ```python
+        # Dependencies injected by the DI container
+        event_publisher: object = ...  # EventPublisherPort[EventPayloadType]
+        aggregate: object = ...  # AggregateRoot[IdType, EventPayloadType]
+        write_repo: object = ...  # repository instance
+
         async with InMemoryUnitOfWork(event_publisher) as uow:
             uow.register_modified(aggregate)
             await write_repo.save(aggregate)

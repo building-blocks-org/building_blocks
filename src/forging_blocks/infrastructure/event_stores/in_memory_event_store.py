@@ -24,6 +24,7 @@ class InMemoryEventStore[EventPayloadType](EventStorePort[EventPayloadType]):
     Attributes:
         _streams: Per-aggregate ordered event lists.
         _versions: Per-aggregate current version counters.
+
     Example:
         ```python
         class Event[T]:
