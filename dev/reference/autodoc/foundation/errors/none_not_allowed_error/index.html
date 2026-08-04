@@ -7756,6 +7756,13 @@ parameters and field values.  Extends <code>ValueErrorMixin</code> (catchable as
         <p>Error indicating that a None value was provided where it is not allowed.</p>
 
 
+<details class="example" open>
+  <summary>Example</summary>
+  <div class="language-python highlight"><pre><span></span><code><span id="__span-0-1"><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">error</span> <span class="o">=</span> <span class="n">NoneNotAllowedError</span><span class="p">(</span><span class="n">ErrorMessage</span><span class="p">(</span><span class="s2">&quot;Value cannot be None&quot;</span><span class="p">))</span>
+</span><span id="__span-0-2"><a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">raise</span> <span class="n">error</span>
+</span></code></pre></div>
+</details>
+
 
 
 
@@ -7765,8 +7772,24 @@ parameters and field values.  Extends <code>ValueErrorMixin</code> (catchable as
               <details class="quote">
                 <summary>Source code in <code>src/forging_blocks/foundation/errors/none_not_allowed_error.py</code></summary>
                 <div class="language-python highlight"><table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span></span><span class="normal"><a href="#__codelineno-0-13">13</a></span>
-<span class="normal"><a href="#__codelineno-0-14">14</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="k">class</span><span class="w"> </span><span class="nc">NoneNotAllowedError</span><span class="p">(</span><span class="n">ValueErrorMixin</span><span class="p">,</span> <span class="n">Error</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
-</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Error indicating that a None value was provided where it is not allowed.&quot;&quot;&quot;</span>
+<span class="normal"><a href="#__codelineno-0-14">14</a></span>
+<span class="normal"><a href="#__codelineno-0-15">15</a></span>
+<span class="normal"><a href="#__codelineno-0-16">16</a></span>
+<span class="normal"><a href="#__codelineno-0-17">17</a></span>
+<span class="normal"><a href="#__codelineno-0-18">18</a></span>
+<span class="normal"><a href="#__codelineno-0-19">19</a></span>
+<span class="normal"><a href="#__codelineno-0-20">20</a></span>
+<span class="normal"><a href="#__codelineno-0-21">21</a></span>
+<span class="normal"><a href="#__codelineno-0-22">22</a></span></pre></div></td><td class="code"><div><pre><span></span><code><span id="__span-0-13"><a id="__codelineno-0-13" name="__codelineno-0-13"></a><span class="k">class</span><span class="w"> </span><span class="nc">NoneNotAllowedError</span><span class="p">(</span><span class="n">ValueErrorMixin</span><span class="p">,</span> <span class="n">Error</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
+</span><span id="__span-0-14"><a id="__codelineno-0-14" name="__codelineno-0-14"></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Error indicating that a None value was provided where it is not allowed.</span>
+</span><span id="__span-0-15"><a id="__codelineno-0-15" name="__codelineno-0-15"></a>
+</span><span id="__span-0-16"><a id="__codelineno-0-16" name="__codelineno-0-16"></a><span class="sd">    Example:</span>
+</span><span id="__span-0-17"><a id="__codelineno-0-17" name="__codelineno-0-17"></a><span class="sd">        ```python</span>
+</span><span id="__span-0-18"><a id="__codelineno-0-18" name="__codelineno-0-18"></a><span class="sd">        error = NoneNotAllowedError(ErrorMessage(&quot;Value cannot be None&quot;))</span>
+</span><span id="__span-0-19"><a id="__codelineno-0-19" name="__codelineno-0-19"></a><span class="sd">        raise error</span>
+</span><span id="__span-0-20"><a id="__codelineno-0-20" name="__codelineno-0-20"></a><span class="sd">        ```</span>
+</span><span id="__span-0-21"><a id="__codelineno-0-21" name="__codelineno-0-21"></a>
+</span><span id="__span-0-22"><a id="__codelineno-0-22" name="__codelineno-0-22"></a><span class="sd">    &quot;&quot;&quot;</span>
 </span></code></pre></div></td></tr></table></div>
               </details>
 
