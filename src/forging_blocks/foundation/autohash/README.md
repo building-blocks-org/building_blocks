@@ -11,15 +11,15 @@ and `auto_freeze` for immutability.
     from forging_blocks.foundation.autohash import auto_hash
 
     @auto_hash
-    class Point:
+    class Point2D:
         __slots__ = ("x", "y")
 
-        def __init__(self, x: int, y: int) -> None:
+        def __init__(self, x: float, y: float) -> None:
             self.x = x
             self.y = y
 
-    p1 = Point(1, 2)
-    p2 = Point(1, 2)
+    p1 = Point2D(1.0, 2.0)
+    p2 = Point2D(1.0, 2.0)
     assert hash(p1) == hash(p2)
     ```
 
@@ -27,18 +27,17 @@ and `auto_freeze` for immutability.
     ```python
     from forging_blocks.foundation.autohash import auto_hash
 
-    @auto_hash(fields=["x"])
-    class Point:
-        __slots__ = ("x", "y")
+    @auto_hash(fields=["id"])
+    class Record:
+        __slots__ = ("id", "data")
 
-        def __init__(self, x: int, y: int) -> None:
-            self.x = x
-            self.y = y
+        def __init__(self, id: str, data: str) -> None:
+            self.id = id
+            self.data = data
 
-    p1 = Point(1, 2)
-    p2 = Point(1, 999)
-    assert hash(p1) == hash(p2)
-    ```
+    r1 = Record("abc", "payload-a")
+    r2 = Record("abc", "payload-b")
+    assert hash(r1) == hash(r2)
 
 ## Generated members
 

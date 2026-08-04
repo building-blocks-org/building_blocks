@@ -22,6 +22,24 @@ class Entity[TId: Hashable](ABC):
     Concrete subclasses are automatically frozen (selective freeze on '_id') after ``__init__``
     completes. Intermediate abstract classes remain unfrozen so their concrete leaf subclasses
     can finish setting up via ``super().__init__()``.
+
+    Example:
+        ```python
+        class User(Entity[int]):
+            def __init__(self, user_id: int | None, name: str) -> None:
+                super().__init__(user_id)
+                self.name = name
+
+
+        u1 = User(1, "Alice")
+        u2 = User(1, "Alice")
+        u3 = User(2, "Alice")
+        draft = User(None, "Bob")
+
+        assert u1 == u2  # same type and id
+        assert u1 != u3  # different id
+        assert draft.is_persisted() is False
+        ```
     """
 
     _id: TId | None

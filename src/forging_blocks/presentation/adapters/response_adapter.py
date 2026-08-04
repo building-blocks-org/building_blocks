@@ -12,6 +12,24 @@ class ResponseAdapter[UseCaseOutput, RawResponse](Protocol):
     JSON encoding, setting HTTP status headers, formatting CLI
     output) and produce the raw response type consumed by the
     transport framework.
+
+    Example:
+        ```python
+        class OrderResponse:
+            def __init__(self, order_id: str, status: str) -> None:
+                self.order_id = order_id
+                self.status = status
+
+
+        class JsonResponseAdapter:
+            def adapt(self, output: object) -> object:
+                return {"data": output}
+
+
+        adapter = JsonResponseAdapter()
+        response = adapter.adapt(OrderResponse(order_id="42", status="paid"))
+        # response is a JSON-serializable dict
+        ```
     """
 
     def adapt(self, output: UseCaseOutput) -> RawResponse:

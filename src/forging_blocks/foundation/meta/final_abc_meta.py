@@ -18,7 +18,12 @@ class FinalABCMeta(FinalMeta, ABCMeta):
 
     Example:
         ```python
-        from forging_blocks.foundation.meta import FinalABCMeta
+        def runtime_final(fn):
+            return fn
+
+
+        def abstractmethod(fn):
+            return fn
 
 
         class MyBase(metaclass=FinalABCMeta):

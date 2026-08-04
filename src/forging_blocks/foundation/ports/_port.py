@@ -21,6 +21,12 @@ class Port(ABC, metaclass=FinalABCMeta):
     Non-Responsibilities:
         - Does NOT enforce dependency-direction rules — that is delegated
           to ``InboundPort`` and ``OutboundPort`` via ``__init_subclass__``.
+
+    Example:
+        ```python
+        class CreateUserPort(Port):
+            def execute(self, name: str) -> str: ...
+        ```
     """
 
     @classmethod

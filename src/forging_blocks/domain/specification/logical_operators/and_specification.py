@@ -12,12 +12,11 @@ class AndSpecification[T](ComposableSpecification[T]):
 
     Example:
         ```python
-        from forging_blocks.domain.specification.logical_operators.and_specification import (
-            AndSpecification,
-        )
-        from forging_blocks.domain.specification.expression import (
-            ExpressionSpecification,
-        )
+        class ExpressionSpecification(ComposableSpecification[object]):
+            # Inline stub for the example.
+            def __init__(self, func, description: str) -> None:
+                pass
+
 
         is_active = ExpressionSpecification(lambda u: u.is_active, "is_active")
         is_admin = ExpressionSpecification(lambda u: u.role == "admin", "is_admin")

@@ -15,8 +15,6 @@ class OSFileSystem(FileSystemPort):
 
     Example:
         ```python
-        from forging_blocks.infrastructure.file_system.os_file_system import OSFileSystem
-
         fs = OSFileSystem()
         await fs.write("/tmp/cache.json", b'{"key": "value"}')
         data = await fs.read("/tmp/cache.json")

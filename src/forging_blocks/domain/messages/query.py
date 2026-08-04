@@ -16,12 +16,9 @@ class Query[QueryPayloadType](Message[QueryPayloadType]):
 
     Example:
         ```python
-        from dataclasses import dataclass
-
-
-        @dataclass
         class GetOrderPayload:
-            order_id: str
+            def __init__(self, order_id: str) -> None:
+                self.order_id = order_id
 
 
         class GetOrder(Query[GetOrderPayload]):

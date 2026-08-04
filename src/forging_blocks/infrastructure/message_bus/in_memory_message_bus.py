@@ -23,16 +23,19 @@ class InMemoryMessageBus[MessageType: Message[object], MessageBusResultType](
 
     Example:
         ```python
-        from forging_blocks.infrastructure.message_bus.in_memory_message_bus import (
-            InMemoryMessageBus,
-        )
-        from forging_blocks.domain.messages.command import Command
+        class Command[T]:
+            def __init__(self) -> None:
+                pass
 
 
         class MyCommand(Command[None]):
             @property
             def _payload(self) -> None:
                 return None
+
+
+        async def my_handler(message: MyCommand) -> None:
+            pass
 
 
         bus = InMemoryMessageBus[MyCommand, None]()

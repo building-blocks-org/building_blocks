@@ -10,7 +10,21 @@ from typing import get_args, get_origin
 
 
 class PortReferenceDetector:
-    """Detects whether a type annotation references a specific port type."""
+    """Detects whether a type annotation references a specific port type.
+
+    Example:
+        ```python
+        class MyBase: ...
+
+
+        class MySubclass(MyBase): ...
+
+
+        detector = PortReferenceDetector(target_port=MyBase)
+        detector.detects_in(MySubclass)  # True (MyBase in MRO)
+        detector.detects_in(str)  # False
+        ```
+    """
 
     def __init__(self, target_port: type) -> None:
         self._target_port = target_port

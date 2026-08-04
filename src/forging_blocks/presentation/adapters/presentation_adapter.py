@@ -32,10 +32,6 @@ class PresentationAdapter[RawRequest, UseCaseInput, UseCaseOutput, RawResponse]:
 
     Example:
         ```python
-        from forging_blocks.presentation.adapters.presentation_adapter import (
-            PresentationAdapter,
-        )
-
         adapter = PresentationAdapter(
             use_case=create_order_use_case,
             request_adapter=JsonRequestAdapter(),

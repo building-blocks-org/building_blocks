@@ -33,6 +33,13 @@ class TransactionManagerPort[TransactionSessionContext, TransactionErrorType](Ou
     Non-Responsibilities:
         - Implement business logic.
         - Manage connection pooling or resource cleanup.
+
+    Example:
+        ```python
+        tm = MyTransactionManager[DbSession, TransactionError]()
+        await tm.begin(session)
+        await tm.commit()
+        ```
     """
 
     @abstractmethod

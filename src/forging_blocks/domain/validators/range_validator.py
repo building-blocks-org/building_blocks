@@ -13,8 +13,6 @@ class RangeValidator(ValidationRule):
 
     Example:
         ```python
-        from forging_blocks.domain.validators import RangeValidator
-
         validator = RangeValidator("age", minimum_value=0, maximum_value=150)
 
         errors = validator.validate(42)

@@ -12,12 +12,11 @@ class NotSpecification[T](ComposableSpecification[T]):
 
     Example:
         ```python
-        from forging_blocks.domain.specification.logical_operators.not_specification import (
-            NotSpecification,
-        )
-        from forging_blocks.domain.specification.expression import (
-            ExpressionSpecification,
-        )
+        class ExpressionSpecification(ComposableSpecification[object]):
+            # Inline stub for the example.
+            def __init__(self, func, description: str) -> None:
+                pass
+
 
         is_banned = ExpressionSpecification(lambda u: u.status == "banned", "is_banned")
 

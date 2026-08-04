@@ -27,16 +27,29 @@ class DictMessageCodec[M: Message[dict[str, object]]](MessageCodec[M, dict[str, 
 
     Example:
         ```python
-        from forging_blocks.domain.messages import Command
-        from forging_blocks.domain.messages.decorators import command_dataclass
-        from forging_blocks.infrastructure.serialization._dict_message_codec import (
-            DictMessageCodec,
-        )
+        class StubCommand[T](Message[T]):
+            # Inline stub for the example.
+            pass
 
 
-        @command_dataclass
-        class CreateOrder(Command[dict[str, object]]):
-            customer_id: str
+        class CreateOrder(StubCommand[dict[str, object]]):
+            def __init__(self, customer_id: str) -> None:
+                super().__init__()
+                self.customer_id = customer_id
+
+            @property
+            def _payload(self) -> dict[str, object]:
+                return {"customer_id": self.customer_id}
+
+            @classmethod
+            def from_payload_fields(
+                cls, payload: dict[str, object], metadata: MessageMetadata | None = None
+            ) -> CreateOrder:
+                return cls(customer_id=str(payload["customer_id"]))
+
+            @property
+            def value(self) -> dict[str, object]:
+                return self._payload
 
 
         codec = DictMessageCodec[CreateOrder]()

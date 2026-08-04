@@ -8,17 +8,16 @@ by ``from_payload_fields()`` for reconstruction.
 
 Example:
     ```python
-    from dataclasses import dataclass
-
-    from forging_blocks.domain.messages.decorators import event_dataclass
-    from forging_blocks.domain.messages.event import Event
-
-
-    @dataclass
     class OrderPayload:
-        order_id: str
-        customer_id: str
-        total: float
+        def __init__(self, order_id: str, customer_id: str, total: float) -> None:
+            self.order_id = order_id
+            self.customer_id = customer_id
+            self.total = total
+
+
+    class Event[T]:
+        # Inline stub for the example.
+        pass
 
 
     @event_dataclass
@@ -49,6 +48,27 @@ class _PatchedMessage(Protocol):
     This protocol allows pyright to verify that the patched attributes exist
     and have the correct signatures, replacing attribute assignment suppressions
     with a proper type-safe cast boundary.
+
+    Example:
+        ```python
+        @message_dataclass
+        class OrderCreated(Event[dict[str, object]]):
+            order_id: str
+
+
+        decorated = OrderCreated
+        assert isinstance(decorated, _PatchedMessage)
+
+        fields = decorated.get_payload_fields()
+        assert fields == {"order_id": "order_id"}
+
+        from_payload = decorated.from_payload_fields(
+            {"order_id": "ORD-001"},
+            metadata=MessageMetadata(),
+        )
+        assert isinstance(from_payload, OrderCreated)
+        assert from_payload.order_id == "ORD-001"
+        ```
     """
 
     def get_payload_fields(self) -> dict[str, object]: ...

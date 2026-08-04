@@ -24,9 +24,10 @@ class InMemoryUnitOfWork[IdType, EventPayloadType](UnitOfWorkPort):
 
     Example:
         ```python
-        from forging_blocks.infrastructure.unit_of_work.in_memory_unit_of_work import (
-            InMemoryUnitOfWork,
-        )
+        # Dependencies injected by the DI container
+        event_publisher: object = ...  # EventPublisherPort[EventPayloadType]
+        aggregate: object = ...  # AggregateRoot[IdType, EventPayloadType]
+        write_repo: object = ...  # repository instance
 
         async with InMemoryUnitOfWork(event_publisher) as uow:
             uow.register_modified(aggregate)

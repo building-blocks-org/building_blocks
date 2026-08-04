@@ -15,7 +15,15 @@ from forging_blocks.foundation.errors.core import ErrorMessage, MetadataValueTyp
 
 
 class ResultAccessError(RuntimeErrorMixin, Error[MetadataValueType]):
-    """Exception raised when trying to access value or err from an inappropriate Result variant."""
+    """Exception raised when trying to access value or err from an inappropriate Result variant.
+
+    Example:
+        ```python
+        error = ResultAccessError(ErrorMessage("Cannot access value from an Err Result."))
+        raise error
+        ```
+
+    """
 
     def __init__(self, message: ErrorMessage | None = None) -> None:
         """Initialise with an optional custom error message.

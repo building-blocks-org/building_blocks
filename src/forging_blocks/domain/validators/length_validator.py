@@ -13,8 +13,6 @@ class LengthValidator(ValidationRule):
 
     Example:
         ```python
-        from forging_blocks.domain.validators import LengthValidator
-
         validator = LengthValidator("username", minimum_length=3, maximum_length=20)
 
         errors = validator.validate("alice")

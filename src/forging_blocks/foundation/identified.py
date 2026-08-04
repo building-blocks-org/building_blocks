@@ -8,6 +8,22 @@ class Identified[IdentityType](Protocol):
 
     Satisfied by any object whose ``id`` returns the object's identity,
     which may be ``None`` for draft/unpersisted instances.
+
+    Example:
+        ```python
+        class User(Identified[int]):
+            def __init__(self, user_id: int, name: str) -> None:
+                self._id = user_id
+                self.name = name
+
+            @property
+            def id(self) -> int | None:
+                return self._id
+
+
+        user = User(42, "Alice")
+        assert user.id == 42
+        ```
     """
 
     @property

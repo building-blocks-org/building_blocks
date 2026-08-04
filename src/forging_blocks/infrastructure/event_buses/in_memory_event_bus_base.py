@@ -15,7 +15,20 @@ from forging_blocks.infrastructure.event_buses.event_bus_base import EventBusBas
 
 
 class _Handler[T](Protocol):
-    """Structural protocol for message handlers."""
+    """Structural protocol for message handlers.
+
+    Example:
+        ```python
+        class OrderCompletedHandler:
+            async def handle(self, message: object) -> None:
+                print(f"Handled: {message}")
+
+
+        handler: _Handler[object] = OrderCompletedHandler()
+        await handler.handle("some-message")
+        ```
+
+    """
 
     async def handle(self, message: T) -> None: ...
 
@@ -28,27 +41,27 @@ class InMemoryEventBusBase[EventPayloadType, CommandPayloadType, HandlerType](
     Attributes:
         _event_handlers: Per-event-type list of handlers.
         _command_handlers: Per-command-type single handler.
+
     Example:
         ```python
-        from forging_blocks.domain.messages.decorators import (
-            command_dataclass,
-            event_dataclass,
-        )
-        from forging_blocks.domain.messages.command import Command
-        from forging_blocks.domain.messages.event import Event
-        from forging_blocks.infrastructure.event_buses.in_memory_event_bus_base import (
-            InMemoryEventBusBase,
-        )
+        class StubEvent[T]:
+            def __init__(self) -> None:
+                pass
 
 
-        @event_dataclass
-        class OrderCompleted(Event[dict[str, object]]):
-            order_id: str
+        class StubCommand[T]:
+            def __init__(self) -> None:
+                pass
 
 
-        @command_dataclass
-        class CreateOrder(Command[dict[str, object]]):
-            customer_id: str
+        class OrderCompleted(StubEvent[dict[str, object]]):
+            def __init__(self, order_id: str) -> None:
+                self.order_id = order_id
+
+
+        class CreateOrder(StubCommand[dict[str, object]]):
+            def __init__(self, customer_id: str) -> None:
+                self.customer_id = customer_id
 
 
         class OrderCompletedHandler:

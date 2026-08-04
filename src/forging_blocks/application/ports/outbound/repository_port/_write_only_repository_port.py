@@ -10,6 +10,20 @@ class WriteOnlyRepositoryPort[TWriteAggregateRoot, TWriteId](OutboundPort):
 
     This interface supports command-side operations where writes are applied
     independently from read-side storage.
+
+    Example:
+        ```python
+        class Account:
+            def __init__(self, id: str, name: str, balance: float) -> None:
+                self.id = id
+                self.name = name
+                self.balance = balance
+
+
+        acc = Account(id="1", name="savings", balance=100.0)
+        await repo.save(acc)
+        await repo.delete_by_id(acc.id)
+        ```
     """
 
     @abstractmethod

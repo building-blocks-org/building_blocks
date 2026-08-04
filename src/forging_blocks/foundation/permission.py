@@ -8,12 +8,11 @@ class Permission(StrEnum):
 
     Example:
         ```python
-        from forging_blocks.foundation.permission import Permission
-
         perm = Permission.READ
         assert perm == "read"
         assert isinstance(perm, str)
         ```
+
     """
 
     READ = "read"

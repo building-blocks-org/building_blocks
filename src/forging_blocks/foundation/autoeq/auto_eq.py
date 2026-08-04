@@ -15,9 +15,6 @@ structural equality comparisons.
 
 Example:
     ```python
-    from forging_blocks.foundation.autoeq import auto_eq
-
-
     @auto_eq
     class Point:
         __slots__ = ("x", "y")
@@ -64,6 +61,21 @@ class _AutoEqDecorator:
     Generates ``__eq__`` based on the class's fields. Does NOT generate
     ``__hash__`` — use `auto_hash` separately when hashability
     is required.
+
+    Example:
+        ```python
+        class Item:
+            __slots__ = ("name", "sku")
+
+            def __init__(self, name: str, sku: str) -> None:
+                self.name = name
+                self.sku = sku
+
+
+        decorator = _AutoEqDecorator(fields=["name", "sku"])
+        Item = decorator(Item)
+        assert Item("a", "x") == Item("a", "y")
+        ```
     """
 
     def __init__(self, *, fields: Sequence[str] | None = None) -> None:

@@ -14,8 +14,6 @@ class EmailValidator(ValidationRule):
 
     Example:
         ```python
-        from forging_blocks.domain.validators import EmailValidator
-
         validator = EmailValidator("email_address")
 
         errors = validator.validate("user@example.com")

@@ -16,6 +16,14 @@ class ArchitectureError(RuntimeErrorMixin, Error[MetadataValueType]):
     layers may depend on inner layers, but never the reverse. This error
     fires at class creation time via ``__init_subclass__`` whenever a
     subclass declares a dependency that points in the wrong direction.
+
+    Example:
+        ```python
+        error = ArchitectureError("Widget depends on Domain — violates dependency direction rules.")
+        raise error
+        ```
+
+
     """
 
     def __init__(self, message: str) -> None:

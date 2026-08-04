@@ -26,8 +26,6 @@ class TimingMiddleware[RequestType, ResponseType](Middleware[RequestType, Respon
 
     Example:
         ```python
-        from forging_blocks.presentation.builtin import TimingMiddleware
-
         mw = TimingMiddleware[MyRequest, MyResponse](logger=my_logger)
         response = await mw.process(request, next_handler)
         # Logs "Request handled in 0.0012 seconds" at info level

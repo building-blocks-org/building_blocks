@@ -15,6 +15,19 @@ class Specification[T](ABC):
 
     This is the minimal contract: only is_satisfied_by().
     Composition (and_, or_, not_) is added by ComposableSpecification.
+
+    Example:
+
+        ```python
+        class ActiveOrderSpecification(Specification[int]):
+            def is_satisfied_by(self, candidate: int) -> bool:
+                return candidate > 0
+
+
+        spec = ActiveOrderSpecification()
+        spec.is_satisfied_by(5)  # True
+        spec.is_satisfied_by(-3)  # False
+        ```
     """
 
     @abstractmethod

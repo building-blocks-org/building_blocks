@@ -18,4 +18,12 @@ class RuleViolatedError(RuleViolationError):
     is the abstract base; code that constructs and raises a rule violation
     MUST use ``RuleViolatedError``.
 
+    Example:
+        ```python
+        from forging_blocks.foundation.errors import ErrorMessage
+
+        err = RuleViolatedError(ErrorMessage("Account must be active"))
+        assert isinstance(err, RuntimeError)
+        raise err
+        ```
     """

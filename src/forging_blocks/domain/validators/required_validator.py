@@ -13,8 +13,6 @@ class RequiredValidator(ValidationRule):
 
     Example:
         ```python
-        from forging_blocks.domain.validators import RequiredValidator
-
         validator = RequiredValidator("username")
 
         errors = validator.validate("alice")

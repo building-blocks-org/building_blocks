@@ -12,12 +12,11 @@ class OrSpecification[T](ComposableSpecification[T]):
 
     Example:
         ```python
-        from forging_blocks.domain.specification.logical_operators.or_specification import (
-            OrSpecification,
-        )
-        from forging_blocks.domain.specification.expression import (
-            ExpressionSpecification,
-        )
+        class ExpressionSpecification(ComposableSpecification[object]):
+            # Inline stub for the example.
+            def __init__(self, func, description: str) -> None:
+                pass
+
 
         is_admin = ExpressionSpecification(lambda u: u.role == "admin", "is_admin")
         is_manager = ExpressionSpecification(lambda u: u.role == "manager", "is_manager")

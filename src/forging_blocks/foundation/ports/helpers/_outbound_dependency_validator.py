@@ -12,6 +12,22 @@ from ._port_reference_detector import PortReferenceDetector
 class OutboundDependencyValidator:
     """Validates that an OutboundPort's ``__init__`` parameters follow
     the architectural rule: OutboundPorts may only depend on other OutboundPorts.
+
+    Example:
+        ```python
+        class OutboundPort: ...
+
+
+        class InboundPort: ...
+
+
+        class MyOutboundPort(OutboundPort):
+            def save(self, data: str) -> str: ...
+
+
+        validator = OutboundDependencyValidator(MyOutboundPort, target_port=InboundPort)
+        validator.validate()
+        ```
     """
 
     def __init__(self, cls: type, *, target_port: type) -> None:

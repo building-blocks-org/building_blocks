@@ -13,8 +13,6 @@ class StdlibLogger(LoggerPort):
 
     Example:
         ```python
-        from forging_blocks.infrastructure.logging.stdlib_logger import StdlibLogger
-
         logger = StdlibLogger(name="my_service")
         logger.info("Service started")
         logger.error("Connection refused", "retrying...")

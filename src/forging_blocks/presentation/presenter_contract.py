@@ -24,7 +24,7 @@ class PresenterPort[ResponseType](InboundPort):
 
     Example:
         ```python
-        from forging_blocks.presentation.presenter_contract import PresenterPort
+        import sys
 
 
         class CliPresenter(PresenterPort[str]):

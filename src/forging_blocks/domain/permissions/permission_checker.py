@@ -15,11 +15,8 @@ class PermissionChecker[PermissionCheckContext](Protocol):
         PermissionCheckContext: The application-defined context for permission checks.
 
     Example:
+
         ```python
-        from forging_blocks.domain.permissions.permission_checker import PermissionChecker
-        from forging_blocks.foundation.permission import Permission
-
-
         class MyChecker(PermissionChecker[dict]):
             async def check(self, context: dict, permission: Permission) -> bool:
                 return permission in context.get("grants", set())

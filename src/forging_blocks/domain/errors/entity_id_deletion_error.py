@@ -19,6 +19,12 @@ class EntityIdDeletionError(RuntimeErrorMixin, Error[MetadataValueType]):
     the ``id`` field would break identity-based equality, hash lookups,
     and aggregate consistency. This error fires at the point where
     ``__delattr__`` on the identifier is intercepted.
+
+    Example:
+        ```python
+        error = EntityIdDeletionError("User")
+        # error.message = "Cannot delete 'id' of User as it defines the entity's identity."
+        ```
     """
 
     def __init__(self, class_name: str) -> None:

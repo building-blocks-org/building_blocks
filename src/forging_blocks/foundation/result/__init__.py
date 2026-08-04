@@ -10,8 +10,6 @@ try/except blocks through your code, you compose operations with
 Example:
 
     ```python
-    from forging_blocks.foundation.result import Ok, Err
-
     Ok(42).map(lambda x: x + 1)  # -> Ok(43)
 
     Err("boom").map(lambda x: x + 1)  # no-op — error short-circuits -> Err("boom")

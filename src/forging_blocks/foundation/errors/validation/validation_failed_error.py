@@ -17,4 +17,12 @@ class ValidationFailedError(ValidationError):
     is the abstract base; code that constructs and raises a validation error
     MUST use ``ValidationFailedError``.
 
+    Example:
+        ```python
+        from forging_blocks.foundation.errors import ErrorMessage
+
+        err = ValidationFailedError(ErrorMessage("Email is required"))
+        assert isinstance(err, ValueError)
+        raise err
+        ```
     """

@@ -9,7 +9,18 @@ from ..core import ErrorMessage, ErrorMetadata
 
 
 class Error[MetadataValueType](Exception, Debuggable):
-    """Base class for all structured errors that can be raised like standard Exceptions."""
+    """Base class for all structured errors that can be raised like standard Exceptions.
+
+    Example:
+        ```python
+        msg = ErrorMessage("Not found")
+        meta = ErrorMetadata[str](context={"id": "42"})
+        error = Error[str](msg, meta)
+        print(error.message.value)  # "Not found"
+        print(error.context)  # {"id": "42"}
+        raise error  # subclass of Exception
+        ```
+    """
 
     def __init__(
         self, message: ErrorMessage, metadata: ErrorMetadata[MetadataValueType] | None = None

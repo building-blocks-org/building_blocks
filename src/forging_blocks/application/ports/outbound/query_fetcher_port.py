@@ -24,6 +24,12 @@ class QueryFetcherPort[QueryPayloadType, QueryFetcherResult](
     """ABC for dispatching query messages asynchronously.
 
     Delivery semantics are decoupled from this contract.
+
+    Example:
+        ```python
+        fetcher = MyQueryFetcher[OrderQueryPayload, list[dict[str, object]]]()
+        orders = await fetcher.fetch(GetOrdersByStatus(status="pending"))
+        ```
     """
 
     @abstractmethod

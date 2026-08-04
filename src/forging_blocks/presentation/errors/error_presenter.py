@@ -24,17 +24,28 @@ class ErrorPresenter:
 
     Example:
         ```python
-        from forging_blocks.foundation.result import Ok, Err
-        from forging_blocks.presentation.errors.error_presenter import ErrorPresenter
+        class SuccessValue:
+            def __init__(self, value: object) -> None:
+                self.value = value
+
+
+        class FailureValue:
+            def __init__(self, error: object) -> None:
+                self.error = error
+
+
+        class SomeError(Exception):
+            pass
+
 
         presenter = ErrorPresenter()
 
         # Idiomatic: handle a Result with structural pattern matching
         result = await use_case.execute(request)
         match result:
-            case Ok(value):
+            case SuccessValue(value):
                 ...  # handle success
-            case Err(error):
+            case FailureValue(error):
                 view_model = presenter.to_view_model(error)
                 for msg in view_model.messages:
                     print(f"  {msg.title}")
@@ -42,7 +53,7 @@ class ErrorPresenter:
         # Alternative: exception-based handling
         try:
             result = await use_case.execute(request)
-        except Error as exc:
+        except SomeError as exc:
             view_model = presenter.to_view_model(exc)
             for msg in view_model.messages:
                 print(f"  {msg.title}")

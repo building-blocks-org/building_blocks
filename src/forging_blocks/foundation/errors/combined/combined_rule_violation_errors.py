@@ -16,4 +16,16 @@ from forging_blocks.foundation.errors.combined.combined_errors import CombinedEr
 
 
 class CombinedRuleViolationErrors(RuntimeErrorMixin, CombinedErrors[RuleViolationError]):
-    """Aggregates multiple rule violation errors for easier handling and reporting."""
+    """Aggregates multiple rule violation errors for easier handling and reporting.
+
+    Example:
+        ```python
+        from forging_blocks.foundation.errors import ErrorMessage, RuleViolatedError
+
+        err1 = RuleViolatedError(ErrorMessage("Account overdrawn"))
+        err2 = RuleViolatedError(ErrorMessage("Card expired"))
+        combined = CombinedRuleViolationErrors([err1, err2])
+        assert isinstance(combined, RuntimeError)
+        print(len(combined))  # 2
+        ```
+    """
