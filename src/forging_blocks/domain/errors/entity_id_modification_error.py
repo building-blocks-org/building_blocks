@@ -21,6 +21,7 @@ class EntityIdModificationError(RuntimeErrorMixin, Error[MetadataValueType]):
     collections, identity comparisons, and reliable persistence. This
     error fires at the ``__setattr__`` interception point whenever a
     re-assignment of the identity field is detected.
+
     Example:
         ```python
         error = EntityIdModificationError("User", "id", 42)

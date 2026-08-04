@@ -12,6 +12,11 @@ class NotSpecification[T](ComposableSpecification[T]):
 
     Example:
         ```python
+        class ExpressionSpecification(ComposableSpecification[object]):
+            # Inline stub for the example.
+            pass
+
+
         is_banned = ExpressionSpecification(lambda u: u.status == "banned", "is_banned")
 
         # Direct construction

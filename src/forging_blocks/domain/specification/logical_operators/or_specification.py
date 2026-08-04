@@ -11,8 +11,12 @@ class OrSpecification[T](ComposableSpecification[T]):
     result of a disjunction is itself composable (e.g. ``(a | b) & c``).
 
     Example:
-
         ```python
+        class ExpressionSpecification(ComposableSpecification[object]):
+            # Inline stub for the example.
+            pass
+
+
         is_admin = ExpressionSpecification(lambda u: u.role == "admin", "is_admin")
         is_manager = ExpressionSpecification(lambda u: u.role == "manager", "is_manager")
 

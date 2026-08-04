@@ -19,6 +19,7 @@ class EntityIdNoneError(ValueErrorMixin, Error[MetadataValueType]):
     collections, or identity lookups.  This error fires at the point
     where code attempts to use an identityless entity in a context that
     requires a defined identifier.
+
     Example:
         ```python
         error = EntityIdNoneError("Customer")
