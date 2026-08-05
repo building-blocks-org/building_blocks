@@ -13,7 +13,6 @@ class CompositeValidationRule(ValidationRule):
     short-circuit), so every validation failure is reported.
 
     Example:
-
         ```python
         composite = CompositeValidationRule(
             [
