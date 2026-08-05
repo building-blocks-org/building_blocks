@@ -9,7 +9,6 @@ class AggregateVersion(ValueObject[int]):
     Used for optimistic concurrency control to detect conflicting updates.
 
     Example:
-
         ```python
         version = AggregateVersion(1)
         assert version.value == 1
