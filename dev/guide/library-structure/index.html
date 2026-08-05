@@ -12,7 +12,7 @@
         <meta name="author" content="ForgingBlocks Org">
       
       
-        <link rel="canonical" href="https://forging-blocks-org.github.io/forging-blocks/dev/guide/recommended_blocks_structure/">
+        <link rel="canonical" href="https://forging-blocks-org.github.io/forging-blocks/dev/guide/library-structure/">
       
       
         <link rel="prev" href="../architecture-overview/">
@@ -26,7 +26,7 @@
     
     
       
-        <title>Recommended Blocks Structure - ForgingBlocks</title>
+        <title>Library Structure - ForgingBlocks</title>
       
     
     
@@ -82,7 +82,7 @@
     <div data-md-component="skip">
       
         
-        <a href="#blocks-structure" class="md-skip">
+        <a href="#internal-block-structure" class="md-skip">
           Skip to content
         </a>
       
@@ -115,7 +115,7 @@
         <div class="md-header__topic" data-md-component="header-topic">
           <span class="md-ellipsis">
             
-              Recommended Blocks Structure
+              Library Structure
             
           </span>
         </div>
@@ -630,7 +630,7 @@
   
   
   <span class="md-ellipsis">
-    Recommended Blocks Structure
+    Library Structure
     
   </span>
   
@@ -643,7 +643,7 @@
   
   
   <span class="md-ellipsis">
-    Recommended Blocks Structure
+    Library Structure
     
   </span>
   
@@ -678,15 +678,6 @@
   <a href="#quick-summary" class="md-nav__link">
     <span class="md-ellipsis">
       Quick summary
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
-  <a href="#block-layer-blocks-are-architecture-neutral-named-boundaries-within-the-library-they-can-be-interpreted-as-layers-if-that-mental-model-helps" class="md-nav__link">
-    <span class="md-ellipsis">
-      Block ≠ Layer — Blocks are architecture-neutral named boundaries within the library; they can be interpreted as layers if that mental model helps.
     </span>
   </a>
   
@@ -7706,15 +7697,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#block-layer-blocks-are-architecture-neutral-named-boundaries-within-the-library-they-can-be-interpreted-as-layers-if-that-mental-model-helps" class="md-nav__link">
-    <span class="md-ellipsis">
-      Block ≠ Layer — Blocks are architecture-neutral named boundaries within the library; they can be interpreted as layers if that mental model helps.
-    </span>
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#block-vs-layer" class="md-nav__link">
     <span class="md-ellipsis">
       Block vs Layer
@@ -7784,7 +7766,7 @@
 
 
   
-    <a href="https://github.com/forging-blocks-org/edit/main/docs/guide/recommended_blocks_structure.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+    <a href="https://github.com/forging-blocks-org/edit/main/docs/guide/library-structure.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
       
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
     </a>
@@ -7792,9 +7774,18 @@
   
 
 
-<h1 id="blocks-structure">Blocks Structure<a class="headerlink" href="#blocks-structure" title="Permanent link">&para;</a></h1>
+<h1 id="internal-block-structure">Internal Block Structure<a class="headerlink" href="#internal-block-structure" title="Permanent link">&para;</a></h1>
 <h2 id="how-forging-blocks-is-organized-internally">How forging-blocks is organized internally<a class="headerlink" href="#how-forging-blocks-is-organized-internally" title="Permanent link">&para;</a></h2>
 <p>This section describes how <strong>forging-blocks itself</strong> is structured into blocks — named groups of code sharing a responsibility and boundary. It documents the library's own internal organization, not a prescription for how you should structure your project.</p>
+<div class="admonition note">
+<p class="admonition-title">The library's block names are its own convention</p>
+<p>The library's five internal blocks (<code>foundation</code>, <code>domain</code>, <code>application</code>,<br />
+<code>infrastructure</code>, <code>presentation</code>) are an organizational convention, not a<br />
+naming template.<br />
+The toolkit itself is architecture-agnostic — you are free to interpret blocks as layers or any other structure.<br />
+Your own project's blocks should carry names meaningful to your context — <code>core</code>, <code>domain</code>, or a<br />
+domain-specific term — rather than replicating the library's internal naming.</p>
+</div>
 <hr />
 <h2 id="quick-summary">Quick summary<a class="headerlink" href="#quick-summary" title="Permanent link">&para;</a></h2>
 <p>The forging-blocks library is organized into five blocks, each with a distinct responsibility:</p>
@@ -7806,7 +7797,8 @@
 <li><strong>Presentation</strong> — Entry-point abstractions (adapters, middleware, error handling). Calls Application; stays thin.</li>
 </ul>
 <p>Dependency rules (inward-pointing): Foundation has no deps → Domain depends on Foundation → Application depends on Domain + Foundation; Infrastructure and Presentation depend on Application + Foundation.</p>
-<h2 id="block-layer-blocks-are-architecture-neutral-named-boundaries-within-the-library-they-can-be-interpreted-as-layers-if-that-mental-model-helps"><strong>Block ≠ Layer</strong> — Blocks are architecture-neutral named boundaries within the library; they can be interpreted as layers if that mental model helps.<a class="headerlink" href="#block-layer-blocks-are-architecture-neutral-named-boundaries-within-the-library-they-can-be-interpreted-as-layers-if-that-mental-model-helps" title="Permanent link">&para;</a></h2>
+<p><strong>Block ≠ Layer</strong></p>
+<p>Blocks are architecture-neutral named boundaries within the library; they can be interpreted as layers if that mental model helps.</p>
 <p>The library's five blocks and their dependency relationships:</p>
 <ul>
 <li><strong>Foundation</strong> – reusable, low-level abstractions.</li>
