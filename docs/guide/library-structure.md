@@ -3,6 +3,12 @@
 
 This section describes how **forging-blocks itself** is structured into blocks — named groups of code sharing a responsibility and boundary. It documents the library's own internal organization, not a prescription for how you should structure your project.
 
+!!! warning "Foundation is not a canonical block name"
+    "Foundation" is the library's own term for its innermost, zero-dependency block.
+    Your own project's innermost block should carry a name meaningful to your domain —
+    `Core`, `Shared`, `Common`, or a domain-specific term. Do not copy the library's
+    internal block names into your project.
+
 ---
 ## Quick summary
 
