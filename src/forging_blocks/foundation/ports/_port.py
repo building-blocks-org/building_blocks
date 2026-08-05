@@ -25,6 +25,8 @@ class Port(ABC, metaclass=FinalABCMeta):
     Example:
         ```python
         class CreateUserPort(Port):
+            @classmethod
+            def __init_subclass__(cls, /) -> None: ...
             def execute(self, name: str) -> str: ...
         ```
     """
