@@ -299,6 +299,10 @@ body {
   color: #313131;
 }
 
+div.md-sidebar__inner nav.md-nav.md-nav--primary.md-nav--lifted ul.md-nav__list .md-ellipsis {
+  background-color: var(--bw-bg-root) !important;
+}
+
 .md-content .md-icon {
   fill: var(--bw-accent-orange-dark) !important;
 }
