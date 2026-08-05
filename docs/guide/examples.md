@@ -221,5 +221,5 @@ aggregated for reporting.
 Once you are comfortable with these examples, you can:
 
 - read [Principles](principles.md) to understand why the toolkit is structured this way,
-- map examples into blocks using [Recommended Blocks Structure](recommended_blocks_structure.md),
+- map examples into blocks using [Library Structure](library-structure.md),
 - and explore architectural mappings in the **Architectural Styles** section if you want to see how these ideas can appear inside well-known styles.
