@@ -257,6 +257,9 @@ body {
 .md-typeset details:not(.quote) > summary::before {
   content: none;
 }
+.md-typeset details:not(.quote) > summary::marker {
+  color: var(--bw-accent-orange);
+}
 
 /* Source code quote details — consistent with code block theme */
 .md-typeset details.quote {
@@ -299,7 +302,8 @@ body {
   color: #313131;
 }
 
-div.md-sidebar__inner nav.md-nav.md-nav--primary.md-nav--lifted ul.md-nav__list .md-ellipsis {
+.md-sidebar__inner .md-ellipsis,
+.md-sidebar__inner .md-nav .md-nav__title {
   background-color: var(--bw-bg-root) !important;
 }
 
