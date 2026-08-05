@@ -63,6 +63,7 @@ class URLLibClient(HttpClientPort[str, str]):
 
         Returns:
             The response body decoded as UTF-8 string.
+
         Raises:
             OSError: On network or connection failures.
             http.client.HTTPException: On HTTP protocol errors.
