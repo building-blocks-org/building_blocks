@@ -43,7 +43,7 @@ class DictMessageCodec[M: Message[dict[str, object]]](MessageCodec[M, dict[str, 
 
             @classmethod
             def from_payload_fields(
-                cls, payload: dict[str, object], metadata: MessageMetadata | None = None
+                cls, payload: dict[str, object], metadata: MessageMetadata
             ) -> CreateOrder:
                 return cls(customer_id=str(payload["customer_id"]))
 

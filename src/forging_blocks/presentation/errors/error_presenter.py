@@ -41,7 +41,7 @@ class ErrorPresenter:
         presenter = ErrorPresenter()
 
         # Idiomatic: handle a Result with structural pattern matching
-        result = await use_case.execute(request)
+        result = FailureValue(SomeError())
         match result:
             case SuccessValue(value):
                 ...  # handle success
@@ -52,7 +52,7 @@ class ErrorPresenter:
 
         # Alternative: exception-based handling
         try:
-            result = await use_case.execute(request)
+            raise SomeError()
         except SomeError as exc:
             view_model = presenter.to_view_model(exc)
             for msg in view_model.messages:

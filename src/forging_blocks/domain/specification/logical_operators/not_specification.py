@@ -15,7 +15,11 @@ class NotSpecification[T](ComposableSpecification[T]):
         class ExpressionSpecification(ComposableSpecification[object]):
             # Inline stub for the example.
             def __init__(self, func, description: str) -> None:
-                pass
+                self._func = func
+                self.description = description
+
+            def is_satisfied_by(self, candidate: object) -> bool:
+                return self._func(candidate)
 
 
         is_banned = ExpressionSpecification(lambda u: u.status == "banned", "is_banned")

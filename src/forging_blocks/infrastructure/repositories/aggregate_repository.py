@@ -48,6 +48,12 @@ class AggregateRepository[
         class InMemoryEventStore[T]:
             def __init__(self) -> None: ...
 
+            async def append_events(
+                self, aggregate_id: object, events: list[object], expected_version: int
+            ) -> None: ...
+            async def get_events(self, aggregate_id: object) -> list[object]: ...
+            async def get_current_version(self, aggregate_id: object) -> int: ...
+
 
         class MyAggregate(AggregateRoot[UUID, str]):
             def __init__(self, aggregate_id: UUID) -> None:
@@ -63,9 +69,12 @@ class AggregateRepository[
             event_store=event_store,
             aggregate_type=MyAggregate,
         )
-        aggregate = MyAggregate(aggregate_id)
-        await repo.save(aggregate)
-        retrieved = await repo.get_by_id(aggregate_id)
+
+
+        async def main() -> None:
+            aggregate = MyAggregate(aggregate_id)
+            await repo.save(aggregate)
+            retrieved = await repo.get_by_id(aggregate_id)
         ```
     """
 
@@ -131,6 +140,7 @@ class AggregateRepository[
         Checks the in-memory cache first; if not cached, replays the
         aggregate from the event store and caches the result so subsequent
         reads avoid a full replay.
+
         Args:
             entity_id: Unique identifier of the aggregate.
 

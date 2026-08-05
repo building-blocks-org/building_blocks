@@ -17,7 +17,6 @@ class Specification[T](ABC):
     Composition (and_, or_, not_) is added by ComposableSpecification.
 
     Example:
-
         ```python
         class ActiveOrderSpecification(Specification[int]):
             def is_satisfied_by(self, candidate: int) -> bool:

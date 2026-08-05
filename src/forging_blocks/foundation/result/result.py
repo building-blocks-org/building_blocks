@@ -60,7 +60,7 @@ class Result[ValueType, ErrorType](Protocol):
 
 
         result = parse_int("42")
-        if result.is_ok():
+        if result.is_ok:
             print(result.value)  # 42
 
         result = parse_int("abc")

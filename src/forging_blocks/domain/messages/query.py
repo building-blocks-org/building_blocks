@@ -29,6 +29,16 @@ class Query[QueryPayloadType](Message[QueryPayloadType]):
             @property
             def _payload(self) -> GetOrderPayload:
                 return GetOrderPayload(order_id=self._order_id)
+
+            @classmethod
+            def from_payload_fields(
+                cls, data: GetOrderPayload, metadata: MessageMetadata
+            ) -> "GetOrder":
+                return cls(order_id=data.order_id)
+
+            @property
+            def value(self) -> GetOrderPayload:
+                return self._payload
         ```
 
     """

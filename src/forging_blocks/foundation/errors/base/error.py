@@ -3,6 +3,8 @@
 Defines the base Error type that all structured errors inherit from.
 """
 
+from typing import Self
+
 from forging_blocks.foundation.debuggable import Debuggable
 
 from ..core import ErrorMessage, ErrorMetadata
@@ -37,6 +39,39 @@ class Error[MetadataValueType](Exception, Debuggable):
         super().__init__(message.value)
         self._message = message
         self._metadata = metadata or ErrorMetadata[MetadataValueType]()
+
+    @classmethod
+    def from_string(
+        cls,
+        text: str,
+        metadata: ErrorMetadata[MetadataValueType] | None = None,
+    ) -> Self:
+        """Create an error from a plain message string.
+
+        Convenience factory that wraps ``text`` in an ``ErrorMessage``
+        and passes it to the constructor. All ``Error`` subclasses
+        inherit this method so callers can raise errors without
+        manually constructing ``ErrorMessage`` instances.
+
+        Args:
+            text: The raw error message text.
+            metadata: Optional structured metadata with diagnostic context.
+
+        Returns:
+            A new error instance.
+
+        Example:
+            ```python
+            class PaymentError(Error[str]):
+                pass
+
+
+            error = PaymentError.from_string("Insufficient funds")
+            raise error
+            ```
+
+        """
+        return cls(ErrorMessage(text), metadata)
 
     def __str__(self) -> str:
         context_str = f" | Context: {self._metadata.context}" if self._metadata.context else ""

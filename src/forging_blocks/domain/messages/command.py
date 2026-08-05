@@ -38,6 +38,20 @@ class Command[RawCommandType](Message[RawCommandType]):
                     customer_id=self._customer_id,
                     items=self._items,
                 )
+
+            @classmethod
+            def from_payload_fields(
+                cls, data: CreateOrderPayload, metadata: MessageMetadata
+            ) -> "CreateOrder":
+                return cls(
+                    customer_id=data.customer_id,
+                    items=data.items,
+                    metadata=metadata,
+                )
+
+            @property
+            def value(self) -> CreateOrderPayload:
+                return self._payload
         ```
 
     """

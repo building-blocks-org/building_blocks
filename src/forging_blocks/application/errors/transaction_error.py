@@ -20,14 +20,7 @@ class TransactionError[MetadataValueType = object](RuntimeErrorMixin, Error[Meta
 
     Example:
         ```python
-        class Msg:
-            # Inline stub for the example.
-            def __init__(self, text: str) -> None:
-                self.text = text
-
-
-        error = TransactionError(Msg("Transaction commit failed"))
-        raise error
+        error = TransactionError.from_string("Transaction commit failed")
         ```
 
     """
