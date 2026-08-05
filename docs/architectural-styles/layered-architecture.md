@@ -5,7 +5,8 @@ Layered Architecture organizes software into horizontal layers, each with a dist
 This page shows how **ForgingBlocks concepts can be projected** onto a traditional layered arrangement.
 
 !!! note "Important"
-
+    ForgingBlocks does **not** enforce Layered Architecture.
+    This page presents it as an **interpretation**, not a required structure.
 ---
 
 ## Quick summary

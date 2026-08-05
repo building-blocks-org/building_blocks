@@ -137,7 +137,7 @@ ForgingBlocks helps you shape software that is **clear**, **testable**, and **ma
 ## Learn More
 
 - [Getting Started](guide/getting-started.md)
-- [Blocks Overview](guide/recommended_blocks_structure.md)
+- [Library Structure](guide/library-structure.md)
 - [Organizing Your Project](guide/principles.md)
 - [Reference Index](reference/index.md)
 
