@@ -34,11 +34,7 @@ class ErrorHandlingMiddleware[RequestType, ResponseType](Middleware[RequestType,
 
     Example:
         ```python
-        class ViewModel:
-            messages: list = []
-
-
-        def on_error(vm: ViewModel) -> MyResponse:
+        def on_error(vm: ErrorViewModel) -> MyResponse:
             return MyResponse(error=vm.messages[0].title)
 
 

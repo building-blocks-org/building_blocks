@@ -39,6 +39,20 @@ class Event[RawEventType](Message[RawEventType]):
                     customer_id=self._customer_id,
                     total=self._total,
                 )
+
+            @classmethod
+            def from_payload_fields(
+                cls, data: OrderCreatedPayload, metadata: MessageMetadata
+            ) -> "OrderCreated":
+                return cls(
+                    order_id=data.order_id,
+                    customer_id=data.customer_id,
+                    total=data.total,
+                )
+
+            @property
+            def value(self) -> OrderCreatedPayload:
+                return self._payload
         ```
 
     """

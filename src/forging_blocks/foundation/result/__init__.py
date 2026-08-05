@@ -8,7 +8,6 @@ try/except blocks through your code, you compose operations with
 `Result.map_error`.
 
 Example:
-
     ```python
     Ok(42).map(lambda x: x + 1)  # -> Ok(43)
 

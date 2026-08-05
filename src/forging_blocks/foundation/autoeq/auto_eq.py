@@ -72,7 +72,7 @@ class _AutoEqDecorator:
                 self.sku = sku
 
 
-        decorator = _AutoEqDecorator(fields=["name", "sku"])
+        decorator = _AutoEqDecorator(fields=["name"])
         Item = decorator(Item)
         assert Item("a", "x") == Item("a", "y")
         ```

@@ -18,7 +18,6 @@ class ExpressionSpecification[T](ComposableSpecification[T]):
     do NOT reimplement them here.
 
     Example:
-
         ```python
         is_active = ExpressionSpecification(lambda user: user.is_active, description="is_active")
         is_admin = ExpressionSpecification(

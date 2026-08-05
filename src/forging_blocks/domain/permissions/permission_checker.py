@@ -15,7 +15,6 @@ class PermissionChecker[PermissionCheckContext](Protocol):
         PermissionCheckContext: The application-defined context for permission checks.
 
     Example:
-
         ```python
         class MyChecker(PermissionChecker[dict]):
             async def check(self, context: dict, permission: Permission) -> bool:

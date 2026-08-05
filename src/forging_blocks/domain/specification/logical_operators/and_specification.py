@@ -15,7 +15,11 @@ class AndSpecification[T](ComposableSpecification[T]):
         class ExpressionSpecification(ComposableSpecification[object]):
             # Inline stub for the example.
             def __init__(self, func, description: str) -> None:
-                pass
+                self._func = func
+                self.description = description
+
+            def is_satisfied_by(self, candidate: object) -> bool:
+                return self._func(candidate)
 
 
         is_active = ExpressionSpecification(lambda u: u.is_active, "is_active")

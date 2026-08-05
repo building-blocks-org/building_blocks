@@ -16,23 +16,8 @@ class FieldErrors[ContainedErrorType: Error[object]](Error[object]):
 
     Example:
         ```python
-        class Msg:
-            def __init__(self, text: str) -> None:
-                self.text = text
-
-
-        class FieldRef:
-            def __init__(self, value: str) -> None:
-                self.value = value
-
-
-        class SomeError(Exception):
-            def __init__(self, message: Msg) -> None:
-                super().__init__(message.text)
-                self._message = message
-
-            def as_debug_string(self) -> str:
-                return f"Error({self._message.text!r})"
+        class SomeError(Error[object]):
+            pass
 
 
         class FieldErrorAggregate(FieldErrors[SomeError]):
@@ -40,10 +25,10 @@ class FieldErrors[ContainedErrorType: Error[object]](Error[object]):
 
 
         field_errors = FieldErrorAggregate(
-            field=FieldRef("email"),
+            field=FieldReference("email"),
             errors=[
-                SomeError(Msg("Format is invalid")),
-                SomeError(Msg("Domain not allowed")),
+                SomeError.from_string("Format is invalid"),
+                SomeError.from_string("Domain not allowed"),
             ],
         )
         assert field_errors.field.value == "email"

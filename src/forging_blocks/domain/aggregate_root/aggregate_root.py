@@ -39,9 +39,7 @@ class AggregateRoot[TId: Hashable, EventPayloadType](Entity[TId], metaclass=Fina
                 return self.item_name
 
             @classmethod
-            def from_payload_fields(
-                cls, payload: str, metadata: MessageMetadata | None = None
-            ) -> ItemAdded:
+            def from_payload_fields(cls, payload: str, metadata: MessageMetadata) -> ItemAdded:
                 return cls(payload)
 
             @property
@@ -57,7 +55,7 @@ class AggregateRoot[TId: Hashable, EventPayloadType](Entity[TId], metaclass=Fina
         cart = ShoppingCart("cart-1")
         cart.apply(ItemAdded("Running Shoes"))
         print(cart.uncommitted_changes)  # [ItemAdded(...)]
-        print(cart.version)  # 1
+        print(cart.version)  # AggregateVersion(1)
         ```
     """
 
@@ -111,6 +109,11 @@ class AggregateRoot[TId: Hashable, EventPayloadType](Entity[TId], metaclass=Fina
 
         Example:
             ```python
+            class OrderPlaced:
+                def __init__(self, order_id: str) -> None:
+                    self.order_id = order_id
+
+
             class OrderAggregate(AggregateRoot[str, str]):
                 def _handle(self, event: Event[str]) -> None:
                     pass
@@ -137,6 +140,11 @@ class AggregateRoot[TId: Hashable, EventPayloadType](Entity[TId], metaclass=Fina
 
         Example:
             ```python
+            class OrderPlaced:
+                def __init__(self, order_id: str) -> None:
+                    self.order_id = order_id
+
+
             class OrderAggregate(AggregateRoot[str, str]):
                 def _handle(self, event: Event[str]) -> None:
                     pass
@@ -160,6 +168,11 @@ class AggregateRoot[TId: Hashable, EventPayloadType](Entity[TId], metaclass=Fina
 
         Example:
             ```python
+            class OrderNotified:
+                def __init__(self, order_id: str) -> None:
+                    self.order_id = order_id
+
+
             class OrderAggregate(AggregateRoot[str, str]):
                 def _handle(self, event: Event[str]) -> None:
                     pass
@@ -187,6 +200,11 @@ class AggregateRoot[TId: Hashable, EventPayloadType](Entity[TId], metaclass=Fina
 
         Example:
             ```python
+            class OrderPlaced:
+                def __init__(self, order_id: str) -> None:
+                    self.order_id = order_id
+
+
             class OrderAggregate(AggregateRoot[str, str]):
                 def _handle(self, event: Event[str]) -> None:
                     pass
@@ -215,6 +233,11 @@ class AggregateRoot[TId: Hashable, EventPayloadType](Entity[TId], metaclass=Fina
 
         Example:
             ```python
+            class OrderPlaced:
+                def __init__(self, order_id: str) -> None:
+                    self.order_id = order_id
+
+
             class OrderAggregate(AggregateRoot[str, str]):
                 def _handle(self, event: Event[str]) -> None:
                     pass

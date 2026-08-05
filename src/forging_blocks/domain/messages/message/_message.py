@@ -30,6 +30,9 @@ class Message[MessageRawType](ABC):
 
     Example:
         ```python
+        from forging_blocks.domain.messages.command import Command
+
+
         class PlaceOrder(Command[str]):
             def __init__(self, description: str) -> None:
                 super().__init__()
