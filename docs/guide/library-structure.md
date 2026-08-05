@@ -1,7 +1,15 @@
-# Blocks Structure
+# Internal Block Structure
 ## How forging-blocks is organized internally
 
 This section describes how **forging-blocks itself** is structured into blocks — named groups of code sharing a responsibility and boundary. It documents the library's own internal organization, not a prescription for how you should structure your project.
+
+!!! note "The library's block names are its own convention"
+    The library's five internal blocks (`foundation`, `domain`, `application`,
+    `infrastructure`, `presentation`) are an organizational convention, not a
+    naming template.
+    The toolkit itself is architecture-agnostic — you are free to interpret blocks as layers or any other structure.
+    Your own project's blocks should carry names meaningful to your context — `core`, `domain`, or a
+    domain-specific term — rather than replicating the library's internal naming.
 
 ---
 ## Quick summary
@@ -16,8 +24,9 @@ The forging-blocks library is organized into five blocks, each with a distinct r
 
 Dependency rules (inward-pointing): Foundation has no deps → Domain depends on Foundation → Application depends on Domain + Foundation; Infrastructure and Presentation depend on Application + Foundation.
 
-**Block ≠ Layer** — Blocks are architecture-neutral named boundaries within the library; they can be interpreted as layers if that mental model helps.
----
+**Block ≠ Layer**
+
+Blocks are architecture-neutral named boundaries within the library; they can be interpreted as layers if that mental model helps.
 
 The library's five blocks and their dependency relationships:
 
