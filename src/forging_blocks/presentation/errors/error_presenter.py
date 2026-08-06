@@ -5,14 +5,12 @@ values, plain ``Exception`` objects, and unknown types via a fallback.
 """
 
 from dataclasses import replace
-from typing import TYPE_CHECKING, cast
+from typing import cast
 
+from forging_blocks.foundation.errors import CombinedErrors, Error, FieldErrors
+from forging_blocks.foundation.result import Err
 from forging_blocks.presentation.errors.error_message_model import ErrorMessageModel
 from forging_blocks.presentation.errors.error_view_model import ErrorViewModel
-
-if TYPE_CHECKING:
-    from forging_blocks.foundation.errors import CombinedErrors, Error, FieldErrors
-    from forging_blocks.foundation.result import Err
 
 
 class ErrorPresenter:
@@ -84,24 +82,21 @@ class ErrorPresenter:
         checked before the generic ``Error`` branch because they
         subclass it.
         """
-        from forging_blocks.foundation.errors import CombinedErrors, Error, FieldErrors
-        from forging_blocks.foundation.result import Err
-
         match error:
             case CombinedErrors():
-                return self._from_combined_errors(cast("CombinedErrors[Error[object]]", error))
+                return self._from_combined_errors(cast(CombinedErrors[Error[object]], error))
             case FieldErrors():
-                return self._from_field_errors(cast("FieldErrors[Error[object]]", error))
+                return self._from_field_errors(cast(FieldErrors[Error[object]], error))
             case Error():
-                return self._from_framework_error(cast("Error[object]", error))
+                return self._from_framework_error(cast(Error[object], error))
             case Err():
-                return self._from_result_err(cast("Err[object, object]", error))
+                return self._from_result_err(cast(Err[object, object], error))
             case Exception():
                 return self._from_exception(error)
             case _:
                 return self._from_unknown(error)
 
-    def _from_framework_error(self, error: "Error[object]") -> list[ErrorMessageModel]:
+    def _from_framework_error(self, error: Error[object]) -> list[ErrorMessageModel]:
         """Convert a framework ``Error`` whose ``ErrorMetadata`` may hold
         *detail* and *field* context.
         """
@@ -111,7 +106,7 @@ class ErrorPresenter:
         code = type(error).__name__
         return [ErrorMessageModel(title=title, detail=detail, field=field, code=code)]
 
-    def _from_result_err(self, err: "Err[object, object]") -> list[ErrorMessageModel]:
+    def _from_result_err(self, err: Err[object, object]) -> list[ErrorMessageModel]:
         """Convert a ``Result.Err`` by re-dispatching its wrapped error."""
         return self._to_message_models(err.error)
 
@@ -134,7 +129,7 @@ class ErrorPresenter:
         ]
 
     def _from_combined_errors(
-        self, error: "CombinedErrors[Error[object]]"
+        self, error: CombinedErrors[Error[object]]
     ) -> list[ErrorMessageModel]:
         """Decompose ``CombinedErrors`` into its individual child messages.
 
@@ -157,7 +152,7 @@ class ErrorPresenter:
             )
         return messages
 
-    def _from_field_errors(self, error: "FieldErrors[Error[object]]") -> list[ErrorMessageModel]:
+    def _from_field_errors(self, error: FieldErrors[Error[object]]) -> list[ErrorMessageModel]:
         """Decompose ``FieldErrors`` into per-field messages.
 
         The parent field name is applied only when a child does not
@@ -175,13 +170,13 @@ class ErrorPresenter:
         return messages
 
     @classmethod
-    def _extract_detail(cls, error: "Error[object]") -> str | None:
+    def _extract_detail(cls, error: Error[object]) -> str | None:
         """Pull a human-readable detail string from the error metadata."""
         detail = error.metadata.context.get("detail")
         return detail if isinstance(detail, str) else None
 
     @classmethod
-    def _extract_field(cls, error: "Error[object]") -> str | None:
+    def _extract_field(cls, error: Error[object]) -> str | None:
         """Pull a field reference from the error metadata."""
         field = error.metadata.context.get("field")
         return field if isinstance(field, str) else None

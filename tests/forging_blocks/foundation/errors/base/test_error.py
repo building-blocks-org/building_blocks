@@ -84,3 +84,13 @@ class TestError:
             ")"
         )
         assert debug_string == expected_debug_string
+
+    def test_from_string_returns_instance(self) -> None:
+        raw_text = "Raw error text"
+        error_metadata = ErrorMetadata({})
+
+        error = Error.from_string(raw_text, error_metadata)
+
+        expected_error = Error(ErrorMessage(raw_text), ErrorMetadata({}))
+        assert error._message == expected_error._message
+        assert error._metadata == expected_error._metadata

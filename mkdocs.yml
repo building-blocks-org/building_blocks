@@ -68,7 +68,7 @@ nav:
       - Examples: guide/examples.md
       - Principles: guide/principles.md
       - Architecture Overview: guide/architecture-overview.md
-      - Recommended Blocks Structure: guide/recommended_blocks_structure.md
+      - Library Structure: guide/library-structure.md
 
   - Reference:
       - Overview: reference/index.md
