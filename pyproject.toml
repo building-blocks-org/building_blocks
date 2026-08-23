@@ -27,7 +27,7 @@ keywords = [
 ]
 
 [project.urls]
-homepage = "https://forging-blocks-org.github.io"
+homepage = "https://forging-blocks-org.github.io/forging-blocks"
 repository = "https://github.com/forging-blocks-org/forging-blocks"
 
 [project.scripts]
