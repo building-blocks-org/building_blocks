@@ -12,10 +12,12 @@ from forging_blocks.foundation.ports.helpers._inbound_dependency_validator impor
 )
 
 
-class Level(PortLevel):
-    OUTERMOST = 0
-    MIDDLE = 1
-    INNERMOST = 2
+class WebDepth(PortLevel):
+    """Example consumer vocabulary for a web-driven application."""
+
+    CONTROLLER = 0
+    APPLICATION = 1
+    DOMAIN = 2
 
 
 @pytest.mark.unit
@@ -46,10 +48,10 @@ class TestInboundDependencyValidator:
         """InboundPort at an outer level depending on a deeper InboundPort passes."""
 
         class AppInbound(InboundPort):
-            port_level = Level.INNERMOST
+            port_level = WebDepth.DOMAIN
 
         class PresentationInbound(InboundPort):
-            port_level = Level.OUTERMOST
+            port_level = WebDepth.CONTROLLER
 
             def __init__(self, app: AppInbound) -> None: ...
 
@@ -59,12 +61,12 @@ class TestInboundDependencyValidator:
         """InboundPort at an outer level depending on an outer InboundPort raises."""
 
         class OuterInbound(InboundPort):
-            port_level = Level.OUTERMOST
+            port_level = WebDepth.CONTROLLER
 
         with pytest.raises(ArchitectureError) as exc_info:
 
             class _(InboundPort):
-                port_level = Level.MIDDLE
+                port_level = WebDepth.APPLICATION
 
                 def __init__(self, dep: OuterInbound) -> None: ...
 

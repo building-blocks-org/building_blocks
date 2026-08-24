@@ -12,10 +12,12 @@ from forging_blocks.foundation.ports.helpers._outbound_dependency_validator impo
 )
 
 
-class Level(PortLevel):
-    OUTERMOST = 0
-    MIDDLE = 1
-    INNERMOST = 2
+class DataDepth(PortLevel):
+    """Example consumer vocabulary for a persistence-facing service."""
+
+    API = 0
+    SERVICE = 1
+    PERSISTENCE = 2
 
 
 @pytest.mark.unit
@@ -46,10 +48,10 @@ class TestOutboundDependencyValidator:
         """OutboundPort depending on a deeper InboundPort passes (inward)."""
 
         class AppInbound(InboundPort):
-            port_level = Level.INNERMOST
+            port_level = DataDepth.PERSISTENCE
 
         class MiddleOutbound(OutboundPort):
-            port_level = Level.MIDDLE
+            port_level = DataDepth.SERVICE
 
             def __init__(self, app: AppInbound) -> None: ...
 
@@ -59,12 +61,12 @@ class TestOutboundDependencyValidator:
         """OutboundPort depending on an outer-level InboundPort raises."""
 
         class OuterInbound(InboundPort):
-            port_level = Level.OUTERMOST
+            port_level = DataDepth.API
 
         with pytest.raises(ArchitectureError) as exc_info:
 
             class _(OutboundPort):
-                port_level = Level.INNERMOST
+                port_level = DataDepth.PERSISTENCE
 
                 def __init__(self, dep: OuterInbound) -> None: ...
 
