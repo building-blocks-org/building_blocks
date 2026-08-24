@@ -6,6 +6,8 @@ Raised at class-definition time via ``InboundPort.__init_subclass__``.
 from forging_blocks.foundation.errors.architecture_error import ArchitectureError
 
 from ._init_parameter_extractor import InitParameterExtractor
+from ._level_comparator import LevelComparator
+from ._level_relation import LevelRelation
 from ._port_reference_detector import PortReferenceDetector
 
 
@@ -33,14 +35,25 @@ class InboundDependencyValidator:
 
     def validate(self) -> None:
         """Raise ``ArchitectureError`` if any parameter references an InboundPort."""
-        parameters = InitParameterExtractor(self._cls).extract()
+        comparator = LevelComparator()
         detector = PortReferenceDetector(self._target_port)
-
-        for parameter_name, parameter_type in parameters.items():
-            if detector.detects_in(parameter_type):
+        self_level = getattr(self._cls, "port_level", None)
+        parameters = InitParameterExtractor(self._cls).extract()
+        for param_name, param_type in parameters.items():
+            for dep_port in detector.referenced_ports(param_type):
+                dep_level = getattr(dep_port, "port_level", None)
+                relation = comparator.compare(self_level, dep_level)
+                if relation is LevelRelation.INWARD:
+                    continue
+                if relation is LevelRelation.OUTWARD:
+                    raise ArchitectureError(
+                        f"{self._cls.__qualname__} is an InboundPort but depends on "
+                        f"{param_type!r} (an InboundPort) at an outer level via "
+                        f"parameter '{param_name}'. Port dependencies must point "
+                        f"inward."
+                    )
                 raise ArchitectureError(
                     f"{self._cls.__qualname__} is an InboundPort but depends on "
-                    f"{parameter_type!r} (an InboundPort) via parameter "
-                    f"'{parameter_name}'. InboundPorts may only depend on "
-                    f"OutboundPort instances."
+                    f"{param_type!r} (an InboundPort) via parameter '{param_name}'. "
+                    f"InboundPorts may only depend on OutboundPort instances."
                 )

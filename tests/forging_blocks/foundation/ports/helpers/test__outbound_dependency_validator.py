@@ -6,10 +6,16 @@ Targets the ArchitectureError raise path (line 30).
 import pytest
 
 from forging_blocks.foundation.errors.architecture_error import ArchitectureError
-from forging_blocks.foundation.ports import InboundPort, OutboundPort
+from forging_blocks.foundation.ports import InboundPort, OutboundPort, PortLevel
 from forging_blocks.foundation.ports.helpers._outbound_dependency_validator import (
     OutboundDependencyValidator,
 )
+
+
+class Level(PortLevel):
+    OUTERMOST = 0
+    MIDDLE = 1
+    INNERMOST = 2
 
 
 @pytest.mark.unit
@@ -35,3 +41,31 @@ class TestOutboundDependencyValidator:
                 def __init__(self, dep: BadInbound) -> None: ...
 
         assert "_" in str(exc_info.value)
+
+    def test_validate_passes_for_deeper_inbound_dependency(self) -> None:
+        """OutboundPort depending on a deeper InboundPort passes (inward)."""
+
+        class AppInbound(InboundPort):
+            port_level = Level.INNERMOST
+
+        class MiddleOutbound(OutboundPort):
+            port_level = Level.MIDDLE
+
+            def __init__(self, app: AppInbound) -> None: ...
+
+        OutboundDependencyValidator(MiddleOutbound, target_port=InboundPort).validate()
+
+    def test_validate_raises_for_outer_inbound_dependency(self) -> None:
+        """OutboundPort depending on an outer-level InboundPort raises."""
+
+        class OuterInbound(InboundPort):
+            port_level = Level.OUTERMOST
+
+        with pytest.raises(ArchitectureError) as exc_info:
+
+            class _(OutboundPort):
+                port_level = Level.INNERMOST
+
+                def __init__(self, dep: OuterInbound) -> None: ...
+
+        assert "outer" in str(exc_info.value)
