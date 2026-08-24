@@ -31,11 +31,23 @@ class PortReferenceDetector:
 
     def detects_in(self, parameter_type: object) -> bool:
         """Return ``True`` when *parameter_type* references the target port."""
+        return bool(self.referenced_ports(parameter_type))
+
+    def referenced_ports(self, parameter_type: object) -> set[type]:
+        """Return every port class in *parameter_type* (target or subclass)."""
+        found: set[type] = set()
+        self._collect(parameter_type, found)
+        return found
+
+    def _collect(self, parameter_type: object, found: set[type]) -> None:
         if isinstance(parameter_type, UnionType):
-            return any(self.detects_in(argument) for argument in get_args(parameter_type))
+            for argument in get_args(parameter_type):
+                self._collect(argument, found)
+            return
         if isinstance(parameter_type, type) and self._target_port in parameter_type.__mro__:
-            return True
+            found.add(parameter_type)
+            return
         origin = get_origin(parameter_type)
         if origin is not None and origin is not parameter_type:
-            return any(self.detects_in(argument) for argument in get_args(parameter_type))
-        return False
+            for argument in get_args(parameter_type):
+                self._collect(argument, found)
