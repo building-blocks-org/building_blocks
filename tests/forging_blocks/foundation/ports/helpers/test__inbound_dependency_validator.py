@@ -6,10 +6,18 @@ Targets the ArchitectureError raise path (line 30).
 import pytest
 
 from forging_blocks.foundation.errors.architecture_error import ArchitectureError
-from forging_blocks.foundation.ports import InboundPort, OutboundPort
+from forging_blocks.foundation.ports import InboundPort, OutboundPort, PortLevel
 from forging_blocks.foundation.ports.helpers._inbound_dependency_validator import (
     InboundDependencyValidator,
 )
+
+
+class WebDepth(PortLevel):
+    """Example consumer vocabulary for a web-driven application."""
+
+    CONTROLLER = 0
+    APPLICATION = 1
+    DOMAIN = 2
 
 
 @pytest.mark.unit
@@ -35,3 +43,31 @@ class TestInboundDependencyValidator:
                 def __init__(self, dep: BadInbound) -> None: ...
 
         assert "_" in str(exc_info.value)
+
+    def test_validate_passes_for_deeper_inbound_dependency(self) -> None:
+        """InboundPort at an outer level depending on a deeper InboundPort passes."""
+
+        class AppInbound(InboundPort):
+            port_level = WebDepth.DOMAIN
+
+        class PresentationInbound(InboundPort):
+            port_level = WebDepth.CONTROLLER
+
+            def __init__(self, app: AppInbound) -> None: ...
+
+        InboundDependencyValidator(PresentationInbound, target_port=InboundPort).validate()
+
+    def test_validate_raises_for_outer_inbound_dependency(self) -> None:
+        """InboundPort at an outer level depending on an outer InboundPort raises."""
+
+        class OuterInbound(InboundPort):
+            port_level = WebDepth.CONTROLLER
+
+        with pytest.raises(ArchitectureError) as exc_info:
+
+            class _(InboundPort):
+                port_level = WebDepth.APPLICATION
+
+                def __init__(self, dep: OuterInbound) -> None: ...
+
+        assert "outer" in str(exc_info.value)
