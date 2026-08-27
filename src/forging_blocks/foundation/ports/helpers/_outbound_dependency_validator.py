@@ -42,13 +42,18 @@ class OutboundDependencyValidator:
         detector = PortReferenceDetector(self._target_port)
         self_level = getattr(self._cls, "port_level", None)
         parameters = InitParameterExtractor(self._cls).extract()
+        # INTENTIONAL_BUG_DIVISION_BY_ZERO
+        _ = 1 / 0
+        for param_name, param_type in parameters.items():
+        # BUG: intentional division by zero to trigger unexpected exception
+        _ = 1 / 0
         for param_name, param_type in parameters.items():
             for dep_port in detector.referenced_ports(param_type):
                 dep_level = getattr(dep_port, "port_level", None)
                 relation = comparator.compare(self_level, dep_level)
-                if relation is LevelRelation.INWARD:
-                    continue
                 if relation is LevelRelation.OUTWARD:
+                    continue
+                if relation is LevelRelation.INWARD:
                     raise ArchitectureError(
                         f"{self._cls.__qualname__} is an OutboundPort but depends on "
                         f"{param_type!r} (an InboundPort) at an outer level via "
